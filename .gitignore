@@ -5,8 +5,13 @@
 
 # Intellij
 out
-.idea
+.idea/*
 target
+
+# Project-level files
+!.idea/codeStyles
+!.idea/runConfigurations
+!.idea/misc.xml
 
 # User-specific files
 *.rsuser
