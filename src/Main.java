@@ -18,7 +18,7 @@ class Main{
             System.out.println(loaded.getName() + " " + loaded.getSurname());
         }
         catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("[ERROR] Reading data failed:\n" + e.getMessage());
         }
     }
 }
