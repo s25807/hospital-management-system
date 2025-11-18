@@ -10,7 +10,7 @@ class Main{
     public static void main(String[] args){
         ObjectMapper mapper = new ObjectMapper();
 
-        Patient patient = new  Patient("4515515151", "Jake", "Kowalski", new Date(2001, 5, 5), Person.Nation.PL, Patient.BloodType.A, true, 80, 180, true);
+        Patient patient = new  Patient("949184518", "Mike", "Kowalski", Date.valueOf("2002-05-02"), Person.Nation.PL, Patient.BloodType.B, true, 80, 185, true);
 
         try {
             mapper.writerWithDefaultPrettyPrinter().writeValue(new File("data/patient.json"), patient);

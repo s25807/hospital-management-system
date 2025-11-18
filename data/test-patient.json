@@ -1,13 +1,13 @@
 {
   "type" : "patient",
-  "pesel" : "949184518",
-  "name" : "Mike",
+  "pesel" : "4515515151",
+  "name" : "Jake",
   "surname" : "Kowalski",
-  "dob" : 1020290400000,
+  "dob" : 989013600000,
   "nationality" : "PL",
-  "bloodType" : "B",
+  "bloodType" : "A",
   "insurance" : true,
   "weight" : 80.0,
-  "height" : 185.0,
+  "height" : 180.0,
   "isActive" : true
 }

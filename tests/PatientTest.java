@@ -1,9 +1,13 @@
 import Models.Patient;
 import Models.Person;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -74,5 +78,29 @@ public class PatientTest {
         assertEquals(0.0, emptyPatient.getWeight());
         assertEquals(0.0, emptyPatient.getHeight());
         assertFalse(emptyPatient.getIsActive());
+    }
+
+    @Test
+    void testSerialization() {
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            mapper.writerWithDefaultPrettyPrinter().writeValue(new File("data/test-patient.json"), patient);
+            Patient loaded = mapper.readValue(new File("data/test-patient.json"), Patient.class);
+            assertEquals("4515515151", loaded.getPesel());
+            assertEquals("Jake", loaded.getName());
+            assertEquals("Kowalski", loaded.getSurname());
+            assertEquals(Date.valueOf("2001-05-05"), loaded.getDob());
+            assertEquals(Person.Nation.PL, loaded.getNationality());
+
+            assertEquals(Patient.BloodType.A, loaded.getBloodType());
+            assertTrue(loaded.getInsurance());
+            assertEquals(80.0, loaded.getWeight());
+            assertEquals(180.0, loaded.getHeight());
+            assertTrue(loaded.getIsActive());
+        }
+        catch (IOException e) {
+            System.err.println("[ERROR] Reading data failed:\n" + e.getMessage());
+        }
     }
 }
