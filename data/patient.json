@@ -1,7 +1,7 @@
 {
   "type" : "patient",
   "pesel" : "949184518",
-  "name" : "Mike",
+  "name" : "John",
   "surname" : "Kowalski",
   "dob" : 1020290400000,
   "nationality" : "PL",

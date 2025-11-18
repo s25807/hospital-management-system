@@ -22,6 +22,10 @@ public class Operation {
     public void setStartTime(Timestamp startTime) { this.startTime = startTime; }
     public void setEndTime(Timestamp endTime) { this.endTime = endTime; }
 
+    /**
+     *
+     * @return time duration in minutes
+     */
     public long calculateDuration() {
         long diffMillis = endTime.getTime() - startTime.getTime();
         return diffMillis / 60000;
