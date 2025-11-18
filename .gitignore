@@ -6,6 +6,7 @@
 # Intellij
 out
 .idea
+target
 
 # User-specific files
 *.rsuser

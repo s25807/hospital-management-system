@@ -1,6 +1,6 @@
 package Models;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 public class Operation {
     public enum Status { Preparation, Rescheduled, Ongoing, Cancelled, Completed };
@@ -23,7 +23,7 @@ public class Operation {
     public void setEndTime(Timestamp endTime) { this.endTime = endTime; }
 
     public long calculateDuration() {
-        long diffMillis = endTime.getTimestamp().getTime() - startTime.getTimestamp().getTime();
+        long diffMillis = endTime.getTime() - startTime.getTime();
         return diffMillis / 60000;
     }
 }

@@ -1,7 +1,18 @@
 package Models;
 
-import java.util.Date;
+import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Patient.class, name = "patient")
+})
 public abstract class Person {
     public enum Nation { PL, DE, ENG };
 
@@ -11,6 +22,7 @@ public abstract class Person {
     private Date dob;
     private Nation nationality;
 
+    public Person() {}
     public Person(String pesel, String name, String surname, Date dob, Nation nationality) {
         this.pesel = pesel;
         this.name = name;

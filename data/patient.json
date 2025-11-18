@@ -1,0 +1,13 @@
+{
+  "type" : "patient",
+  "pesel" : "4515515151",
+  "name" : "Jake",
+  "surname" : "Kowalski",
+  "dob" : 60949836000000,
+  "nationality" : "PL",
+  "bloodType" : "A",
+  "insurance" : true,
+  "weight" : 80.0,
+  "height" : 180.0,
+  "isActive" : true
+}

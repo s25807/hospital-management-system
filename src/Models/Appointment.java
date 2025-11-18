@@ -1,7 +1,14 @@
 package Models;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
 public class Appointment {
     public enum Status { Initialized, Scheduled, InProgress, Cancelled, Completed };
 
@@ -23,7 +30,7 @@ public class Appointment {
     public void setEndTime(Timestamp endTime) { this.endTime = endTime; }
 
     public long calculateDuration() {
-        long diffMillis = endTime.getTimestamp().getTime() - startTime.getTimestamp().getTime();
+        long diffMillis = endTime.getTime() - startTime.getTime();
         return diffMillis / 60000;
     }
 }
