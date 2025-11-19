@@ -1,5 +1,6 @@
 package validations;
 
+import annotations.NotNull;
 import annotations.ValidDate;
 
 import java.lang.reflect.Field;
@@ -16,7 +17,9 @@ public class ValidDateValidator implements Validator {
                     field.setAccessible(true);
                     Object value = field.get(object);
 
-                    if (value == null) continue;
+                    if (value == null && field.isAnnotationPresent(NotNull.class)) {
+                        throw new IllegalArgumentException("[ERROR] " + field.getName() + " is required");
+                    }
 
                     ValidDate annotation = field.getAnnotation(ValidDate.class);
                     ValidDate.Mode mode = annotation.value();
