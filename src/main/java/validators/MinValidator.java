@@ -1,21 +1,24 @@
-package validations;
+package validators;
 
-import annotations.NotNull;
+import annotations.Min;
+
 import java.lang.reflect.Field;
 
-public class NotNullValidator implements Validator {
+public class MinValidator implements Validator {
     public void validate(Object object) throws IllegalAccessException {
         Class<?> clazz = object.getClass();
 
         while (clazz != null) {
             for (Field field : clazz.getDeclaredFields()) {
-                if (field.isAnnotationPresent(NotNull.class)) {
+                if (field.isAnnotationPresent(Min.class)) {
                     field.setAccessible(true);
                     Object value = field.get(object);
 
-                    if (value == null) {
-                        NotNull annotation = field.getAnnotation(NotNull.class);
-                        throw new IllegalArgumentException("[ERROR] " + field.getName() + " " + annotation.message());
+                    Min annotation = field.getAnnotation(Min.class);
+                    double min = annotation.value();
+
+                    if ((double) value < min) {
+                        throw new IllegalArgumentException("[ERROR] " + field.getName() + " " + annotation.message() + " " + min);
                     }
                 }
             }

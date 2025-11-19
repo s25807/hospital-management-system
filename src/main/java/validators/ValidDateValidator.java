@@ -1,4 +1,4 @@
-package validations;
+package validators;
 
 import annotations.NotNull;
 import annotations.ValidDate;
