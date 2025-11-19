@@ -1,16 +1,28 @@
 package models;
 
-import validations.NotNullValidator;
+import annotations.Min;
+import annotations.NotNull;
 
 import java.sql.Date;
 
 public class Patient extends Person {
     public enum BloodType { A, B, AB, O };
 
+    @NotNull
     private BloodType bloodType;
+
+    @NotNull
     private boolean insurance;
+
+    @NotNull
+    @Min(value = 0.1)
     private double weight;
+
+    @NotNull
+    @Min(value = 0.1)
     private double height;
+
+    @NotNull
     private boolean isActive;
 
     public Patient() {}

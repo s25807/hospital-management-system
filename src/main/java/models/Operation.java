@@ -1,14 +1,26 @@
 package models;
 
+import annotations.NotNull;
+import annotations.ValidDate;
+
 import java.sql.Timestamp;
 
 public class Operation {
     public enum Status { Preparation, Rescheduled, Ongoing, Cancelled, Completed };
 
+    @NotNull
+    @ValidDate(value = ValidDate.Mode.FUTURE)
     private Timestamp startTime;
+
+    @NotNull
+    @ValidDate(value = ValidDate.Mode.FUTURE)
     private Timestamp endTime;
+
+    @NotNull
+    @ValidDate(value = ValidDate.Mode.FUTURE)
     private Appointment.Status status;
 
+    public Operation() {}
     public Operation(Timestamp startTime) {
         this.startTime = startTime;
         this.status = Appointment.Status.Initialized;

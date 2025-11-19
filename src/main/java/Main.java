@@ -2,7 +2,7 @@ import models.Person;
 import models.Patient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import validations.ValidatorService;
+import validators.ValidatorService;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ class Main{
     public static void main(String[] args){
         ObjectMapper mapper = new ObjectMapper();
 
-        Patient patient = new Patient("51563666", "John", "Kowalski", null, Person.Nation.PL, Patient.BloodType.B, true, 80, 185, true);
+        Patient patient = new Patient("51563666", "John", "Kowalski", Date.valueOf("2002-05-02"), Person.Nation.PL, Patient.BloodType.B, true, 80, 185, true);
 
         try {
             ValidatorService.validate(patient);

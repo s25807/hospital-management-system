@@ -2,6 +2,8 @@ package models;
 
 import java.sql.Timestamp;
 
+import annotations.NotNull;
+import annotations.ValidDate;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonTypeInfo(
@@ -12,8 +14,15 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 public class Appointment {
     public enum Status { Initialized, Scheduled, InProgress, Cancelled, Completed };
 
+    @NotNull
+    @ValidDate(value = ValidDate.Mode.FUTURE)
     private Timestamp startTime;
+
+    @NotNull
+    @ValidDate(value = ValidDate.Mode.FUTURE)
     private Timestamp endTime;
+
+    @NotNull
     private Status status;
 
     public Appointment(Timestamp startTime) {

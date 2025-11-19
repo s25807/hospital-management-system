@@ -20,12 +20,17 @@ public abstract class Person {
 
     @NotNull
     private String pesel;
+
     @NotNull
     private String name;
+
     @NotNull
     private String surname;
+
+    @NotNull
     @ValidDate(value = ValidDate.Mode.PAST)
     private Date dob;
+
     @NotNull
     private Nation nationality;
 

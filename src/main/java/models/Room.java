@@ -1,11 +1,24 @@
 package models;
 
+import annotations.Max;
+import annotations.Min;
+import annotations.NotNull;
+
 public abstract class Room {
+    @NotNull
     private String roomNumber;
+
+    @Min
+    @NotNull
     private int maxPeopleAllowed;
+
+    @NotNull
     private int occupancy;
+
+    @NotNull
     private boolean isFilled;
 
+    public Room() {}
     public Room(String roomNumber, int maxPeopleAllowed, int occupancy) {
         this.roomNumber = roomNumber;
         this.maxPeopleAllowed = maxPeopleAllowed;

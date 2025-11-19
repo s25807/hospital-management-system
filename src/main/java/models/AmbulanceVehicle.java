@@ -1,14 +1,31 @@
 package models;
 
+import annotations.Min;
+import annotations.NotNull;
+
 public abstract class AmbulanceVehicle {
     public enum Brand { REV, DEMERS, BINZ, ICU };
 
+    @NotNull
     private String registrationPlate;
+
+    @NotNull
     private Brand brand;
+
+    @Min(value = 0.1)
+    @NotNull
     private double weightLimit;
+
+    @NotNull
     private int personLimit;
+
+    @NotNull
     private boolean isOnMission;
+
+    @NotNull
     private double maxSpeed;
+
+    @NotNull
     private double rangeOfTravel;
 
     public AmbulanceVehicle(String registrationPlate, Brand brand, double weightLimit, int personLimit, boolean isOnMission, double maxSpeed, double rangeOfTravel) {

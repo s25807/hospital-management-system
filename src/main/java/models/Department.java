@@ -1,7 +1,12 @@
 package models;
 
+import annotations.NotNull;
+
 public class Department {
+    @NotNull
     private String id;
+
+    @NotNull
     private String name;
 
     public Department() {}
