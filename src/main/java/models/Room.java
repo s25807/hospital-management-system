@@ -1,4 +1,4 @@
-package Models;
+package models;
 
 public abstract class Room {
     private String roomNumber;

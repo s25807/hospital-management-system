@@ -9,10 +9,8 @@ out
 target
 
 # Intellij project-level files exceptions
-!.idea/codeStyles
 !.idea/runConfigurations
 !.idea/runConfigurations/*.xml
-!.idea/misc.xml
 
 # User-specific files
 *.rsuser

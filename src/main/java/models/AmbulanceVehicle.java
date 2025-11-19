@@ -1,4 +1,4 @@
-package Models;
+package models;
 
 public abstract class AmbulanceVehicle {
     public enum Brand { REV, DEMERS, BINZ, ICU };

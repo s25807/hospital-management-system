@@ -1,5 +1,5 @@
-import Models.Person;
-import Models.Patient;
+import models.Person;
+import models.Patient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
