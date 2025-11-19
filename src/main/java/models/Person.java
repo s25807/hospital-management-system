@@ -2,6 +2,8 @@ package models;
 
 import java.sql.Date;
 
+import annotations.NotNull;
+import annotations.ValidDate;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -16,10 +18,15 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 public abstract class Person {
     public enum Nation { PL, DE, ENG };
 
+    @NotNull
     private String pesel;
+    @NotNull
     private String name;
+    @NotNull
     private String surname;
+    @ValidDate(value = ValidDate.Mode.PAST)
     private Date dob;
+    @NotNull
     private Nation nationality;
 
     public Person() {}
@@ -42,4 +49,6 @@ public abstract class Person {
     public void setSurname(String surname) { this.surname = surname; }
     public void setDob(Date dob) { this.dob = dob; }
     public void setNationality(Nation nationality) { this.nationality = nationality; }
+
+    private void validate() { }
 }

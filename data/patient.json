@@ -1,9 +1,9 @@
 {
   "type" : "patient",
-  "pesel" : "949184518",
+  "pesel" : null,
   "name" : "John",
   "surname" : "Kowalski",
-  "dob" : 1020290400000,
+  "dob" : 1777672800000,
   "nationality" : "PL",
   "bloodType" : "B",
   "insurance" : true,

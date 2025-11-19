@@ -2,6 +2,7 @@ import models.Person;
 import models.Patient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import validations.ValidatorService;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +12,13 @@ class Main{
     public static void main(String[] args){
         ObjectMapper mapper = new ObjectMapper();
 
-        Patient patient = new  Patient("949184518", "John", "Kowalski", Date.valueOf("2002-05-02"), Person.Nation.PL, Patient.BloodType.B, true, 80, 185, true);
+        Patient patient = new Patient(null, "John", "Kowalski", Date.valueOf("2026-05-02"), Person.Nation.PL, Patient.BloodType.B, true, 80, 185, true);
+
+        try {
+            ValidatorService.validate(patient);
+        } catch (Exception e){
+            System.err.println(e.getMessage());
+        }
 
         try {
             mapper.writerWithDefaultPrettyPrinter().writeValue(new File("data/patient.json"), patient);

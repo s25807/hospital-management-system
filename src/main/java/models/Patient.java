@@ -1,5 +1,7 @@
 package models;
 
+import validations.NotNullValidator;
+
 import java.sql.Date;
 
 public class Patient extends Person {
