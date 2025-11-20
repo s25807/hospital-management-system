@@ -1,6 +1,6 @@
 {
   "type" : "patient",
-  "pesel" : "51563666",
+  "pesel" : "51563666444",
   "name" : "John",
   "surname" : "Kowalski",
   "dob" : 1020290400000,
@@ -8,6 +8,6 @@
   "bloodType" : "B",
   "insurance" : true,
   "weight" : 80.0,
-  "height" : 0.0,
+  "height" : 185.0,
   "isActive" : true
 }

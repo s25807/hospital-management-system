@@ -2,6 +2,7 @@ package models;
 
 import java.sql.Date;
 
+import annotations.Length;
 import annotations.NotNull;
 import annotations.ValidDate;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -19,6 +20,7 @@ public abstract class Person {
     public enum Nation { PL, DE, ENG };
 
     @NotNull
+    @Length(value = 11)
     private String pesel;
 
     @NotNull
