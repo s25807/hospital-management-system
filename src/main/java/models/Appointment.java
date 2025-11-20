@@ -25,6 +25,8 @@ public class Appointment {
     @NotNull
     private Status status;
 
+    public Appointment() {}
+
     public Appointment(Timestamp startTime) {
         this.startTime = startTime;
         this.status = Status.Initialized;
