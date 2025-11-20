@@ -6,6 +6,7 @@
 # Intellij
 out
 .idea/*
+.idea/misc.xml
 target
 
 # Intellij project-level files exceptions
