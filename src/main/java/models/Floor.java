@@ -5,7 +5,6 @@ import annotations.NotNull;
 
 public class Floor {
     @NotNull
-    @Min(value = 0)
     private int number;
     @NotNull
     @Min(value = 1)
