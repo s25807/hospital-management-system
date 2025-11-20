@@ -5,6 +5,7 @@ import java.util.List;
 public class ValidatorRegistry {
     public static final List<Validator> validators = List.of(
             new NotNullValidator(),
+            new LengthValidator(),
             new MaxValidator(),
             new MinValidator(),
             new ValidDateValidator()
