@@ -18,19 +18,19 @@ public class Operation {
 
     @NotNull
     @ValidDate(value = ValidDate.Mode.FUTURE)
-    private Appointment.Status status;
+    private Operation.Status status;
 
     public Operation() {}
     public Operation(Timestamp startTime) {
         this.startTime = startTime;
-        this.status = Appointment.Status.Initialized;
+        this.status = Status.Preparation;
     }
 
-    public Appointment.Status getStatus() { return status; }
+    public Operation.Status getStatus() { return status; }
     public Timestamp getStartTime() { return startTime; }
     public Timestamp getEndTime() { return endTime; }
 
-    public void setStatus(Appointment.Status status) { this.status = status; }
+    public void setStatus(Operation.Status status) { this.status = status; }
     public void setStartTime(Timestamp startTime) { this.startTime = startTime; }
     public void setEndTime(Timestamp endTime) { this.endTime = endTime; }
 
