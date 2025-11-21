@@ -26,8 +26,8 @@ public class Patient extends Person {
     private boolean isActive;
 
     public Patient() {}
-    public Patient(String pesel, String name, String surname, Date dob, Nation nationality, BloodType bloodType, boolean insurance, double weight, double height, boolean isActive) {
-        super(pesel, name, surname, dob, nationality);
+    public Patient(String pesel, String username, String password, String name, String surname, Date dob, Nation nationality, BloodType bloodType, boolean insurance, double weight, double height, boolean isActive) {
+        super(pesel, username, password, name, surname, dob, nationality);
         this.bloodType = bloodType;
         this.insurance = insurance;
         this.weight = weight;

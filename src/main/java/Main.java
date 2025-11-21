@@ -1,3 +1,4 @@
+import constants.PathConstants;
 import models.Person;
 import models.Patient;
 
@@ -9,10 +10,12 @@ import java.io.IOException;
 import java.sql.Date;
 
 class Main{
+    public static final String mainPatient = PathConstants.PATIENTS_MAIN;
+
     public static void main(String[] args){
         ObjectMapper mapper = new ObjectMapper();
 
-        Patient patient = new Patient("51563666444", "John", "Kowalski", Date.valueOf("2002-05-02"), Person.Nation.PL, Patient.BloodType.B, true, 80, 185, true);
+        Patient patient = new Patient("51563666444", "superman", "abcdefghijk", "John", "Kowalski", Date.valueOf("2002-05-02"), Person.Nation.PL, Patient.BloodType.B, true, 80, 185, true);
 
         try {
             ValidatorService.validate(patient);
@@ -21,8 +24,8 @@ class Main{
         }
 
         try {
-            mapper.writerWithDefaultPrettyPrinter().writeValue(new File("data/patient.json"), patient);
-            Patient loaded = mapper.readValue(new File("data/patient.json"), Patient.class);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(new File(mainPatient + "patient.json"), patient);
+            Patient loaded = mapper.readValue(new File(mainPatient + "patient.json"), Patient.class);
             System.out.println(loaded.getName() + " " + loaded.getSurname());
         }
         catch (IOException e) {
