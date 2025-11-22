@@ -1,0 +1,7 @@
+{
+  "type" : "patientRoom",
+  "roomNumber" : "15C",
+  "maxPeopleAllowed" : 4,
+  "occupancy" : 2,
+  "vip" : false
+}

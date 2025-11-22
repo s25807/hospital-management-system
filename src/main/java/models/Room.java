@@ -1,9 +1,19 @@
 package models;
 
-import annotations.Max;
 import annotations.Min;
 import annotations.NotNull;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = PatientRoom.class, name = "patientRoom")
+})
 public abstract class Room {
     @NotNull
     private String roomNumber;
@@ -29,7 +39,11 @@ public abstract class Room {
     public String getRoomNumber() { return roomNumber; }
     public int getMaxPeopleAllowed() { return maxPeopleAllowed; }
     public int getOccupancy() { return occupancy; }
+
+    @JsonIgnore
     public boolean isFilled() { return isFilled; }
+
+    @JsonIgnore
     public int getRemainingPlaces() { return maxPeopleAllowed - occupancy; }
 
     public void setRoomNumber(String roomNumber) { this.roomNumber = roomNumber; }
@@ -44,8 +58,5 @@ public abstract class Room {
         }
     }
 
-    private void checkIsFilled() {
-        int remaining = maxPeopleAllowed - occupancy;
-        isFilled = remaining == 0;
-    }
+    private void checkIsFilled() { isFilled = getRemainingPlaces() == 0; }
 }
