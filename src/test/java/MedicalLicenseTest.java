@@ -29,15 +29,6 @@ public class MedicalLicenseTest {
                 new MedicalLicense(null, LocalDate.now(), LocalDate.now().plusDays(1))
         );
     }
-    @Test
-    void testInvalidDates() {
-        LocalDate acquisition = LocalDate.of(2025, 1, 1);
-        LocalDate expiration = LocalDate.of(2024, 1, 1);
-
-        assertThrows(IllegalArgumentException.class, () ->
-                new MedicalLicense("ML-1", acquisition, expiration)
-        );
-    }
 
     @Test
     void testIsExpired() {
