@@ -1,6 +1,8 @@
 {
   "type" : "patient",
   "pesel" : "51563666444",
+  "username" : "superman",
+  "password" : "Qwerty7/",
   "name" : "John",
   "surname" : "Kowalski",
   "dob" : 1020290400000,

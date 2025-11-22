@@ -1,3 +1,5 @@
+import constants.PathConstants;
+import exceptions.InvalidPasswordException;
 import models.Patient;
 import models.Person;
 
@@ -5,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import validators.ValidatorService;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +23,8 @@ public class PatientTest {
     void setUp() {
         patient = new Patient(
                 "4515515151",
+                "username",
+                "password123",
                 "Jake",
                 "Kowalski",
                 Date.valueOf("2001-05-05"),
@@ -81,12 +86,59 @@ public class PatientTest {
     }
 
     @Test
+    void testErrors() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            ValidatorService.validate(new Patient());
+        });
+        assertThrows(IllegalArgumentException.class, () -> {
+            ValidatorService.validate(
+                    new Patient("00011100011",
+                            "username",
+                            "pass",
+                            "Luffy",
+                            "Monkey",
+                            Date.valueOf("2002-05-05"),
+                            Person.Nation.PL,
+                            Patient.BloodType.A,
+                            false,
+                            65,
+                            170,
+                            false));
+        });
+        assertThrows(InvalidPasswordException.class, () -> {
+            ValidatorService.validate(
+                    new Patient("00011100011",
+                            "username",
+                            "password",
+                            "Luffy",
+                            "Monkey",
+                            Date.valueOf("2002-05-05"),
+                            Person.Nation.PL,
+                            Patient.BloodType.A,
+                            false,
+                            65,
+                            170,
+                            false));
+        });
+    }
+
+    @Test
+    void testCalculateAge() {
+        assertEquals(24, patient.calculateAge());
+
+        Patient temp = new Patient();
+        temp.setDob(Date.valueOf("2002-12-05"));
+        assertEquals(22, temp.calculateAge());
+    }
+
+    @Test
     void testSerialization() {
         ObjectMapper mapper = new ObjectMapper();
+        String path = PathConstants.PATIENTS_TESTS;
 
         try {
-            mapper.writerWithDefaultPrettyPrinter().writeValue(new File("data/test-patient.json"), patient);
-            Patient loaded = mapper.readValue(new File("data/test-patient.json"), Patient.class);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(new File(path + "test-patient.json"), patient);
+            Patient loaded = mapper.readValue(new File(path + "test-patient.json"), Patient.class);
             assertEquals("4515515151", loaded.getPesel());
             assertEquals("Jake", loaded.getName());
             assertEquals("Kowalski", loaded.getSurname());

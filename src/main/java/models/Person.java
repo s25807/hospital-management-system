@@ -1,6 +1,8 @@
 package models;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Period;
 
 import annotations.*;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -69,4 +71,12 @@ public abstract class Person {
     public void setSurname(String surname) { this.surname = surname; }
     public void setDob(Date dob) { this.dob = dob; }
     public void setNationality(Nation nationality) { this.nationality = nationality; }
+
+    public int calculateAge() {
+        return Period.between(dob.toLocalDate(), LocalDate.now()).getYears();
+    }
+
+    public void updateInformation() {
+
+    }
 }
