@@ -15,7 +15,7 @@ class Main{
     public static void main(String[] args){
         ObjectMapper mapper = new ObjectMapper();
 
-        Patient patient = new Patient("51563666444", "superman", "abcdefghijk", "John", "Kowalski", Date.valueOf("2002-05-02"), Person.Nation.PL, Patient.BloodType.B, true, 80, 185, true);
+        Patient patient = new Patient("51563666444", "superman", "Qwerty7/", "John", "Kowalski", Date.valueOf("2002-05-02"), Person.Nation.PL, Patient.BloodType.B, true, 80, 185, true);
 
         try {
             ValidatorService.validate(patient);

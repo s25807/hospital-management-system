@@ -1,6 +1,7 @@
 package validators;
 
 import annotations.Max;
+import exceptions.IllegalTypeException;
 
 import java.lang.reflect.Field;
 
@@ -12,14 +13,16 @@ public class MaxValidator implements Validator{
             for (Field field : clazz.getDeclaredFields()) {
                 if (field.isAnnotationPresent(Max.class)) {
                     field.setAccessible(true);
+
+                    Class<?> fieldType = field.getType();
                     Object value = field.get(object);
 
                     Max annotation = field.getAnnotation(Max.class);
                     double min = annotation.value();
 
-                    if ((double) value < min) {
-                        throw new IllegalArgumentException("[ERROR] " + field.getName() + " " + annotation.message() + " " + min);
-                    }
+                    if (fieldType.isAssignableFrom(String.class)) if (value.toString().length() < min) throw new IllegalArgumentException("[ERROR] " + field.getName() + " " + annotation.message() + " " + (int) min);
+                    else if(fieldType.isAssignableFrom(Double.class)) if((double) value < min) throw new IllegalArgumentException("[ERROR] " + field.getName() + " " + annotation.message() + " " + min);
+                    else throw new IllegalTypeException("[ERROR] " + fieldType.getName() + " is an invalid type for @Max");
                 }
             }
 

@@ -8,6 +8,7 @@ public class ValidatorRegistry {
             new LengthValidator(),
             new MaxValidator(),
             new MinValidator(),
+            new PasswordValidator(),
             new ValidDateValidator()
     );
 
