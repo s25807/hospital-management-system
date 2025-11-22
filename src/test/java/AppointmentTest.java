@@ -1,4 +1,5 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
+import constants.PathConstants;
 import models.Appointment;
 import models.Patient;
 import models.Person;
@@ -58,11 +59,12 @@ public class AppointmentTest {
     @Test
     void testSerialization() {
         ObjectMapper mapper = new ObjectMapper();
+        String path = PathConstants.APPOINTMENTS_TESTS;
 
         try {
-            mapper.writerWithDefaultPrettyPrinter().writeValue(new File("data/test-appointment.json"), appointment);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(new File(path + "test-appointment.json"), appointment);
 
-            Appointment loaded = mapper.readValue(new File("data/test-appointment.json"), Appointment.class);
+            Appointment loaded = mapper.readValue(new File(path + "test-appointment.json"), Appointment.class);
 
             assertEquals(Timestamp.valueOf("2025-08-08 11:00:00"), loaded.getStartTime());
             assertEquals(Timestamp.valueOf("2025-08-08 11:45:00") , loaded.getEndTime());
