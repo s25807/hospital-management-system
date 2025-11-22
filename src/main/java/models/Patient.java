@@ -46,4 +46,6 @@ public class Patient extends Person {
     public void setWeight(double weight) { this.weight = weight; }
     public void setHeight(double height) { this.height = height; }
     public void setIsActive(boolean isActive) { this.isActive = isActive; }
+
+    public void createAppointment() {}
 }
