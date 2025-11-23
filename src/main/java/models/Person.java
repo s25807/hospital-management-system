@@ -14,7 +14,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         property = "type"
 )
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = Patient.class, name = "patient")
+        @JsonSubTypes.Type(value = Patient.class, name = "patient"),
+        @JsonSubTypes.Type(value = Employee.class, name = "employee"),
+        @JsonSubTypes.Type(value = Doctor.class, name = "doctor"),
+        @JsonSubTypes.Type(value = Nurse.class, name = "nurse"),
+        @JsonSubTypes.Type(value = Paramedic.class, name = "paramedic")
 })
 public abstract class Person {
     public enum Nation { PL, DE, ENG };

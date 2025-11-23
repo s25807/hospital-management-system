@@ -1,4 +1,5 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
+import constants.PathConstants;
 import models.Floor;
 import models.Patient;
 import models.Person;
@@ -44,10 +45,11 @@ public class FloorTest {
     @Test
     void testSerialization() {
         ObjectMapper mapper = new ObjectMapper();
+        String path = PathConstants.FLOORS_TESTS;
 
         try {
-            mapper.writerWithDefaultPrettyPrinter().writeValue(new File("data/test-floor.json"), floor);
-            Floor loaded = mapper.readValue(new File("data/test-floor.json"), Floor.class);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(new File(path + "test-floor.json"), floor);
+            Floor loaded = mapper.readValue(new File(path + "test-floor.json"), Floor.class);
             assertEquals(2, loaded.getNumber());
             assertEquals(12, loaded.getAmountOfRooms());
         }
