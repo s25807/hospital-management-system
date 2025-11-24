@@ -5,6 +5,7 @@ import models.Patient;
 import models.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import validators.ValidatorService;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,11 +33,11 @@ public class AppointmentTest {
 
     @Test
     void testSetters() {
-        appointment.setStartTime(Timestamp.valueOf("2025-08-09 11:00:00"));
-        assertEquals(Timestamp.valueOf("2025-08-09 11:00:00"), appointment.getStartTime());
+        appointment.setStartTime(Timestamp.valueOf("2026-08-09 11:00:00"));
+        assertEquals(Timestamp.valueOf("2026-08-09 11:00:00"), appointment.getStartTime());
 
-        appointment.setEndTime(Timestamp.valueOf("2025-08-09 11:30:00"));
-        assertEquals(Timestamp.valueOf("2025-08-09 11:30:00"), appointment.getEndTime());
+        appointment.setEndTime(Timestamp.valueOf("2026-08-09 11:30:00"));
+        assertEquals(Timestamp.valueOf("2026-08-09 11:30:00"), appointment.getEndTime());
 
         appointment.setStatus(Appointment.Status.Scheduled);
         assertEquals(Appointment.Status.Scheduled, appointment.getStatus());
@@ -52,9 +53,35 @@ public class AppointmentTest {
     }
 
     @Test
+    void testErrors() {
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            Appointment a = new Appointment(
+                    Timestamp.valueOf("2000-01-01")
+            );
+            a.setEndTime(Timestamp.valueOf("2000-01-01"));
+            a.setStatus(Appointment.Status.Scheduled);
+            ValidatorService.validate(a);
+        });
+
+//        assertThrows(IllegalArgumentException.class, () -> {
+//            Appointment a = new Appointment(
+//                    Timestamp.valueOf("2000-01-01 10:00:00")
+//            );
+//            a.setEndTime(Timestamp.valueOf("2035-01-01 12:00:00"));
+//            a.setStatus(Appointment.Status.Scheduled);
+//            ValidatorService.validate(a);
+//        });
+
+    }
+
+
+    @Test
     void testCalculateDuration() {
         assertEquals(45, appointment.calculateDuration());
     }
+
+
 
     @Test
     void testSerialization() {
