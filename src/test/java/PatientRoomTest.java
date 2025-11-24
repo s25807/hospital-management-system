@@ -1,13 +1,15 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import constants.PathConstants;
-import models.Patient;
 import models.PatientRoom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import validators.ValidatorService;
 
 import java.io.File;
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PatientRoomTest {
     private PatientRoom patientRoom;
@@ -27,6 +29,26 @@ public class PatientRoomTest {
         Assertions.assertFalse(patientRoom.isFilled());
         Assertions.assertFalse(patientRoom.isVip());
         Assertions.assertEquals(2, patientRoom.getRemainingPlaces());
+    }
+
+    @Test
+    void testDefaultConstructor() {
+        PatientRoom empty = new PatientRoom();
+        assertNull(empty.getRoomNumber());
+        assertEquals(0, empty.getMaxPeopleAllowed());
+        assertEquals(0, empty.getOccupancy());
+        assertFalse(empty.isFilled());
+        assertFalse(empty.isVip());
+    }
+
+    @Test
+    void testErrors() {
+        PatientRoom room = new PatientRoom("300C", 2, 1, false);
+        assertThrows(IllegalArgumentException.class, () -> room.setOccupancy(3));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            ValidatorService.validate(new PatientRoom());
+        });
     }
 
     @Test

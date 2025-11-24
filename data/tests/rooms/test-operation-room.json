@@ -1,0 +1,10 @@
+{
+  "type" : "operationRoom",
+  "roomNumber" : "1S",
+  "maxPeopleAllowed" : 3,
+  "occupancy" : 2,
+  "surgicalEquipment" : {
+    "scalpel" : 5,
+    "clamp" : 10
+  }
+}
