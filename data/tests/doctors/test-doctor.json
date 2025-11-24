@@ -1,0 +1,15 @@
+{
+  "type" : "doctor",
+  "pesel" : "12312312312",
+  "username" : "doctor1",
+  "password" : "newPassword1",
+  "name" : "Jan",
+  "surname" : "Nowak",
+  "dob" : 316738800000,
+  "nationality" : "PL",
+  "employeeId" : "doc_1",
+  "status" : "ACTIVE",
+  "onDuty" : true,
+  "listOfMedLicenceNumbers" : [ ],
+  "hasHeadRole" : true
+}
