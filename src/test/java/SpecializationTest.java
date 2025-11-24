@@ -2,6 +2,7 @@ import models.Floor;
 import models.Specialization;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import validators.ValidatorService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,4 +41,25 @@ public class SpecializationTest {
         assertNull(emptySpecialization.getName());
         assertNull(emptySpecialization.getRequirements());
     }
+
+    @Test
+    void testErrors() {
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            Specialization s = new Specialization(
+                    null,
+                    new ArrayList<>(List.of("medical degree"))
+            );
+            ValidatorService.validate(s);
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            Specialization s = new Specialization(
+                    "Neurology",
+                    null
+            );
+            ValidatorService.validate(s);
+        });
+    }
+
 }
