@@ -1,13 +1,21 @@
 package models;
 
+import annotations.NotEmpty;
 import annotations.NotNull;
 import annotations.ValidDate;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.time.LocalDate;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
 public class MedicalLicense {
 
     @NotNull
+    @NotEmpty
     private String licenseNumber;
 
     @NotNull

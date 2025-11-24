@@ -1,5 +1,6 @@
 package models;
 
+import annotations.NotEmpty;
 import annotations.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -12,6 +13,7 @@ public abstract class Employee extends Person {
     enum Status { ACTIVE, ON_LEAVE, INACTIVE }
 
     @NotNull
+    @NotEmpty
     private String employeeId;
 
     @NotNull

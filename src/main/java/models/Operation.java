@@ -2,9 +2,15 @@ package models;
 
 import annotations.NotNull;
 import annotations.ValidDate;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.sql.Timestamp;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
 public class Operation {
     public enum Status { Preparation, Rescheduled, Ongoing, Cancelled, Completed };
 

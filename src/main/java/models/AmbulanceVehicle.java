@@ -1,12 +1,20 @@
 package models;
 
 import annotations.Min;
+import annotations.NotEmpty;
 import annotations.NotNull;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
 public abstract class AmbulanceVehicle {
     public enum Brand { REV, DEMERS, BINZ, ICU };
 
     @NotNull
+    @NotEmpty
     private String registrationPlate;
 
     @NotNull

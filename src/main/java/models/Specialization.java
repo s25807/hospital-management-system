@@ -1,11 +1,19 @@
 package models;
 
+import annotations.NotEmpty;
 import annotations.NotNull;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.util.ArrayList;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
 public class Specialization {
     @NotNull
+    @NotEmpty
     private String name;
 
     @NotNull

@@ -1,5 +1,6 @@
 package models;
 
+import annotations.NotEmpty;
 import annotations.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -13,15 +14,18 @@ public class Paramedic extends Employee{
     private LicenceType licenceType;
 
     @NotNull
+    @NotEmpty
     private String licenceNumber;
 
     @NotNull
     private boolean hasEmergencyDrivingPermit;
 
     @NotNull
+    @NotEmpty
     private String cprNumber;
 
     @NotNull
+    @NotEmpty
     private String advancedLifeSupNumber;
 
     public Paramedic() {}

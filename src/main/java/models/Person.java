@@ -29,6 +29,7 @@ public abstract class Person {
 
     @Unique
     @NotNull
+    @NotEmpty
     private String username;
 
     @NotNull
@@ -37,9 +38,11 @@ public abstract class Person {
     private String password;
 
     @NotNull
+    @NotEmpty
     private String name;
 
     @NotNull
+    @NotEmpty
     private String surname;
 
     @NotNull
