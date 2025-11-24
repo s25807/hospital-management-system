@@ -6,6 +6,7 @@ public class ValidatorRegistry {
     public static final List<Validator> validators = List.of(
             new NotNullValidator(),
             new LengthValidator(),
+            new NotEmptyValidator(),
             new MaxValidator(),
             new MinValidator(),
             new PasswordValidator(),

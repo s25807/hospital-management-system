@@ -1,6 +1,7 @@
 package models;
 
 import annotations.Min;
+import annotations.NotEmpty;
 import annotations.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -18,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 })
 public abstract class Room {
     @NotNull
+    @NotEmpty
     private String roomNumber;
 
     @Min

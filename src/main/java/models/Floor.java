@@ -2,10 +2,17 @@ package models;
 
 import annotations.Min;
 import annotations.NotNull;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
 public class Floor {
     @NotNull
     private int number;
+
     @NotNull
     @Min(value = 1)
     private int amountOfRooms;

@@ -1,12 +1,21 @@
 package models;
 
+import annotations.NotEmpty;
 import annotations.NotNull;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
 public class Department {
     @NotNull
+    @NotEmpty
     private String id;
 
     @NotNull
+    @NotEmpty
     private String name;
 
     public Department() {}
