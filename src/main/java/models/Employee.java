@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class Employee extends Person {
-    enum Status { ACTIVE, ON_LEAVE, INACTIVE }
+    public enum Status { ACTIVE, ON_LEAVE, INACTIVE }
 
     @NotNull
     @NotEmpty

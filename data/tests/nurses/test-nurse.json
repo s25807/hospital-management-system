@@ -1,0 +1,14 @@
+{
+  "type" : "nurse",
+  "pesel" : "11111111111",
+  "username" : "nurse1",
+  "password" : "password123",
+  "name" : "Anna",
+  "surname" : "Schmid",
+  "dob" : 637023600000,
+  "nationality" : "DE",
+  "employeeId" : "nur_1",
+  "status" : "ACTIVE",
+  "onDuty" : true,
+  "listOfMedLicenceNumbers" : [ ]
+}

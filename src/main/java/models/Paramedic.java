@@ -8,7 +8,7 @@ import java.sql.Date;
 import java.util.List;
 
 public class Paramedic extends Employee{
-    enum LicenceType { FIRST_AID, SURGICAL }
+    public enum LicenceType { FIRST_AID, SURGICAL }
 
     @NotNull
     private LicenceType licenceType;

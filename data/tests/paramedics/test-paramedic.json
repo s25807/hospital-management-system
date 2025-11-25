@@ -1,0 +1,19 @@
+{
+  "type" : "paramedic",
+  "pesel" : "11223344556",
+  "username" : "paramedicUser",
+  "password" : "password123",
+  "name" : "Robert",
+  "surname" : "Williams",
+  "dob" : 490658400000,
+  "nationality" : "ENG",
+  "employeeId" : "par_1",
+  "status" : "ACTIVE",
+  "onDuty" : true,
+  "listOfMedLicenceNumbers" : [ ],
+  "licenceType" : "FIRST_AID",
+  "licenceNumber" : "LIC001",
+  "hasEmergencyDrivingPermit" : true,
+  "cprNumber" : "CPR123",
+  "advancedLifeSupNumber" : "ALS001"
+}
