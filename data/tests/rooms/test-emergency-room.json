@@ -1,0 +1,6 @@
+{
+  "type" : "emergencyRoom",
+  "roomNumber" : "13E",
+  "maxPeopleAllowed" : 5,
+  "occupancy" : 2
+}
