@@ -3,6 +3,7 @@ package models;
 import annotations.Min;
 import annotations.NotEmpty;
 import annotations.NotNull;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonTypeInfo(
@@ -10,6 +11,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         include = JsonTypeInfo.As.PROPERTY,
         property = "type"
 )
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Boat.class, name = "boat"),
+        @JsonSubTypes.Type(value = Helicopter.class, name = "helicopter"),
+        @JsonSubTypes.Type(value = Van.class, name = "Van")
+})
 public abstract class AmbulanceVehicle {
     public enum Brand { REV, DEMERS, BINZ, ICU };
 
@@ -36,6 +42,7 @@ public abstract class AmbulanceVehicle {
     @NotNull
     private double rangeOfTravel;
 
+    public AmbulanceVehicle() {}
     public AmbulanceVehicle(String registrationPlate, Brand brand, double weightLimit, int personLimit, boolean isOnMission, double maxSpeed, double rangeOfTravel) {
         this.registrationPlate = registrationPlate;
         this.brand = brand;

@@ -22,6 +22,7 @@ public class MinValidator implements Validator {
 
                     if (fieldType.isAssignableFrom(String.class)) if (value.toString().length() < min) throw new IllegalArgumentException("[ERROR] " + field.getName() + " " + annotation.message() + " " + (int) min);
                     else if(fieldType.isAssignableFrom(Double.class)) if((double) value < min) throw new IllegalArgumentException("[ERROR] " + field.getName() + " " + annotation.message() + " " + min);
+                    else if(fieldType.isAssignableFrom(Integer.class)) if((int) value < min) throw new IllegalArgumentException("[ERROR] " + field.getName() + " " + annotation.message() + " " + (int) min);
                     else throw new IllegalTypeException("[ERROR] " + fieldType.getName() + " is an invalid type for @Min");
                 }
             }
