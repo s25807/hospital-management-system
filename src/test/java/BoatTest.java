@@ -1,5 +1,5 @@
-package models;
-
+import models.Boat;
+import models.AmbulanceVehicle;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BoatTest {
-
     private final ObjectMapper mapper = new ObjectMapper();
 
     private static final String SAMPLE_REG = "ABC-123";
