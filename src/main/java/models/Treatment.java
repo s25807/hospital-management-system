@@ -17,19 +17,16 @@ public abstract class Treatment {
     private double dose;
 
     @NotNull
-    @ValidDate(value = ValidDate.Mode.PAST)
+    @ValidDate(value = ValidDate.Mode.FUTURE)
     private Date startDate;
 
     @NotNull
-    @ValidDate(value = ValidDate.Mode.PAST)
+    @ValidDate(value = ValidDate.Mode.FUTURE)
     private Date endDate;
 
     public Treatment() {}
 
     public Treatment(String name, double dose, Date startDate, Date endDate) {
-        if (dose <= 0) {
-            throw new IllegalArgumentException("Dose must be positive");
-        }
         this.name = name;
         this.dose = dose;
         this.startDate = startDate;
@@ -47,13 +44,8 @@ public abstract class Treatment {
     public void setEndDate(Date endDate) { this.endDate = endDate; }
 
     public long calculateTotalTime() {
-        if (startDate == null || endDate == null)
-            throw new IllegalStateException("Start date and end date must be set");
-
         long diff = endDate.getTime() - startDate.getTime();
-        if (diff < 0)
-            throw new IllegalArgumentException("End date cannot be before start date");
-
         return diff / (1000L * 60L * 60L * 24L);
     }
+
 }

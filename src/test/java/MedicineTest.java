@@ -57,14 +57,16 @@ public class MedicineTest {
 
     @Test
     void testValidationFailsForNegativeDose() {
-        assertThrows(IllegalArgumentException.class, () -> new Medicine(
+        Medicine invalid = new Medicine(
                 "Painkillers",
                 -1.0,
                 Date.valueOf("2024-11-20"),
                 Date.valueOf("2024-11-25"),
-                "Pfizer",
+                "Novartis",
                 "SN-1234"
-        ));
+        );
+
+        assertThrows(IllegalArgumentException.class, () -> ValidatorService.validate(invalid));
     }
 
     @Test
