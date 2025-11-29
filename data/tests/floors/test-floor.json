@@ -1,4 +1,5 @@
 {
+  "type" : "Floor",
   "number" : 2,
   "amountOfRooms" : 12
 }
