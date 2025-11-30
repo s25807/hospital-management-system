@@ -1,8 +1,10 @@
+import annotations.SkipSetup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import constants.PathConstants;
 import models.OperationRoom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import validators.ValidatorService;
 
 import java.io.File;
@@ -18,7 +20,8 @@ public class OperationRoomTest {
     private Map<String, Integer> equipment;
 
     @BeforeEach
-    void setUp() {
+    void setUp(TestInfo info) {
+        if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
         equipment = new HashMap<>();
         equipment.put("scalpel", 5);
         equipment.put("clamp", 10);
@@ -70,6 +73,7 @@ public class OperationRoomTest {
     }
 
     @Test
+    @SkipSetup
     void testDefaultConstructor() {
         OperationRoom empty = new OperationRoom();
 

@@ -1,9 +1,11 @@
+import annotations.SkipSetup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import constants.PathConstants;
 import models.PatientRoom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import validators.ValidatorService;
 
 import java.io.File;
@@ -13,10 +15,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PatientRoomTest {
     private PatientRoom patientRoom;
+    private final ObjectMapper mapper = new ObjectMapper();
     private static final String roomPath = PathConstants.ROOMS_TESTS;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp(TestInfo info) {
+        if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
         patientRoom = new PatientRoom("15C", 4, 2, false);
     }
 
@@ -32,6 +36,7 @@ public class PatientRoomTest {
     }
 
     @Test
+    @SkipSetup
     void testDefaultConstructor() {
         PatientRoom empty = new PatientRoom();
         assertNull(empty.getRoomNumber());
@@ -53,8 +58,6 @@ public class PatientRoomTest {
 
     @Test
     public void serializationTest() {
-        ObjectMapper mapper = new ObjectMapper();
-
         try {
             mapper.writerWithDefaultPrettyPrinter().writeValue(new File(roomPath + "test-pRoom.json"), patientRoom);
             PatientRoom room =  mapper.readValue(new File(roomPath + "test-pRoom.json"), PatientRoom.class);

@@ -1,3 +1,4 @@
+import annotations.SkipSetup;
 import constants.PathConstants;
 import exceptions.InvalidPasswordException;
 import models.Patient;
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import validators.ValidatorService;
 
 import java.io.File;
@@ -16,11 +18,12 @@ import java.sql.Date;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PatientTest {
-
+    private final ObjectMapper mapper = new ObjectMapper();
     private Patient patient;
 
     @BeforeEach
-    void setUp() {
+    void setUp(TestInfo info) {
+        if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
         patient = new Patient(
                 "4515515151",
                 "username",
@@ -71,6 +74,7 @@ public class PatientTest {
     }
 
     @Test
+    @SkipSetup
     void testDefaultConstructor() {
         Patient emptyPatient = new Patient();
         assertNull(emptyPatient.getPesel());
@@ -133,7 +137,6 @@ public class PatientTest {
 
     @Test
     void testSerialization() {
-        ObjectMapper mapper = new ObjectMapper();
         String path = PathConstants.PATIENTS_TESTS;
 
         try {

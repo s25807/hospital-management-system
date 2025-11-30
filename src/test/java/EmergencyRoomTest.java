@@ -1,8 +1,10 @@
+import annotations.SkipSetup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import constants.PathConstants;
 import models.EmergencyRoom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import validators.ValidatorService;
 
 import java.io.File;
@@ -14,10 +16,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class EmergencyRoomTest {
 
+    private final ObjectMapper mapper = new ObjectMapper();
     private EmergencyRoom emergencyRoom;
 
     @BeforeEach
-    void setUp() {
+    void setUp(TestInfo info) {
+        if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
         EmergencyRoom.setAvgResponseTime(0);
         EmergencyRoom.setResponseTimes(new ArrayList<>());
 
@@ -34,6 +38,7 @@ public class EmergencyRoomTest {
     }
 
     @Test
+    @SkipSetup
     void testDefaultConstructor() {
         EmergencyRoom empty = new EmergencyRoom();
 
@@ -59,6 +64,7 @@ public class EmergencyRoomTest {
     }
 
     @Test
+    @SkipSetup
     void testResponseTimeClass() {
         Timestamp start = Timestamp.valueOf("2025-01-01 08:00:00");
         Timestamp end   = Timestamp.valueOf("2025-01-01 08:30:00");
@@ -88,7 +94,6 @@ public class EmergencyRoomTest {
 
     @Test
     void testSerialization() {
-        ObjectMapper mapper = new ObjectMapper();
         String path = PathConstants.ROOMS_TESTS;
 
         try {

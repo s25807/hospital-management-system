@@ -1,3 +1,4 @@
+import annotations.SkipSetup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import constants.PathConstants;
 import models.Floor;
@@ -5,6 +6,7 @@ import models.Patient;
 import models.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,10 +15,12 @@ import java.sql.Date;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class FloorTest {
+    private final ObjectMapper mapper = new ObjectMapper();
     private Floor floor;
 
     @BeforeEach
-    void setup() {
+    void setup(TestInfo info) {
+        if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
         floor = new Floor(2, 12);
     }
 
@@ -36,6 +40,7 @@ public class FloorTest {
     }
 
     @Test
+    @SkipSetup
     void testDefaultConstructor() {
         Floor emptyFloor = new Floor();
         assertEquals(0, emptyFloor.getNumber());
@@ -44,7 +49,6 @@ public class FloorTest {
 
     @Test
     void testSerialization() {
-        ObjectMapper mapper = new ObjectMapper();
         String path = PathConstants.FLOORS_TESTS;
 
         try {

@@ -1,3 +1,4 @@
+import annotations.SkipSetup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import constants.PathConstants;
 import models.Appointment;
@@ -5,6 +6,7 @@ import models.Patient;
 import models.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +19,8 @@ public class AppointmentTest {
     private Appointment appointment;
 
     @BeforeEach
-    void setUp() {
+    void setUp(TestInfo info) {
+        if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
         appointment = new Appointment(Timestamp.valueOf("2025-08-08 11:00:00"));
         appointment.setEndTime(Timestamp.valueOf("2025-08-08 11:45:00"));
         appointment.setStatus(Appointment.Status.Completed);
@@ -43,6 +46,7 @@ public class AppointmentTest {
     }
 
     @Test
+    @SkipSetup
     void testDefaultConstructor() {
         Appointment emptyAppointment = new Appointment();
 

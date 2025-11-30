@@ -1,15 +1,19 @@
+import annotations.SkipSetup;
 import models.Van;
 import models.AmbulanceVehicle;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class VanTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
+    private Van van;
 
     private static final String SAMPLE_REG = "ABC-123";
     private static final AmbulanceVehicle.Brand SAMPLE_BRAND = AmbulanceVehicle.Brand.REV;
@@ -19,13 +23,17 @@ public class VanTest {
     private static final double SAMPLE_MAX_SPEED = 120.0;
     private static final double SAMPLE_RANGE = 500.0;
 
-    @Test
-    void constructorAndGetSet() {
-        Van van = new Van(
+    @BeforeEach
+    void setUp(TestInfo info) {
+        if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
+        van = new Van(
                 SAMPLE_REG, SAMPLE_BRAND, SAMPLE_WEIGHT, SAMPLE_PERSONS,
                 SAMPLE_ON_MISSION, SAMPLE_MAX_SPEED, SAMPLE_RANGE, true
         );
+    }
 
+    @Test
+    void constructorAndGetSet() {
         assertEquals(SAMPLE_REG, van.getRegistrationPlate());
         assertEquals(SAMPLE_BRAND, van.getBrand());
         assertEquals(SAMPLE_WEIGHT, van.getWeightLimit());
@@ -40,6 +48,7 @@ public class VanTest {
     }
 
     @Test
+    @SkipSetup
     void noArgConstructorDefaults() {
         Van van = new Van();
         assertFalse(van.isOffRoadCapability());
@@ -49,10 +58,6 @@ public class VanTest {
 
     @Test
     void jsonRoundTrip_VanUppercaseName() throws JsonProcessingException {
-        Van van = new Van(
-                SAMPLE_REG, SAMPLE_BRAND, SAMPLE_WEIGHT, SAMPLE_PERSONS,
-                SAMPLE_ON_MISSION, SAMPLE_MAX_SPEED, SAMPLE_RANGE, true
-        );
 
         String json = mapper.writeValueAsString(van);
 

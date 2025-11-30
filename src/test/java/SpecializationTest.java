@@ -1,9 +1,11 @@
+import annotations.SkipSetup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import constants.PathConstants;
 import models.Floor;
 import models.Specialization;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import validators.ValidatorService;
 
 import java.io.File;
@@ -17,7 +19,8 @@ public class SpecializationTest {
     private Specialization specialization;
 
     @BeforeEach
-    void setup() {
+    void setup(TestInfo info) {
+        if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
         specialization = new Specialization("Neurology",
                 new ArrayList<>(List.of("medical degree", "proficiency with MRI", "hospital internship")));
     }
@@ -40,6 +43,7 @@ public class SpecializationTest {
     }
 
     @Test
+    @SkipSetup
     void testDefaultConstructor() {
         Specialization emptySpecialization = new Specialization();
         assertNull(emptySpecialization.getName());

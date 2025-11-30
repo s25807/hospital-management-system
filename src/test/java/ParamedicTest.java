@@ -1,3 +1,4 @@
+import annotations.SkipSetup;
 import constants.PathConstants;
 import exceptions.InvalidPasswordException;
 import models.Paramedic;
@@ -5,6 +6,7 @@ import models.Person;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import validators.ValidatorService;
 
 import java.io.File;
@@ -20,7 +22,8 @@ public class ParamedicTest {
     private Paramedic paramedicWithLicences;
 
     @BeforeEach
-    void setUp() {
+    void setUp(TestInfo info) {
+        if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
         paramedic = new Paramedic(
                 "11223344556",
                 "paramedicUser",
@@ -132,6 +135,7 @@ public class ParamedicTest {
     }
 
     @Test
+    @SkipSetup
     void testDefaultConstructor() {
         Paramedic empty = new Paramedic();
 

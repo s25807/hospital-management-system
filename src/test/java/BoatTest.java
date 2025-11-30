@@ -1,13 +1,17 @@
+import annotations.SkipSetup;
 import models.Boat;
 import models.AmbulanceVehicle;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BoatTest {
     private final ObjectMapper mapper = new ObjectMapper();
+    private Boat boat;
 
     private static final String SAMPLE_REG = "ABC-123";
     private static final AmbulanceVehicle.Brand SAMPLE_BRAND = AmbulanceVehicle.Brand.REV;
@@ -17,13 +21,17 @@ public class BoatTest {
     private static final double SAMPLE_MAX_SPEED = 120.0;
     private static final double SAMPLE_RANGE = 500.0;
 
-    @Test
-    void constructorAndGetSet() {
-        Boat boat = new Boat(
+    @BeforeEach
+    public void setUp(TestInfo info) {
+        if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
+        boat = new Boat(
                 SAMPLE_REG, SAMPLE_BRAND, SAMPLE_WEIGHT, SAMPLE_PERSONS,
                 SAMPLE_ON_MISSION, SAMPLE_MAX_SPEED, SAMPLE_RANGE, 12.34
         );
+    }
 
+    @Test
+    void constructorAndGetSet() {
         assertEquals(SAMPLE_REG, boat.getRegistrationPlate());
         assertEquals(SAMPLE_BRAND, boat.getBrand());
         assertEquals(SAMPLE_WEIGHT, boat.getWeightLimit());
@@ -40,6 +48,7 @@ public class BoatTest {
     }
 
     @Test
+    @SkipSetup
     void noArgConstructorDefaults() {
         Boat boat = new Boat();
         assertEquals(0.0, boat.getLength());
