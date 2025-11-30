@@ -128,7 +128,7 @@ public class NurseTest {
     @Test
     void testErrors() {
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             ValidatorService.validate(new Nurse());
         });
 

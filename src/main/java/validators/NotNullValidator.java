@@ -15,7 +15,7 @@ public class NotNullValidator implements Validator {
 
                     if (value == null) {
                         NotNull annotation = field.getAnnotation(NotNull.class);
-                        throw new IllegalArgumentException("[ERROR] " + field.getName() + " " + annotation.message());
+                        throw new NullPointerException("[ERROR] " + field.getName() + " " + annotation.message());
                     }
                 }
             }

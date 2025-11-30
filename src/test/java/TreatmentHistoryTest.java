@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 import validators.ValidatorService;
 
 import java.sql.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,12 +39,12 @@ public class TreatmentHistoryTest {
         );
 
         TreatmentHistory history = new TreatmentHistory(
-                p, t, info, Date.valueOf("2024-11-11")
+                p, List.of(t), List.of(info), Date.valueOf("2024-11-11")
         );
 
         assertEquals(p, history.getPatient());
-        assertEquals(t, history.getTreatment());
-        assertEquals(info, history.getAdditionalInformation());
+        assertEquals(t, history.getTreatmentList().get(0));
+        assertEquals(info, history.getAdditionalInformationList().get(0));
     }
 
     @Test
@@ -52,7 +53,7 @@ public class TreatmentHistoryTest {
                 null, null, null, null
         );
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> ValidatorService.validate(history));
     }
 }

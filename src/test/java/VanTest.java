@@ -28,7 +28,7 @@ public class VanTest {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
         van = new Van(
                 SAMPLE_REG, SAMPLE_BRAND, SAMPLE_WEIGHT, SAMPLE_PERSONS,
-                SAMPLE_ON_MISSION, SAMPLE_MAX_SPEED, SAMPLE_RANGE, true
+                SAMPLE_ON_MISSION, SAMPLE_MAX_SPEED, SAMPLE_RANGE, Van.Capability.Extreme
         );
     }
 
@@ -41,17 +41,17 @@ public class VanTest {
         assertTrue(van.isOnMission());
         assertEquals(SAMPLE_MAX_SPEED, van.getMaxSpeed());
         assertEquals(SAMPLE_RANGE, van.getRangeOfTravel());
-        assertTrue(van.isOffRoadCapability());
+        assertEquals(Van.Capability.Extreme, van.getOffRoadCapability());
 
-        van.setOffRoadCapability(false);
-        assertFalse(van.isOffRoadCapability());
+        van.setOffRoadCapability(Van.Capability.Low);
+        assertEquals(Van.Capability.Low, van.getOffRoadCapability());
     }
 
     @Test
     @SkipSetup
     void noArgConstructorDefaults() {
         Van van = new Van();
-        assertFalse(van.isOffRoadCapability());
+        assertNull(van.getOffRoadCapability());
         assertNull(van.getRegistrationPlate());
         assertNull(van.getBrand());
     }

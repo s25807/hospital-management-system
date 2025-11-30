@@ -26,7 +26,7 @@ public class AdditionalInformationTest {
                 null, null, null
         );
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> ValidatorService.validate(info));
     }
 }

@@ -22,7 +22,6 @@ public class EmergencyRoomTest {
     @BeforeEach
     void setUp(TestInfo info) {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
-        EmergencyRoom.setAvgResponseTime(0);
         EmergencyRoom.setResponseTimes(new ArrayList<>());
 
         emergencyRoom = new EmergencyRoom("13E", 5, 2);
@@ -59,7 +58,7 @@ public class EmergencyRoomTest {
         emergencyRoom.addResponseTime(t1Start, t1End);
         emergencyRoom.addResponseTime(t2Start, t2End);
 
-        double avg = emergencyRoom.getAvgResponseTime();
+        double avg = emergencyRoom.calculateAveResponseTime();
         assertEquals(15.0, avg, 0.0001);
     }
 
@@ -82,12 +81,12 @@ public class EmergencyRoomTest {
 
     @Test
     void testErrors() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             ValidatorService.validate(new EmergencyRoom());
         });
 
         EmergencyRoom.ResponseTime rt = new EmergencyRoom.ResponseTime();
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             ValidatorService.validate(rt);
         });
     }

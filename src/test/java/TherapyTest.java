@@ -61,6 +61,6 @@ public class TherapyTest {
                 null
         );
 
-        assertThrows(IllegalArgumentException.class, () -> ValidatorService.validate(invalid));
+        assertThrows(NullPointerException.class, () -> ValidatorService.validate(invalid));
     }
 }

@@ -53,7 +53,7 @@ public class SpecializationTest {
     @Test
     void testErrors() {
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             Specialization s = new Specialization(
                     null,
                     new ArrayList<>(List.of("medical degree"))
@@ -69,7 +69,7 @@ public class SpecializationTest {
             ValidatorService.validate(s);
         });
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             Specialization s = new Specialization(
                     "Neurology",
                     null

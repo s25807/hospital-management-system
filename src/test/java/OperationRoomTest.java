@@ -89,7 +89,7 @@ public class OperationRoomTest {
         OperationRoom or = new OperationRoom("3S", 2, 1);
         assertThrows(IllegalArgumentException.class, () -> or.setOccupancy(5));
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             ValidatorService.validate(new OperationRoom());
         });
     }

@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmergencyRoom extends Room {
-    @NotNull
-    private static double avgResponseTime = 0;
 
     @NotNull
     private static List<ResponseTime> responseTimes = new ArrayList<>();
@@ -18,22 +16,14 @@ public class EmergencyRoom extends Room {
     public EmergencyRoom(String roomNumber, int maxPeopleAllowed, int occupancy) {
         super(roomNumber, maxPeopleAllowed, occupancy);
     }
-
-    public static void setAvgResponseTime(double avgResponseTime) { EmergencyRoom.avgResponseTime = avgResponseTime; }
     public static void setResponseTimes(List<ResponseTime> responseTimes) {  EmergencyRoom.responseTimes = responseTimes; }
 
     @JsonIgnore
-    private void calculateAveResponseTime() {
+    public double calculateAveResponseTime() {
         double totalResponseTimeMinutes = 0;
         for (ResponseTime time : responseTimes) totalResponseTimeMinutes += time.getDurationMinutes();
 
-        avgResponseTime = totalResponseTimeMinutes / responseTimes.size();
-    }
-
-    @JsonIgnore
-    public double getAvgResponseTime() {
-        calculateAveResponseTime();
-        return avgResponseTime;
+        return totalResponseTimeMinutes / responseTimes.size();
     }
 
     @JsonIgnore

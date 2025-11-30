@@ -4,7 +4,7 @@ import annotations.NotEmpty;
 import annotations.NotNull;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -17,11 +17,11 @@ public class Specialization {
     private String name;
 
     @NotNull
-    private ArrayList<String> requirements;
+    private List<String> requirements;
 
     public Specialization() {}
 
-    public Specialization(String name, ArrayList<String> requirements) {
+    public Specialization(String name, List<String> requirements) {
         this.name = name;
         this.requirements = requirements;
     }
@@ -30,7 +30,7 @@ public class Specialization {
 
     public void setName(String name) { this.name = name; }
 
-    public ArrayList<String> getRequirements() { return requirements; }
+    public List<String> getRequirements() { return requirements; }
 
-    public void setRequirements(ArrayList<String> requirements) { this.requirements = requirements; }
+    public void setRequirements(List<String> requirements) { this.requirements = requirements; }
 }

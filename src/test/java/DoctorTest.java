@@ -135,7 +135,7 @@ public class DoctorTest {
     @Test
     void testErrors() {
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             ValidatorService.validate(new Doctor());
         });
 

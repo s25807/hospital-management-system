@@ -18,7 +18,7 @@ public class DepartmentTest {
     @Test
     public void validateDepartmentTest() {
         Department department = new Department();
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Assertions.assertThrows(NullPointerException.class, () -> {
             department.setId(null);
             ValidatorService.validate(department);
         });

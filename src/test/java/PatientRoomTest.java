@@ -51,7 +51,7 @@ public class PatientRoomTest {
         PatientRoom room = new PatientRoom("300C", 2, 1, false);
         assertThrows(IllegalArgumentException.class, () -> room.setOccupancy(3));
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             ValidatorService.validate(new PatientRoom());
         });
     }

@@ -4,6 +4,7 @@ import annotations.NotNull;
 import annotations.ValidDate;
 
 import java.sql.Date;
+import java.util.List;
 
 public class TreatmentHistory {
 
@@ -11,10 +12,10 @@ public class TreatmentHistory {
     private Patient patient;
 
     @NotNull
-    private Treatment treatment;
+    private List<Treatment> treatmentList;
 
     @NotNull
-    private AdditionalInformation additionalInformation;
+    private List<AdditionalInformation> additionalInformationList;
 
     @NotNull
     @ValidDate(value = ValidDate.Mode.PAST)
@@ -22,10 +23,10 @@ public class TreatmentHistory {
 
     public TreatmentHistory() {}
 
-    public TreatmentHistory(Patient patient, Treatment treatment, AdditionalInformation additionalInformation, Date dateRecorded) {
+    public TreatmentHistory(Patient patient, List<Treatment> treatmentList, List<AdditionalInformation> additionalInformationList, Date dateRecorded) {
         this.patient = patient;
-        this.treatment = treatment;
-        this.additionalInformation = additionalInformation;
+        this.treatmentList = treatmentList;
+        this.additionalInformationList = additionalInformationList;
         this.dateRecorded = dateRecorded;
     }
 
@@ -37,21 +38,19 @@ public class TreatmentHistory {
         this.patient = patient;
     }
 
-    public Treatment getTreatment() {
-        return treatment;
+    public List<Treatment> getTreatmentList() {
+        return treatmentList;
     }
 
-    public void setTreatment(Treatment treatment) {
-        this.treatment = treatment;
+    public void setTreatmentList(List<Treatment> treatmentList) {
+        this.treatmentList = treatmentList;
     }
 
-    public AdditionalInformation getAdditionalInformation() {
-        return additionalInformation;
+    public List<AdditionalInformation> getAdditionalInformationList() {
+        return additionalInformationList;
     }
 
-    public void setAdditionalInformation(AdditionalInformation additionalInformation) {
-        this.additionalInformation = additionalInformation;
-    }
+    public void setAdditionalInformationList(List<AdditionalInformation> additionalInformationList) { this.additionalInformationList = additionalInformationList; }
 
     public Date getDateRecorded() {
         return dateRecorded;

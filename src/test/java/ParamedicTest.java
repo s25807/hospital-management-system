@@ -163,7 +163,7 @@ public class ParamedicTest {
     @Test
     void testErrors() {
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             ValidatorService.validate(new Paramedic());
         });
 
