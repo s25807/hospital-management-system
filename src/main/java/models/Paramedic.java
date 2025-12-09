@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 public class Paramedic extends Employee{
     public enum LicenceType { FIRST_AID, SURGICAL }
@@ -29,16 +30,16 @@ public class Paramedic extends Employee{
     private String advancedLifeSupNumber;
 
     public Paramedic() {}
-    public Paramedic(String pesel, String username, String password, String name, String surname, Date dob, Nation nationality, String employeeId, Status status, boolean onDuty, LicenceType licenceType, String licenceNumber, boolean hasEmergencyDrivingPermit, String cprNumber, String advancedLifeSupNumber) {
-        super(pesel, username, password, name, surname, dob, nationality, employeeId, status, onDuty);
+    public Paramedic(String pesel, String username, String password, String name, String surname, Date dob, Nation nationality, String employeeId, Status status, boolean onDuty, MedicalLicense medicalLicense ,LicenceType licenceType, String licenceNumber, boolean hasEmergencyDrivingPermit, String cprNumber, String advancedLifeSupNumber) {
+        super(pesel, username, password, name, surname, dob, nationality, employeeId, status, onDuty, medicalLicense);
         this.licenceType = licenceType;
         this.licenceNumber = licenceNumber;
         this.hasEmergencyDrivingPermit = hasEmergencyDrivingPermit;
         this.cprNumber = cprNumber;
         this.advancedLifeSupNumber = advancedLifeSupNumber;
     }
-    public Paramedic(String pesel, String username, String password, String name, String surname, Date dob, Nation nationality, String employeeId, Status status, boolean onDuty, List<String> listOfMedLicenceNumbers, LicenceType licenceType, String licenceNumber, boolean hasEmergencyDrivingPermit, String cprNumber, String advancedLifeSupNumber) {
-        super(pesel, username, password, name, surname, dob, nationality, employeeId, status, onDuty, listOfMedLicenceNumbers);
+    public Paramedic(String pesel, String username, String password, String name, String surname, Date dob, Nation nationality, String employeeId, Status status, boolean onDuty, Map<String, MedicalLicense> mapOfMedicalLicenseNumbers, LicenceType licenceType, String licenceNumber, boolean hasEmergencyDrivingPermit, String cprNumber, String advancedLifeSupNumber) {
+        super(pesel, username, password, name, surname, dob, nationality, employeeId, status, onDuty, mapOfMedicalLicenseNumbers);
         this.licenceType = licenceType;
         this.licenceNumber = licenceNumber;
         this.hasEmergencyDrivingPermit = hasEmergencyDrivingPermit;

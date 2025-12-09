@@ -5,9 +5,7 @@ import annotations.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public abstract class Employee extends Person {
     public enum Status { ACTIVE, ON_LEAVE, INACTIVE }
@@ -23,39 +21,43 @@ public abstract class Employee extends Person {
     private boolean onDuty;
 
     @NotNull
-    private List<String> listOfMedLicenceNumbers;
+    @NotEmpty
+    private Map<String, MedicalLicense> mapOfMedLicenceNumbers;
 
     public Employee() {}
-    public Employee(String pesel, String username, String password, String name, String surname, Date dob, Nation nationality, String employeeId, Status status, boolean onDuty) {
+    public Employee(String pesel, String username, String password, String name, String surname, Date dob, Nation nationality, String employeeId, Status status, boolean onDuty, MedicalLicense medicalLicense) {
         super(pesel, username, password, name, surname, dob, nationality);
         this.employeeId = employeeId;
         this.status = status;
         this.onDuty = onDuty;
-        this.listOfMedLicenceNumbers = new ArrayList<>();
+        this.mapOfMedLicenceNumbers = new HashMap<>();
+        registerNewMedLicence(medicalLicense);
     }
-    public Employee(String pesel, String username, String password, String name, String surname, Date dob, Nation nationality, String employeeId, Status status, boolean onDuty,  List<String> listOfMedLicenceNumbers) {
+    public Employee(String pesel, String username, String password, String name, String surname, Date dob, Nation nationality, String employeeId, Status status, boolean onDuty,  Map<String, MedicalLicense> mapOfMedLicenceNumbers) {
         super(pesel, username, password, name, surname, dob, nationality);
         this.employeeId = employeeId;
         this.status = status;
         this.onDuty = onDuty;
-        this.listOfMedLicenceNumbers =  listOfMedLicenceNumbers;
+        this.mapOfMedLicenceNumbers =  mapOfMedLicenceNumbers;
     }
 
     public String getEmployeeId() { return employeeId; }
     public Status getStatus() { return status; }
     public boolean isOnDuty() { return onDuty; }
-    public List<String> getListOfMedLicenceNumbers() { return listOfMedLicenceNumbers; }
+    public Map<String, MedicalLicense> getMapOfMedLicenceNumbers() { return new HashMap<>(mapOfMedLicenceNumbers); }
 
     public void setEmployeeId(String employeeId) { this.employeeId = employeeId; }
     public void setStatus(Status status) { this.status = status; }
     public void toggleDuty(boolean onDuty) { this.onDuty = onDuty; }
 
     @JsonIgnore
-    public void registerNewMedLicence(String medLicenceNumber) { this.listOfMedLicenceNumbers.add(medLicenceNumber); }
+    public void registerNewMedLicence(MedicalLicense medicalLicense) {
+        this.mapOfMedLicenceNumbers.put(medicalLicense.getLicenseNumber(),  medicalLicense);
+    }
 
     @JsonIgnore
     public Optional<String> findMedicalLicenseNumber(String medLicenceNumber) {
-        for (String num :  listOfMedLicenceNumbers) if (medLicenceNumber.equals(num)) return Optional.of(num);
+        if (mapOfMedLicenceNumbers.containsKey(medLicenceNumber)) return Optional.of(medLicenceNumber);
         return Optional.empty();
     }
 }

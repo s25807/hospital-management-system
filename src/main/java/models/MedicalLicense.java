@@ -3,8 +3,10 @@ package models;
 import annotations.NotEmpty;
 import annotations.NotNull;
 import annotations.ValidDate;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 @JsonTypeInfo(
@@ -20,13 +22,14 @@ public class MedicalLicense {
 
     @NotNull
     @ValidDate(value = ValidDate.Mode.PAST)
-    private LocalDate acquisitionDate;
+    private Date acquisitionDate;
 
     @NotNull
     @ValidDate(value = ValidDate.Mode.FUTURE)
-    private LocalDate expirationDate;
+    private Date expirationDate;
 
-    public MedicalLicense(String licenseNumber, LocalDate acquisitionDate, LocalDate expirationDate) {
+    public MedicalLicense() {}
+    public MedicalLicense(String licenseNumber, Date acquisitionDate, Date expirationDate) {
         setLicenseNumber(licenseNumber);
         this.acquisitionDate = acquisitionDate;
         this.expirationDate = expirationDate;
@@ -43,23 +46,22 @@ public class MedicalLicense {
         this.licenseNumber = licenseNumber;
     }
 
-    public LocalDate getAcquisitionDate() {
+    public Date getAcquisitionDate() {
         return acquisitionDate;
     }
 
-    public void setAcquisitionDate(LocalDate acquisitionDate) {
+    public void setAcquisitionDate(Date acquisitionDate) {
         this.acquisitionDate = acquisitionDate;
     }
 
-    public LocalDate getExpirationDate() {
+    public Date getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(LocalDate expirationDate) {
+    public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
     }
 
-    public boolean isExpired() {
-        return expirationDate.isBefore(LocalDate.now());
-    }
+    @JsonIgnore
+    public boolean isExpired() { return expirationDate.toLocalDate().isBefore(LocalDate.now()); }
 }
