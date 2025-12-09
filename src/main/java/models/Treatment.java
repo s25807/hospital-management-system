@@ -4,6 +4,7 @@ import annotations.Min;
 import annotations.NotEmpty;
 import annotations.NotNull;
 import annotations.ValidDate;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.sql.Date;
 
@@ -25,7 +26,7 @@ public abstract class Treatment {
     private Date endDate;
 
     @NotNull
-    TreatmentHistory history;
+    private TreatmentHistory history;
 
     public Treatment() {}
 
@@ -49,6 +50,7 @@ public abstract class Treatment {
     public void setEndDate(Date endDate) { this.endDate = endDate; }
     public void setHistory(TreatmentHistory history) { this.history = history; }
 
+    @JsonIgnore
     public long calculateTotalTime() {
         long diff = endDate.getTime() - startDate.getTime();
         return diff / (1000L * 60L * 60L * 24L);

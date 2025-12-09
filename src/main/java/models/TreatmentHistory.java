@@ -33,30 +33,36 @@ public class TreatmentHistory {
     public Patient getPatient() {
         return patient;
     }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
+    public Date getDateRecorded() {
+        return dateRecorded;
     }
-
     public List<Treatment> getTreatmentList() {
         return treatmentList;
     }
-
-    public void setTreatmentList(List<Treatment> treatmentList) {
-        this.treatmentList = treatmentList;
-    }
-
     public List<AdditionalInformation> getAdditionalInformationList() {
         return additionalInformationList;
     }
 
-    public void setAdditionalInformationList(List<AdditionalInformation> additionalInformationList) { this.additionalInformationList = additionalInformationList; }
-
-    public Date getDateRecorded() {
-        return dateRecorded;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
-
+    public void setTreatmentList(List<Treatment> treatmentList) {
+        this.treatmentList = treatmentList;
+    }
+    public void setAdditionalInformationList(List<AdditionalInformation> additionalInformationList) { this.additionalInformationList = additionalInformationList; }
     public void setDateRecorded(Date dateRecorded) {
         this.dateRecorded = dateRecorded;
+    }
+
+    public void addTreatment(Treatment treatment) {
+        if(treatment == null) throw new NullPointerException("Treatment cannot be null");
+        if(treatment.getHistory() != this) treatment.setHistory(this);
+        if(!treatmentList.contains(treatment)) treatmentList.add(treatment);
+    }
+
+    public void removeTreatment(Treatment treatment) {
+        if(treatment == null) throw new NullPointerException("Treatment cannot be null");
+        if(treatment.getHistory() == this) setTreatmentList(null);
+        treatmentList.remove(treatment);
     }
 }
