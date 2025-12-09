@@ -1,6 +1,8 @@
 import annotations.SkipSetup;
 import constants.PathConstants;
 import exceptions.InvalidPasswordException;
+import models.Employee;
+import models.MedicalLicense;
 import models.Nurse;
 import models.Person;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,31 +15,21 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class NurseTest {
     private final ObjectMapper mapper = new ObjectMapper();
     private Nurse nurse;
-    private Nurse nurseWithLicences;
+    private MedicalLicense medicalLicense;
 
     @BeforeEach
     void setUp(TestInfo info) {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
-        nurse = new Nurse(
-                "11111111111",
-                "nurse1",
-                "password123",
-                "Anna",
-                "Schmid",
-                Date.valueOf("1990-03-10"),
-                Person.Nation.DE,
-                "nur_1",
-                Nurse.Status.ACTIVE,
-                true
-        );
+        medicalLicense = new MedicalLicense("AAC-DAE-20A", Date.valueOf("2000-10-10"), Date.valueOf("2020-10-10"));
 
-        nurseWithLicences = new Nurse(
+        nurse = new Nurse(
                 "22222222222",
                 "nurse2",
                 "password123",
@@ -48,38 +40,24 @@ public class NurseTest {
                 "nur_2",
                 Nurse.Status.ON_LEAVE,
                 false,
-                List.of("LIC100", "LIC200")
+                medicalLicense
         );
     }
 
     @Test
     void testConstructorAndGetters() {
-        assertEquals("11111111111", nurse.getPesel());
-        assertEquals("nurse1", nurse.getUsername());
+        assertEquals("22222222222", nurse.getPesel());
+        assertEquals("nurse2", nurse.getUsername());
         assertEquals("password123", nurse.getPassword());
-        assertEquals("Anna", nurse.getName());
-        assertEquals("Schmid", nurse.getSurname());
-        assertEquals(Date.valueOf("1990-03-10"), nurse.getDob());
-        assertEquals(Person.Nation.DE, nurse.getNationality());
+        assertEquals("Maria", nurse.getName());
+        assertEquals("Woźniak", nurse.getSurname());
+        assertEquals(Date.valueOf("1988-01-01"), nurse.getDob());
+        assertEquals(Person.Nation.PL, nurse.getNationality());
 
-        assertEquals("nur_1", nurse.getEmployeeId());
-        assertEquals(Nurse.Status.ACTIVE, nurse.getStatus());
-        assertTrue(nurse.isOnDuty());
-        assertTrue(nurse.getListOfMedLicenceNumbers().isEmpty());
-
-
-        assertEquals("22222222222", nurseWithLicences.getPesel());
-        assertEquals("nurse2", nurseWithLicences.getUsername());
-        assertEquals("password123", nurseWithLicences.getPassword());
-        assertEquals("Maria", nurseWithLicences.getName());
-        assertEquals("Woźniak", nurseWithLicences.getSurname());
-        assertEquals(Date.valueOf("1988-01-01"), nurseWithLicences.getDob());
-        assertEquals(Person.Nation.PL, nurseWithLicences.getNationality());
-
-        assertEquals("nur_2", nurseWithLicences.getEmployeeId());
-        assertEquals(Nurse.Status.ON_LEAVE, nurseWithLicences.getStatus());
-        assertFalse(nurseWithLicences.isOnDuty());
-        assertEquals(List.of("LIC100", "LIC200"), nurseWithLicences.getListOfMedLicenceNumbers());
+        assertEquals("nur_2", nurse.getEmployeeId());
+        assertEquals(Nurse.Status.ON_LEAVE, nurse.getStatus());
+        assertFalse(nurse.isOnDuty());
+        assertEquals(Map.of(medicalLicense.getLicenseNumber(), medicalLicense), nurse.getMapOfMedLicenceNumbers());
     }
 
     @Test
@@ -99,10 +77,10 @@ public class NurseTest {
 
     @Test
     void testMedicalLicenceOperations() {
-        nurse.registerNewMedLicence("MED123");
-        assertTrue(nurse.getListOfMedLicenceNumbers().contains("MED123"));
+        nurse.registerNewMedLicence(medicalLicense);
+        assertTrue(nurse.getMapOfMedLicenceNumbers().containsValue(medicalLicense));
 
-        assertTrue(nurse.findMedicalLicenseNumber("MED123").isPresent());
+        assertTrue(nurse.findMedicalLicenseNumber("AAC-DAE-20A").isPresent());
         assertTrue(nurse.findMedicalLicenseNumber("med1").isEmpty());
     }
 
@@ -122,7 +100,7 @@ public class NurseTest {
         assertNull(empty.getStatus());
         assertFalse(empty.isOnDuty());
 
-        assertNull(empty.getListOfMedLicenceNumbers());
+        assertThrows(NullPointerException.class, () -> { empty.getMapOfMedLicenceNumbers(); });
     }
 
     @Test
@@ -145,7 +123,8 @@ public class NurseTest {
                                 Person.Nation.DE,
                                 "nur_1",
                                 Nurse.Status.ACTIVE,
-                                true
+                                true,
+                                medicalLicense
                         )
                 );
             } catch (Exception e) {
@@ -170,7 +149,8 @@ public class NurseTest {
                                 Person.Nation.DE,
                                 "nur_1",
                                 Nurse.Status.ACTIVE,
-                                true
+                                true,
+                                medicalLicense
                         )
                 );
             } catch (Exception e) {
@@ -194,14 +174,14 @@ public class NurseTest {
 
             Nurse loaded = mapper.readValue(new File(path + "test-nurse.json"), Nurse.class);
 
-            assertEquals("11111111111", loaded.getPesel());
-            assertEquals("Anna", loaded.getName());
-            assertEquals("Schmid", loaded.getSurname());
-            assertEquals(Date.valueOf("1990-03-10"), loaded.getDob());
-            assertEquals(Person.Nation.DE, loaded.getNationality());
-            assertEquals("nur_1", loaded.getEmployeeId());
-            assertEquals(Nurse.Status.ACTIVE, loaded.getStatus());
-            assertTrue(loaded.isOnDuty());
+            assertEquals("22222222222", loaded.getPesel());
+            assertEquals("Maria", loaded.getName());
+            assertEquals("Woźniak", loaded.getSurname());
+            assertEquals(Date.valueOf("1988-01-01"), loaded.getDob());
+            assertEquals(Person.Nation.PL, loaded.getNationality());
+            assertEquals("nur_2", loaded.getEmployeeId());
+            assertEquals(Nurse.Status.ON_LEAVE, loaded.getStatus());
+            assertFalse(loaded.isOnDuty());
 
         } catch (IOException e) {
             System.err.println("[ERROR] Reading data failed:\n" + e.getMessage());

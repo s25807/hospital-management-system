@@ -1,14 +1,21 @@
 {
   "type" : "nurse",
-  "pesel" : "11111111111",
-  "username" : "nurse1",
+  "pesel" : "22222222222",
+  "username" : "nurse2",
   "password" : "password123",
-  "name" : "Anna",
-  "surname" : "Schmid",
-  "dob" : 637023600000,
-  "nationality" : "DE",
-  "employeeId" : "nur_1",
-  "status" : "ACTIVE",
-  "onDuty" : true,
-  "listOfMedLicenceNumbers" : [ ]
+  "name" : "Maria",
+  "surname" : "Woźniak",
+  "dob" : 567990000000,
+  "nationality" : "PL",
+  "employeeId" : "nur_2",
+  "status" : "ON_LEAVE",
+  "onDuty" : false,
+  "mapOfMedLicenceNumbers" : {
+    "AAC-DAE-20A" : {
+      "type" : "MedicalLicense",
+      "licenseNumber" : "AAC-DAE-20A",
+      "acquisitionDate" : 971128800000,
+      "expirationDate" : 1602280800000
+    }
+  }
 }

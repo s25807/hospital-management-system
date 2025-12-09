@@ -2,6 +2,8 @@ import annotations.SkipSetup;
 import constants.PathConstants;
 import exceptions.InvalidPasswordException;
 import models.Doctor;
+import models.Employee;
+import models.MedicalLicense;
 import models.Person;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,7 +15,9 @@ import validators.ValidatorService;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,26 +25,13 @@ public class DoctorTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
     private Doctor doctor;
-    private Doctor doctorWithLicences;
+    private MedicalLicense medicalLicense;
 
     @BeforeEach
     void setUp(TestInfo info) {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
+        medicalLicense = new MedicalLicense("AAC-DAE-20A", Date.valueOf("2000-10-10"), Date.valueOf("2020-10-10"));
         doctor = new Doctor(
-                "12312312312",
-                "doctor1",
-                "newPassword1",
-                "Jan",
-                "Nowak",
-                Date.valueOf("1980-01-15"),
-                Person.Nation.PL,
-                "doc_1",
-                Doctor.Status.ACTIVE,
-                true,
-                true
-        );
-
-        doctorWithLicences = new Doctor(
                 "45645645645",
                 "doctor2",
                 "password123",
@@ -51,38 +42,28 @@ public class DoctorTest {
                 "doc_2",
                 Doctor.Status.ON_LEAVE,
                 false,
-                List.of("licence1", "licence2"),
-                false
+                false,
+                medicalLicense
         );
     }
 
     @Test
     void testConstructorAndGetters() {
-        assertEquals("12312312312", doctor.getPesel());
-        assertEquals("Jan", doctor.getName());
-        assertEquals("Nowak", doctor.getSurname());
-        assertEquals(Date.valueOf("1980-01-15"), doctor.getDob());
-        assertEquals(Person.Nation.PL, doctor.getNationality());
 
-        assertEquals("doc_1", doctor.getEmployeeId());
-        assertEquals(Doctor.Status.ACTIVE, doctor.getStatus());
-        assertTrue(doctor.isOnDuty());
-        assertTrue(doctor.isHasHeadRole());
+        assertEquals("45645645645", doctor.getPesel());
+        assertEquals("doctor2", doctor.getUsername());
+        assertEquals("password123", doctor.getPassword());
+        assertEquals("Mark", doctor.getName());
+        assertEquals("Smith", doctor.getSurname());
+        assertEquals(Date.valueOf("1975-07-20"), doctor.getDob());
+        assertEquals(Person.Nation.ENG, doctor.getNationality());
 
-        assertEquals("45645645645", doctorWithLicences.getPesel());
-        assertEquals("doctor2", doctorWithLicences.getUsername());
-        assertEquals("password123", doctorWithLicences.getPassword());
-        assertEquals("Mark", doctorWithLicences.getName());
-        assertEquals("Smith", doctorWithLicences.getSurname());
-        assertEquals(Date.valueOf("1975-07-20"), doctorWithLicences.getDob());
-        assertEquals(Person.Nation.ENG, doctorWithLicences.getNationality());
+        assertEquals("doc_2", doctor.getEmployeeId());
+        assertEquals(Doctor.Status.ON_LEAVE, doctor.getStatus());
+        assertFalse(doctor.isOnDuty());
+        assertFalse(doctor.isHasHeadRole());
 
-        assertEquals("doc_2", doctorWithLicences.getEmployeeId());
-        assertEquals(Doctor.Status.ON_LEAVE, doctorWithLicences.getStatus());
-        assertFalse(doctorWithLicences.isOnDuty());
-        assertFalse(doctorWithLicences.isHasHeadRole());
-
-        assertEquals(List.of("licence1", "licence2"), doctorWithLicences.getListOfMedLicenceNumbers());
+        assertEquals(Map.of(medicalLicense.getLicenseNumber(), medicalLicense), doctor.getMapOfMedLicenceNumbers());
     }
 
     @Test
@@ -120,15 +101,15 @@ public class DoctorTest {
         assertFalse(empty.isOnDuty());
         assertFalse(empty.isHasHeadRole());
 
-        assertNull(empty.getListOfMedLicenceNumbers());
+        assertThrows(NullPointerException.class, () -> { empty.getMapOfMedLicenceNumbers(); });
     }
 
     @Test
     void testMedicalLicenceOperations() {
-        doctor.registerNewMedLicence("licence3");
-        assertTrue(doctor.getListOfMedLicenceNumbers().contains("licence3"));
+        doctor.registerNewMedLicence(medicalLicense);
+        assertEquals(medicalLicense, doctor.getMapOfMedLicenceNumbers().get(medicalLicense.getLicenseNumber()));
 
-        assertTrue(doctor.findMedicalLicenseNumber("licence3").isPresent());
+        assertTrue(doctor.findMedicalLicenseNumber("AAC-DAE-20A").isPresent());
         assertTrue(doctor.findMedicalLicenseNumber("licence4").isEmpty());
     }
 
@@ -152,7 +133,8 @@ public class DoctorTest {
                             "emp_1",
                             Doctor.Status.ACTIVE,
                             true,
-                            true
+                            true,
+                            medicalLicense
                     )
             );
         });
@@ -170,7 +152,8 @@ public class DoctorTest {
                             "emp_1",
                             Doctor.Status.ACTIVE,
                             true,
-                            true
+                            true,
+                            medicalLicense
                     )
             );
         });
@@ -186,15 +169,15 @@ public class DoctorTest {
 
             Doctor loaded = mapper.readValue(new File(path + "test-doctor.json"), Doctor.class);
 
-            assertEquals("12312312312", loaded.getPesel());
-            assertEquals("Jan", loaded.getName());
-            assertEquals("Nowak", loaded.getSurname());
-            assertEquals(Date.valueOf("1980-01-15"), loaded.getDob());
-            assertEquals(Person.Nation.PL, loaded.getNationality());
-            assertEquals("doc_1", loaded.getEmployeeId());
-            assertEquals(Doctor.Status.ACTIVE, loaded.getStatus());
-            assertTrue(loaded.isOnDuty());
-            assertTrue(loaded.isHasHeadRole());
+            assertEquals("45645645645", loaded.getPesel());
+            assertEquals("Mark", loaded.getName());
+            assertEquals("Smith", loaded.getSurname());
+            assertEquals(Date.valueOf("1975-07-20"), loaded.getDob());
+            assertEquals(Person.Nation.ENG, loaded.getNationality());
+            assertEquals("doc_2", loaded.getEmployeeId());
+            assertEquals(Doctor.Status.ON_LEAVE, loaded.getStatus());
+            assertFalse(loaded.isOnDuty());
+            assertFalse(loaded.isHasHeadRole());
         }
         catch (IOException e) {
             System.err.println("[ERROR] Reading data failed:\n" + e.getMessage());

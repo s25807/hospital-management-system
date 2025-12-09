@@ -1,6 +1,8 @@
 import annotations.SkipSetup;
 import constants.PathConstants;
 import exceptions.InvalidPasswordException;
+import models.Employee;
+import models.MedicalLicense;
 import models.Paramedic;
 import models.Person;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,40 +11,25 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import validators.ValidatorService;
 
+import javax.print.attribute.standard.Media;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ParamedicTest {
 
     private Paramedic paramedic;
-    private Paramedic paramedicWithLicences;
+    private MedicalLicense medicalLicense;
 
     @BeforeEach
     void setUp(TestInfo info) {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
+        medicalLicense = new MedicalLicense("AAC-DAE-20A", Date.valueOf("2000-10-10"), Date.valueOf("2020-10-10"));
         paramedic = new Paramedic(
-                "11223344556",
-                "paramedicUser",
-                "password123",
-                "Robert",
-                "Williams",
-                Date.valueOf("1985-07-20"),
-                Person.Nation.ENG,
-                "par_1",
-                Paramedic.Status.ACTIVE,
-                true,
-                Paramedic.LicenceType.FIRST_AID,
-                "LIC001",
-                true,
-                "CPR123",
-                "ALS001"
-        );
-
-        paramedicWithLicences = new Paramedic(
                 "33445566778",
                 "paramedic2",
                 "password123",
@@ -53,7 +40,7 @@ public class ParamedicTest {
                 "par_2",
                 Paramedic.Status.ON_LEAVE,
                 false,
-                List.of("AA111", "BB222"),
+                medicalLicense,
                 Paramedic.LicenceType.SURGICAL,
                 "LIC777",
                 false,
@@ -64,44 +51,25 @@ public class ParamedicTest {
 
     @Test
     void testConstructorAndGetters() {
-        assertEquals("11223344556", paramedic.getPesel());
-        assertEquals("paramedicUser", paramedic.getUsername());
+        assertEquals("33445566778", paramedic.getPesel());
+        assertEquals("paramedic2", paramedic.getUsername());
         assertEquals("password123", paramedic.getPassword());
-        assertEquals("Robert", paramedic.getName());
-        assertEquals("Williams", paramedic.getSurname());
-        assertEquals(Date.valueOf("1985-07-20"), paramedic.getDob());
-        assertEquals(Person.Nation.ENG, paramedic.getNationality());
+        assertEquals("Tomasz", paramedic.getName());
+        assertEquals("Dąbrowski", paramedic.getSurname());
+        assertEquals(Date.valueOf("1980-05-10"), paramedic.getDob());
+        assertEquals(Person.Nation.PL, paramedic.getNationality());
 
-        assertEquals("par_1", paramedic.getEmployeeId());
-        assertEquals(Paramedic.Status.ACTIVE, paramedic.getStatus());
-        assertTrue(paramedic.isOnDuty());
+        assertEquals("par_2", paramedic.getEmployeeId());
+        assertEquals(Paramedic.Status.ON_LEAVE, paramedic.getStatus());
+        assertFalse(paramedic.isOnDuty());
 
-        assertEquals(Paramedic.LicenceType.FIRST_AID, paramedic.getLicenceType());
-        assertEquals("LIC001", paramedic.getLicenceNumber());
-        assertTrue(paramedic.isHasEmergencyDrivingPermit());
-        assertEquals("CPR123", paramedic.getCprNumber());
-        assertEquals("ALS001", paramedic.getAdvancedLifeSupNumber());
+        assertEquals(Map.of(medicalLicense.getLicenseNumber(), medicalLicense), paramedic.getMapOfMedLicenceNumbers());
 
-
-        assertEquals("33445566778", paramedicWithLicences.getPesel());
-        assertEquals("paramedic2", paramedicWithLicences.getUsername());
-        assertEquals("password123", paramedicWithLicences.getPassword());
-        assertEquals("Tomasz", paramedicWithLicences.getName());
-        assertEquals("Dąbrowski", paramedicWithLicences.getSurname());
-        assertEquals(Date.valueOf("1980-05-10"), paramedicWithLicences.getDob());
-        assertEquals(Person.Nation.PL, paramedicWithLicences.getNationality());
-
-        assertEquals("par_2", paramedicWithLicences.getEmployeeId());
-        assertEquals(Paramedic.Status.ON_LEAVE, paramedicWithLicences.getStatus());
-        assertFalse(paramedicWithLicences.isOnDuty());
-
-        assertEquals(List.of("AA111", "BB222"), paramedicWithLicences.getListOfMedLicenceNumbers());
-
-        assertEquals(Paramedic.LicenceType.SURGICAL, paramedicWithLicences.getLicenceType());
-        assertEquals("LIC777", paramedicWithLicences.getLicenceNumber());
-        assertFalse(paramedicWithLicences.isHasEmergencyDrivingPermit());
-        assertEquals("CPR445", paramedicWithLicences.getCprNumber());
-        assertEquals("ALS777", paramedicWithLicences.getAdvancedLifeSupNumber());
+        assertEquals(Paramedic.LicenceType.SURGICAL, paramedic.getLicenceType());
+        assertEquals("LIC777", paramedic.getLicenceNumber());
+        assertFalse(paramedic.isHasEmergencyDrivingPermit());
+        assertEquals("CPR445", paramedic.getCprNumber());
+        assertEquals("ALS777", paramedic.getAdvancedLifeSupNumber());
     }
 
     @Test
@@ -127,10 +95,10 @@ public class ParamedicTest {
 
     @Test
     void testMedicalLicenceOperations() {
-        paramedic.registerNewMedLicence("MED004");
-        assertTrue(paramedic.getListOfMedLicenceNumbers().contains("MED004"));
+        paramedic.registerNewMedLicence(medicalLicense);
+        assertTrue(paramedic.getMapOfMedLicenceNumbers().containsValue(medicalLicense));
 
-        assertTrue(paramedic.findMedicalLicenseNumber("MED004").isPresent());
+        assertTrue(paramedic.findMedicalLicenseNumber("AAC-DAE-20A").isPresent());
         assertTrue(paramedic.findMedicalLicenseNumber("XYZ").isEmpty());
     }
 
@@ -157,7 +125,7 @@ public class ParamedicTest {
         assertNull(empty.getCprNumber());
         assertNull(empty.getAdvancedLifeSupNumber());
 
-        assertNull(empty.getListOfMedLicenceNumbers());
+        assertThrows(NullPointerException.class, () -> { empty.getMapOfMedLicenceNumbers(); });
     }
 
     @Test
@@ -181,6 +149,7 @@ public class ParamedicTest {
                                 "par_1",
                                 Paramedic.Status.ACTIVE,
                                 true,
+                                medicalLicense,
                                 Paramedic.LicenceType.FIRST_AID,
                                 "LIC001",
                                 true,
@@ -211,6 +180,7 @@ public class ParamedicTest {
                                 "par_1",
                                 Paramedic.Status.ACTIVE,
                                 true,
+                                medicalLicense,
                                 Paramedic.LicenceType.FIRST_AID,
                                 "LIC001",
                                 true,
@@ -239,21 +209,21 @@ public class ParamedicTest {
 
             Paramedic loaded = mapper.readValue(new File(path + "test-paramedic.json"), Paramedic.class);
 
-            assertEquals("11223344556", loaded.getPesel());
-            assertEquals("Robert", loaded.getName());
-            assertEquals("Williams", loaded.getSurname());
-            assertEquals(Date.valueOf("1985-07-20"), loaded.getDob());
-            assertEquals(Person.Nation.ENG, loaded.getNationality());
+            assertEquals("33445566778", loaded.getPesel());
+            assertEquals("Tomasz", loaded.getName());
+            assertEquals("Dąbrowski", loaded.getSurname());
+            assertEquals(Date.valueOf("1980-05-10"), loaded.getDob());
+            assertEquals(Person.Nation.PL, loaded.getNationality());
 
-            assertEquals("par_1", loaded.getEmployeeId());
-            assertEquals(Paramedic.Status.ACTIVE, loaded.getStatus());
-            assertTrue(loaded.isOnDuty());
+            assertEquals("par_2", loaded.getEmployeeId());
+            assertEquals(Paramedic.Status.ON_LEAVE, loaded.getStatus());
+            assertFalse(loaded.isOnDuty());
 
-            assertEquals(Paramedic.LicenceType.FIRST_AID, loaded.getLicenceType());
-            assertEquals("LIC001", loaded.getLicenceNumber());
-            assertTrue(loaded.isHasEmergencyDrivingPermit());
-            assertEquals("CPR123", loaded.getCprNumber());
-            assertEquals("ALS001", loaded.getAdvancedLifeSupNumber());
+            assertEquals(Paramedic.LicenceType.SURGICAL, loaded.getLicenceType());
+            assertEquals("LIC777", loaded.getLicenceNumber());
+            assertFalse(loaded.isHasEmergencyDrivingPermit());
+            assertEquals("CPR445", loaded.getCprNumber());
+            assertEquals("ALS777", loaded.getAdvancedLifeSupNumber());
 
         } catch (IOException e) {
             System.err.println("[ERROR] Reading data failed:\n" + e.getMessage());

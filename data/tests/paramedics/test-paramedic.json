@@ -1,19 +1,26 @@
 {
   "type" : "paramedic",
-  "pesel" : "11223344556",
-  "username" : "paramedicUser",
+  "pesel" : "33445566778",
+  "username" : "paramedic2",
   "password" : "password123",
-  "name" : "Robert",
-  "surname" : "Williams",
-  "dob" : 490658400000,
-  "nationality" : "ENG",
-  "employeeId" : "par_1",
-  "status" : "ACTIVE",
-  "onDuty" : true,
-  "listOfMedLicenceNumbers" : [ ],
-  "licenceType" : "FIRST_AID",
-  "licenceNumber" : "LIC001",
-  "hasEmergencyDrivingPermit" : true,
-  "cprNumber" : "CPR123",
-  "advancedLifeSupNumber" : "ALS001"
+  "name" : "Tomasz",
+  "surname" : "Dąbrowski",
+  "dob" : 326757600000,
+  "nationality" : "PL",
+  "employeeId" : "par_2",
+  "status" : "ON_LEAVE",
+  "onDuty" : false,
+  "mapOfMedLicenceNumbers" : {
+    "AAC-DAE-20A" : {
+      "type" : "MedicalLicense",
+      "licenseNumber" : "AAC-DAE-20A",
+      "acquisitionDate" : 971128800000,
+      "expirationDate" : 1602280800000
+    }
+  },
+  "licenceType" : "SURGICAL",
+  "licenceNumber" : "LIC777",
+  "hasEmergencyDrivingPermit" : false,
+  "cprNumber" : "CPR445",
+  "advancedLifeSupNumber" : "ALS777"
 }

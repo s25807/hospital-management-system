@@ -132,7 +132,7 @@ public class PatientTest {
 
         Patient temp = new Patient();
         temp.setDob(Date.valueOf("2002-12-05"));
-        assertEquals(22, temp.calculateAge());
+        assertEquals(23, temp.calculateAge());
     }
 
     @Test
