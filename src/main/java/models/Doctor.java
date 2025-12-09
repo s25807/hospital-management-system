@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class Doctor extends Employee {
     @NotNull
@@ -33,11 +34,31 @@ public class Doctor extends Employee {
     public List<Doctor> getSupervisorsList() { return new ArrayList<>(supervisorsList); }
 
     public void assignHeadRole(boolean hasHeadRole) { this.hasHeadRole = hasHeadRole; }
-    public void setSupervisor(Doctor supervisor) {
-        if(supervisor != this) this.supervisor = supervisor;
+    public void setSupervisor(Doctor doctor) {
+        if(doctor != this) {
+            supervisor = doctor;
+            if(!doctor.isSupervising(this)) supervisor.addDoctorHeSupervisors(this);
+        }
         else throw new IllegalArgumentException("Doctor cannot be his own supervisor");
     }
-    public void addDoctorHeSupervisors(Doctor doctor) { this.supervisorsList.add(doctor); }
+    public void addDoctorHeSupervisors(Doctor doctor) {
+        if(supervisor != this) {
+            if(!doctor.isSupervising(this)) supervisorsList.add(doctor);
+            doctor.setSupervisor(this);
+        }
+    }
+
+    @JsonIgnore
+    public boolean isSupervising(Doctor doctor) { return supervisorsList.contains(doctor); }
+
+    public void removeSupervisor() {
+        if(supervisor.isSupervising(this)) supervisor.removeDoctorHeSupervisors(this);
+        supervisor = null;
+    }
+    public void removeDoctorHeSupervisors(Doctor doctor) {
+        supervisorsList.remove(doctor);
+        doctor.setSupervisor(null);
+    }
 
     @JsonIgnore
     public void newOperation() {}
