@@ -114,6 +114,30 @@ public class DoctorTest {
     }
 
     @Test
+    void testSupervisor() {
+        assertThrows(IllegalArgumentException.class, () -> { doctor.setSupervisor(doctor); });
+
+        MedicalLicense superMedicalLicense = new MedicalLicense("BBB-DAE-20A", Date.valueOf("2000-10-10"), Date.valueOf("2020-10-10"));
+        Doctor superDoctor = new Doctor(
+                "626272167",
+                "supervisor",
+                "password123",
+                "Marcus",
+                "Smith",
+                Date.valueOf("1975-07-20"),
+                Person.Nation.ENG,
+                "doc_2",
+                Doctor.Status.ACTIVE,
+                false,
+                true,
+                superMedicalLicense
+        );
+
+        doctor.setSupervisor(superDoctor);
+        assertEquals(superDoctor, doctor.getSupervisor());
+    }
+
+    @Test
     void testErrors() {
 
         assertThrows(NullPointerException.class, () -> {
@@ -178,6 +202,7 @@ public class DoctorTest {
             assertEquals(Doctor.Status.ON_LEAVE, loaded.getStatus());
             assertFalse(loaded.isOnDuty());
             assertFalse(loaded.isHasHeadRole());
+            assertNull(loaded.getSupervisor());
         }
         catch (IOException e) {
             System.err.println("[ERROR] Reading data failed:\n" + e.getMessage());

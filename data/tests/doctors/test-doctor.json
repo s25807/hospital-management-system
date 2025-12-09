@@ -18,5 +18,7 @@
       "expirationDate" : 1602280800000
     }
   },
-  "hasHeadRole" : false
+  "hasHeadRole" : false,
+  "supervisor" : null,
+  "supervisorsList" : [ ]
 }
