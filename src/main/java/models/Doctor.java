@@ -35,10 +35,11 @@ public class Doctor extends Employee {
 
     public void assignHeadRole(boolean hasHeadRole) { this.hasHeadRole = hasHeadRole; }
     public void setSupervisor(Doctor doctor) {
-        if(doctor != this) {
+        if(doctor != this &&  doctor != null) {
             supervisor = doctor;
             if(!doctor.isSupervising(this)) supervisor.addDoctorHeSupervisors(this);
         }
+        else if (doctor == null) supervisor = null;
         else throw new IllegalArgumentException("Doctor cannot be his own supervisor");
     }
     public void addDoctorHeSupervisors(Doctor doctor) {
@@ -49,7 +50,10 @@ public class Doctor extends Employee {
     }
 
     @JsonIgnore
-    public boolean isSupervising(Doctor doctor) { return supervisorsList.contains(doctor); }
+    public boolean isSupervising(Doctor doctor) {
+        if (doctor != null) return supervisorsList.contains(doctor);
+        else return false;
+    }
 
     public void removeSupervisor() {
         if(supervisor.isSupervising(this)) supervisor.removeDoctorHeSupervisors(this);
