@@ -1,9 +1,14 @@
+import models.Patient;
+import models.Person;
 import models.Therapy;
+import models.TreatmentHistory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import validators.ValidatorService;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,11 +18,29 @@ public class TherapyTest {
 
     @BeforeEach
     void setUp() {
+        Patient p = new Patient(
+                "4515515151",
+                "username",
+                "password123",
+                "Jake",
+                "Kowalski",
+                Date.valueOf("2001-05-05"),
+                Person.Nation.PL,
+                Patient.BloodType.A,
+                true,
+                80,
+                180,
+                true
+        );
+
+        TreatmentHistory ts = new TreatmentHistory(p, new ArrayList<>(), new ArrayList<>(), Date.valueOf(LocalDate.now()));
+
         therapy = new Therapy(
                 "Radiation block",
                 1.0,
                 Date.valueOf("2024-09-01"),
                 Date.valueOf("2024-09-10"),
+                ts,
                 Therapy.TherapyType.Radiation
         );
     }
@@ -53,11 +76,29 @@ public class TherapyTest {
 
     @Test
     void testValidationFailsForNullType() {
+        Patient p = new Patient(
+                "4515515151",
+                "username",
+                "password123",
+                "Jake",
+                "Kowalski",
+                Date.valueOf("2001-05-05"),
+                Person.Nation.PL,
+                Patient.BloodType.A,
+                true,
+                80,
+                180,
+                true
+        );
+
+        TreatmentHistory ts = new TreatmentHistory(p, new ArrayList<>(), new ArrayList<>(), Date.valueOf(LocalDate.now()));
+
         Therapy invalid = new Therapy(
                 "Some therapy",
                 1.0,
                 Date.valueOf("2024-09-01"),
                 Date.valueOf("2024-09-02"),
+                ts,
                 null
         );
 
