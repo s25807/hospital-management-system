@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import util.ObjectStore;
 import validators.ValidatorService;
 
 import java.io.File;
@@ -20,7 +21,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class NurseTest {
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectStore objectStore = new ObjectStore();
     private Nurse nurse;
     private MedicalLicense medicalLicense;
 
@@ -32,7 +33,7 @@ public class NurseTest {
         nurse = new Nurse(
                 "22222222222",
                 "nurse2",
-                "password123",
+                "Qwerty7/",
                 "Maria",
                 "Woźniak",
                 Date.valueOf("1988-01-01"),
@@ -48,7 +49,7 @@ public class NurseTest {
     void testConstructorAndGetters() {
         assertEquals("22222222222", nurse.getPesel());
         assertEquals("nurse2", nurse.getUsername());
-        assertEquals("password123", nurse.getPassword());
+        assertEquals("Qwerty7/", nurse.getPassword());
         assertEquals("Maria", nurse.getName());
         assertEquals("Woźniak", nurse.getSurname());
         assertEquals(Date.valueOf("1988-01-01"), nurse.getDob());
@@ -166,25 +167,17 @@ public class NurseTest {
 
     @Test
     void testSerialization() {
-        String path = PathConstants.NURSES_TESTS;
+        String path = PathConstants.NURSES_TESTS + "test-nurse.json";
+        objectStore.save(nurse, path);
 
-        try {
-            mapper.writerWithDefaultPrettyPrinter()
-                    .writeValue(new File(path + "test-nurse.json"), nurse);
-
-            Nurse loaded = mapper.readValue(new File(path + "test-nurse.json"), Nurse.class);
-
-            assertEquals("22222222222", loaded.getPesel());
-            assertEquals("Maria", loaded.getName());
-            assertEquals("Woźniak", loaded.getSurname());
-            assertEquals(Date.valueOf("1988-01-01"), loaded.getDob());
-            assertEquals(Person.Nation.PL, loaded.getNationality());
-            assertEquals("nur_2", loaded.getEmployeeId());
-            assertEquals(Nurse.Status.ON_LEAVE, loaded.getStatus());
-            assertFalse(loaded.isOnDuty());
-
-        } catch (IOException e) {
-            System.err.println("[ERROR] Reading data failed:\n" + e.getMessage());
-        }
+        Nurse loaded = objectStore.load(Nurse.class, path);
+        assertEquals("22222222222", loaded.getPesel());
+        assertEquals("Maria", loaded.getName());
+        assertEquals("Woźniak", loaded.getSurname());
+        assertEquals(Date.valueOf("1988-01-01"), loaded.getDob());
+        assertEquals(Person.Nation.PL, loaded.getNationality());
+        assertEquals("nur_2", loaded.getEmployeeId());
+        assertEquals(Nurse.Status.ON_LEAVE, loaded.getStatus());
+        assertFalse(loaded.isOnDuty());
     }
 }

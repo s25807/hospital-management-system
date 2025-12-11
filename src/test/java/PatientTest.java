@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import util.ObjectStore;
 import validators.ValidatorService;
 
 import java.io.File;
@@ -18,16 +19,16 @@ import java.sql.Date;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PatientTest {
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectStore objectStore = new ObjectStore();
     private Patient patient;
 
     @BeforeEach
     void setUp(TestInfo info) {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
         patient = new Patient(
-                "4515515151",
+                "45155151519",
                 "username",
-                "password123",
+                "Qwerty7/",
                 "Jake",
                 "Kowalski",
                 Date.valueOf("2001-05-05"),
@@ -42,7 +43,7 @@ public class PatientTest {
 
     @Test
     void testConstructorAndGetters() {
-        assertEquals("4515515151", patient.getPesel());
+        assertEquals("45155151519", patient.getPesel());
         assertEquals("Jake", patient.getName());
         assertEquals("Kowalski", patient.getSurname());
         assertEquals(Date.valueOf("2001-05-05"), patient.getDob());
@@ -137,25 +138,21 @@ public class PatientTest {
 
     @Test
     void testSerialization() {
-        String path = PathConstants.PATIENTS_TESTS;
+        String path = PathConstants.PATIENTS_TESTS + "test-patient.json";
 
-        try {
-            mapper.writerWithDefaultPrettyPrinter().writeValue(new File(path + "test-patient.json"), patient);
-            Patient loaded = mapper.readValue(new File(path + "test-patient.json"), Patient.class);
-            assertEquals("4515515151", loaded.getPesel());
-            assertEquals("Jake", loaded.getName());
-            assertEquals("Kowalski", loaded.getSurname());
-            assertEquals(Date.valueOf("2001-05-05"), loaded.getDob());
-            assertEquals(Person.Nation.PL, loaded.getNationality());
+        objectStore.save(patient, path);
+        Patient loaded = objectStore.load(Patient.class, path);
 
-            assertEquals(Patient.BloodType.A, loaded.getBloodType());
-            assertTrue(loaded.getInsurance());
-            assertEquals(80.0, loaded.getWeight());
-            assertEquals(180.0, loaded.getHeight());
-            assertTrue(loaded.getIsActive());
-        }
-        catch (IOException e) {
-            System.err.println("[ERROR] Reading data failed:\n" + e.getMessage());
-        }
+        assertEquals("45155151519", loaded.getPesel());
+        assertEquals("Jake", loaded.getName());
+        assertEquals("Kowalski", loaded.getSurname());
+        assertEquals(Date.valueOf("2001-05-05"), loaded.getDob());
+        assertEquals(Person.Nation.PL, loaded.getNationality());
+
+        assertEquals(Patient.BloodType.A, loaded.getBloodType());
+        assertTrue(loaded.getInsurance());
+        assertEquals(80.0, loaded.getWeight());
+        assertEquals(180.0, loaded.getHeight());
+        assertTrue(loaded.getIsActive());
     }
 }

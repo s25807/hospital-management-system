@@ -29,4 +29,6 @@ public class AdditionalInformationTest {
         assertThrows(NullPointerException.class,
                 () -> ValidatorService.validate(info));
     }
+
+    //TODO Serialization test
 }

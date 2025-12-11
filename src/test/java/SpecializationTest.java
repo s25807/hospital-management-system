@@ -6,6 +6,7 @@ import models.Specialization;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import util.ObjectStore;
 import validators.ValidatorService;
 
 import java.io.File;
@@ -16,6 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SpecializationTest {
+    private final ObjectStore objectStore = new ObjectStore();
     private Specialization specialization;
 
     @BeforeEach
@@ -94,27 +96,15 @@ public class SpecializationTest {
 
     @Test
     void testSerialization() {
-        ObjectMapper mapper = new ObjectMapper();
-        String path = PathConstants.SPECIALIZATIONS_TESTS;
+        String path = PathConstants.SPECIALIZATIONS_TESTS + "test-specialization.json";
+        objectStore.save(specialization, path);
 
-        try {
-            mapper.writerWithDefaultPrettyPrinter()
-                    .writeValue(new File(path + "test-specialization.json"), specialization);
-
-            Specialization loaded = mapper.readValue(
-                    new File(path + "test-specialization.json"),
-                    Specialization.class
-            );
-
-            assertEquals("Neurology", loaded.getName());
-            assertArrayEquals(
-                    new String[]{"medical degree", "proficiency with MRI", "hospital internship"},
-                    loaded.getRequirements().toArray()
-            );
-
-        } catch (IOException e) {
-            System.err.println("[ERROR] Reading data failed:\n" + e.getMessage());
-        }
+        Specialization loaded = objectStore.load(Specialization.class, path);
+        assertEquals("Neurology", loaded.getName());
+        assertArrayEquals(
+                new String[]{"medical degree", "proficiency with MRI", "hospital internship"},
+                loaded.getRequirements().toArray()
+        );
     }
 
 }

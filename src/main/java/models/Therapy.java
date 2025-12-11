@@ -15,12 +15,10 @@ public class Therapy extends Treatment {
     @NotNull
     private TherapyType type;
 
-    public Therapy() {
-        super();
-    }
+    public Therapy() {}
 
-    public Therapy(String name, double dose, Date startDate, Date endDate, TherapyType type) {
-        super(name, dose, startDate, endDate);
+    public Therapy(String name, double dose, Date startDate, Date endDate, TreatmentHistory treatmentHistory, TherapyType type) {
+        super(name, dose, startDate, endDate, treatmentHistory);
         this.type = type;
     }
 

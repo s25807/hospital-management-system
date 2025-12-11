@@ -19,8 +19,8 @@ public class Medicine extends Treatment {
         super();
     }
 
-    public Medicine(String name, double dose, Date startDate, Date endDate, String company, String serialNumber) {
-        super(name, dose, startDate, endDate);
+    public Medicine(String name, double dose, Date startDate, Date endDate, TreatmentHistory treatmentHistory, String company, String serialNumber) {
+        super(name, dose, startDate, endDate, treatmentHistory);
         this.company = company;
         this.serialNumber = serialNumber;
     }

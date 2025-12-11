@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import util.ObjectStore;
 import validators.ValidatorService;
 
 import java.io.File;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DoctorTest {
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectStore objectStore = new ObjectStore();
     private Doctor doctor;
     private MedicalLicense medicalLicense;
 
@@ -34,7 +35,7 @@ public class DoctorTest {
         doctor = new Doctor(
                 "45645645645",
                 "doctor2",
-                "password123",
+                "Qwerty7/",
                 "Mark",
                 "Smith",
                 Date.valueOf("1975-07-20"),
@@ -52,7 +53,7 @@ public class DoctorTest {
 
         assertEquals("45645645645", doctor.getPesel());
         assertEquals("doctor2", doctor.getUsername());
-        assertEquals("password123", doctor.getPassword());
+        assertEquals("Qwerty7/", doctor.getPassword());
         assertEquals("Mark", doctor.getName());
         assertEquals("Smith", doctor.getSurname());
         assertEquals(Date.valueOf("1975-07-20"), doctor.getDob());
@@ -185,27 +186,20 @@ public class DoctorTest {
 
     @Test
     void testSerialization() {
-        String path = PathConstants.DOCTORS_TESTS;
+        String path = PathConstants.DOCTORS_TESTS + "test-doctor.json";
+        objectStore.save(doctor, path);
 
-        try {
-            mapper.writerWithDefaultPrettyPrinter()
-                    .writeValue(new File(path + "test-doctor.json"), doctor);
+        Doctor loaded = objectStore.load(Doctor.class, path);
 
-            Doctor loaded = mapper.readValue(new File(path + "test-doctor.json"), Doctor.class);
-
-            assertEquals("45645645645", loaded.getPesel());
-            assertEquals("Mark", loaded.getName());
-            assertEquals("Smith", loaded.getSurname());
-            assertEquals(Date.valueOf("1975-07-20"), loaded.getDob());
-            assertEquals(Person.Nation.ENG, loaded.getNationality());
-            assertEquals("doc_2", loaded.getEmployeeId());
-            assertEquals(Doctor.Status.ON_LEAVE, loaded.getStatus());
-            assertFalse(loaded.isOnDuty());
-            assertFalse(loaded.isHasHeadRole());
-            assertNull(loaded.getSupervisor());
-        }
-        catch (IOException e) {
-            System.err.println("[ERROR] Reading data failed:\n" + e.getMessage());
-        }
+        assertEquals("45645645645", loaded.getPesel());
+        assertEquals("Mark", loaded.getName());
+        assertEquals("Smith", loaded.getSurname());
+        assertEquals(Date.valueOf("1975-07-20"), loaded.getDob());
+        assertEquals(Person.Nation.ENG, loaded.getNationality());
+        assertEquals("doc_2", loaded.getEmployeeId());
+        assertEquals(Doctor.Status.ON_LEAVE, loaded.getStatus());
+        assertFalse(loaded.isOnDuty());
+        assertFalse(loaded.isHasHeadRole());
+        assertNull(loaded.getSupervisor());
     }
 }

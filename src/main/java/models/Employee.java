@@ -3,6 +3,7 @@ package models;
 import annotations.NotEmpty;
 import annotations.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.sql.Date;
 import java.util.*;
@@ -22,6 +23,7 @@ public abstract class Employee extends Person {
 
     @NotNull
     @NotEmpty
+    @JsonDeserialize(as = HashMap.class)
     private Map<String, MedicalLicense> mapOfMedLicenceNumbers;
 
     public Employee() {}

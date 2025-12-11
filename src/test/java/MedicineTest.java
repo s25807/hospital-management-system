@@ -1,9 +1,14 @@
 import models.Medicine;
+import models.Patient;
+import models.Person;
+import models.TreatmentHistory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import validators.ValidatorService;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,11 +18,29 @@ public class MedicineTest {
 
     @BeforeEach
     void setUp() {
+        Patient p = new Patient(
+                "4515515151",
+                "username",
+                "password123",
+                "Jake",
+                "Kowalski",
+                Date.valueOf("2001-05-05"),
+                Person.Nation.PL,
+                Patient.BloodType.A,
+                true,
+                80,
+                180,
+                true
+        );
+
+        TreatmentHistory ts = new TreatmentHistory(p, new ArrayList<>(), new ArrayList<>(), Date.valueOf(LocalDate.now()));
+
         medicine = new Medicine(
                 "Painkillers",
                 2.0,
                 Date.valueOf("2024-11-20"),
                 Date.valueOf("2024-11-25"),
+                ts,
                 "Pfizer",
                 "SN-1234"
         );
@@ -57,11 +80,29 @@ public class MedicineTest {
 
     @Test
     void testValidationFailsForNegativeDose() {
+        Patient p = new Patient(
+                "4515515151",
+                "username",
+                "password123",
+                "Jake",
+                "Kowalski",
+                Date.valueOf("2001-05-05"),
+                Person.Nation.PL,
+                Patient.BloodType.A,
+                true,
+                80,
+                180,
+                true
+        );
+
+        TreatmentHistory ts = new TreatmentHistory(p, new ArrayList<>(), new ArrayList<>(), Date.valueOf(LocalDate.now()));
+
         Medicine invalid = new Medicine(
                 "Painkillers",
                 -1.0,
                 Date.valueOf("2024-11-20"),
                 Date.valueOf("2024-11-25"),
+                ts,
                 "Novartis",
                 "SN-1234"
         );
@@ -71,15 +112,35 @@ public class MedicineTest {
 
     @Test
     void testValidationFailsForEmptyCompany() {
+        Patient p = new Patient(
+                "4515515151",
+                "username",
+                "password123",
+                "Jake",
+                "Kowalski",
+                Date.valueOf("2001-05-05"),
+                Person.Nation.PL,
+                Patient.BloodType.A,
+                true,
+                80,
+                180,
+                true
+        );
+
+        TreatmentHistory ts = new TreatmentHistory(p, new ArrayList<>(), new ArrayList<>(), Date.valueOf(LocalDate.now()));
+
         Medicine invalid = new Medicine(
                 "Painkillers",
                 2.0,
                 Date.valueOf("2024-11-20"),
                 Date.valueOf("2024-11-25"),
+                ts,
                 "",
                 "SN-1234"
         );
 
         assertThrows(IllegalArgumentException.class, () -> ValidatorService.validate(invalid));
     }
+
+    //TODO Serialization test with ObjectStore
 }

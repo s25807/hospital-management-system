@@ -47,4 +47,6 @@ public class MedicalLicenseTest {
         );
         assertFalse(active.isExpired());
     }
+
+    //TODO Serialization test with ObjectStore
 }

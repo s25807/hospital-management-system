@@ -5,6 +5,7 @@ import models.EmergencyRoom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import util.ObjectStore;
 import validators.ValidatorService;
 
 import java.io.File;
@@ -15,8 +16,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EmergencyRoomTest {
-
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectStore objectStore = new ObjectStore();
     private EmergencyRoom emergencyRoom;
 
     @BeforeEach
@@ -93,24 +93,14 @@ public class EmergencyRoomTest {
 
     @Test
     void testSerialization() {
-        String path = PathConstants.ROOMS_TESTS;
+        String path = PathConstants.ROOMS_TESTS + "test-emergency-room.json";
+        objectStore.save(emergencyRoom,  path);
 
-        try {
-            mapper.writerWithDefaultPrettyPrinter()
-                    .writeValue(new File(path + "test-emergency-room.json"), emergencyRoom);
-
-            EmergencyRoom loaded = mapper.readValue(
-                    new File(path + "test-emergency-room.json"),
-                    EmergencyRoom.class
-            );
-
-            assertEquals("13E", loaded.getRoomNumber());
-            assertEquals(5, loaded.getMaxPeopleAllowed());
-            assertEquals(2, loaded.getOccupancy());
-            assertFalse(loaded.isFilled());
-            assertEquals(3, loaded.getRemainingPlaces());
-        } catch (IOException e) {
-            System.err.println("[ERROR] Reading data failed:\n" + e.getMessage());
-        }
+        EmergencyRoom loaded = objectStore.load(EmergencyRoom.class, path);
+        assertEquals("13E", loaded.getRoomNumber());
+        assertEquals(5, loaded.getMaxPeopleAllowed());
+        assertEquals(2, loaded.getOccupancy());
+        assertFalse(loaded.isFilled());
+        assertEquals(3, loaded.getRemainingPlaces());
     }
 }

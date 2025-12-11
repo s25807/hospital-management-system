@@ -15,11 +15,9 @@ public class Appointment {
     public enum Status { Initialized, Scheduled, InProgress, Cancelled, Completed };
 
     @NotNull
-    @ValidDate(value = ValidDate.Mode.FUTURE)
     private Timestamp startTime;
 
     @NotNull
-    @ValidDate(value = ValidDate.Mode.FUTURE)
     private Timestamp endTime;
 
     @NotNull

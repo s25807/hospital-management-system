@@ -7,6 +7,7 @@ import models.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import util.ObjectStore;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AppointmentTest {
     private Appointment appointment;
+    private final ObjectStore objectStore = new ObjectStore();
 
     @BeforeEach
     void setUp(TestInfo info) {
@@ -62,20 +64,13 @@ public class AppointmentTest {
 
     @Test
     void testSerialization() {
-        ObjectMapper mapper = new ObjectMapper();
-        String path = PathConstants.APPOINTMENTS_TESTS;
+        String path = PathConstants.APPOINTMENTS_TESTS + "test-appointment.json";
+        objectStore.save(appointment, path);
 
-        try {
-            mapper.writerWithDefaultPrettyPrinter().writeValue(new File(path + "test-appointment.json"), appointment);
+        Appointment loaded = objectStore.load(Appointment.class, path);
 
-            Appointment loaded = mapper.readValue(new File(path + "test-appointment.json"), Appointment.class);
-
-            assertEquals(Timestamp.valueOf("2025-08-08 11:00:00"), loaded.getStartTime());
-            assertEquals(Timestamp.valueOf("2025-08-08 11:45:00") , loaded.getEndTime());
-            assertEquals(Appointment.Status.Completed, loaded.getStatus());
-        }
-        catch (IOException e) {
-            System.err.println("[ERROR] Reading data failed:\n" + e.getMessage());
-        }
+        assertEquals(Timestamp.valueOf("2025-08-08 11:00:00"), loaded.getStartTime());
+        assertEquals(Timestamp.valueOf("2025-08-08 11:45:00") , loaded.getEndTime());
+        assertEquals(Appointment.Status.Completed, loaded.getStatus());
     }
 }

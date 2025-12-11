@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import util.ObjectStore;
 import validators.ValidatorService;
 
 import java.io.File;
@@ -15,8 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PatientRoomTest {
     private PatientRoom patientRoom;
-    private final ObjectMapper mapper = new ObjectMapper();
-    private static final String roomPath = PathConstants.ROOMS_TESTS;
+    private final ObjectStore objectStore = new ObjectStore();
 
     @BeforeEach
     public void setUp(TestInfo info) {
@@ -58,20 +58,17 @@ public class PatientRoomTest {
 
     @Test
     public void serializationTest() {
-        try {
-            mapper.writerWithDefaultPrettyPrinter().writeValue(new File(roomPath + "test-pRoom.json"), patientRoom);
-            PatientRoom room =  mapper.readValue(new File(roomPath + "test-pRoom.json"), PatientRoom.class);
+        String path = PathConstants.ROOMS_TESTS + "test-pRoom.json";
+        objectStore.save(patientRoom, path);
 
-            Assertions.assertNotNull(room);
-            Assertions.assertEquals("15C", room.getRoomNumber());
-            Assertions.assertEquals(4, room.getMaxPeopleAllowed());
-            Assertions.assertThrows(IllegalArgumentException.class, () -> {room.setOccupancy(5);});
-            Assertions.assertFalse(room.isFilled());
-            Assertions.assertFalse(room.isVip());
-            Assertions.assertEquals(2, room.getRemainingPlaces());
-        }
-        catch (IOException e) {
-            System.err.println("[ERROR] Reading data failed:\n" + e.getMessage());
-        }
+        PatientRoom loaded = objectStore.load(PatientRoom.class, path);
+
+        Assertions.assertNotNull(loaded);
+        Assertions.assertEquals("15C", loaded.getRoomNumber());
+        Assertions.assertEquals(4, loaded.getMaxPeopleAllowed());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {loaded.setOccupancy(5);});
+        Assertions.assertFalse(loaded.isFilled());
+        Assertions.assertFalse(loaded.isVip());
+        Assertions.assertEquals(2, loaded.getRemainingPlaces());
     }
 }

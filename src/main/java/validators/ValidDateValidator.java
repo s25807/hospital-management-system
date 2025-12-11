@@ -5,7 +5,9 @@ import annotations.ValidDate;
 
 import java.lang.reflect.Field;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class ValidDateValidator implements Validator {
     public void validate(Object object) throws IllegalAccessException {
@@ -25,14 +27,27 @@ public class ValidDateValidator implements Validator {
                     ValidDate.Mode mode = annotation.value();
                     String message = mode == ValidDate.Mode.PAST ? "Date of birth cannot be a future date" : field.getName() + " cannot have a past date";
 
-                    LocalDate date = ((Date) value).toLocalDate();
-                    LocalDate today = LocalDate.now();
+                    if(value.getClass() == Date.class) {
+                        LocalDate date = ((Date) value).toLocalDate();
+                        LocalDate today = LocalDate.now();
 
-                    boolean ok =
-                            (mode == ValidDate.Mode.PAST && date.isBefore(today)) ||
-                            (mode == ValidDate.Mode.FUTURE && date.isAfter(today));
+                        boolean ok =
+                                (mode == ValidDate.Mode.PAST && date.isBefore(today))
+                                        || (mode == ValidDate.Mode.FUTURE && date.isAfter(today));
 
-                    if (!ok) throw new IllegalArgumentException("[ERROR] " + message);
+                        if (!ok) throw new IllegalArgumentException("[ERROR] " + message);
+                    }
+                    else if(value.getClass() == Timestamp.class) {
+                        LocalDateTime date = ((Timestamp) value).toLocalDateTime();
+                        LocalDateTime today = LocalDateTime.now();
+
+                        boolean ok =
+                                (mode == ValidDate.Mode.PAST && date.isBefore(today))
+                                ||  (mode == ValidDate.Mode.FUTURE && date.isAfter(today));
+
+                        if (!ok) throw new IllegalArgumentException("[ERROR] " + message);
+                    }
+                    else throw new IllegalArgumentException("[ERROR] " + field.getName() + "cannot be of type " + value.getClass() + "!");
                 }
             }
 
