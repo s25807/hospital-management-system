@@ -1,8 +1,8 @@
 {
   "type" : "patient",
-  "pesel" : "4515515151",
+  "pesel" : "45155151519",
   "username" : "username",
-  "password" : "password123",
+  "password" : "Qwerty7/",
   "name" : "Jake",
   "surname" : "Kowalski",
   "dob" : 989013600000,
@@ -11,5 +11,11 @@
   "insurance" : true,
   "weight" : 80.0,
   "height" : 180.0,
-  "isActive" : true
+  "isActive" : true,
+  "treatmentHistory" : {
+    "patient" : null,
+    "treatmentList" : null,
+    "additionalInformationList" : null,
+    "dateRecorded" : null
+  }
 }
