@@ -24,7 +24,7 @@ public class NotEmptyValidator implements Validator {
                     else if(value.getClass() == HashMap.class){
                         if (((HashMap) value).isEmpty()) throw new IllegalArgumentException("[ERROR] " + field.getName() + " " + annotation.message());
                     }
-                    else throw new IllegalTypeException("[ERROR] " + field.getName() + " " + "should be of String type!");
+                    else throw new IllegalTypeException("[ERROR] " + field.getName() + " " + "cannot be of type " + value.getClass() + "!");
                 }
             }
 

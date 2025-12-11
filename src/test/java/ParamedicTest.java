@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import util.ObjectStore;
 import validators.ValidatorService;
 
 import javax.print.attribute.standard.Media;
@@ -21,7 +22,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ParamedicTest {
-
+    private final ObjectStore objectStore = new ObjectStore();
     private Paramedic paramedic;
     private MedicalLicense medicalLicense;
 
@@ -32,7 +33,7 @@ public class ParamedicTest {
         paramedic = new Paramedic(
                 "33445566778",
                 "paramedic2",
-                "password123",
+                "Qwerty7/",
                 "Tomasz",
                 "Dąbrowski",
                 Date.valueOf("1980-05-10"),
@@ -53,7 +54,7 @@ public class ParamedicTest {
     void testConstructorAndGetters() {
         assertEquals("33445566778", paramedic.getPesel());
         assertEquals("paramedic2", paramedic.getUsername());
-        assertEquals("password123", paramedic.getPassword());
+        assertEquals("Qwerty7/", paramedic.getPassword());
         assertEquals("Tomasz", paramedic.getName());
         assertEquals("Dąbrowski", paramedic.getSurname());
         assertEquals(Date.valueOf("1980-05-10"), paramedic.getDob());
@@ -200,33 +201,24 @@ public class ParamedicTest {
 
     @Test
     void testSerialization() {
-        ObjectMapper mapper = new ObjectMapper();
-        String path = PathConstants.PARAMEDICS_TESTS;
+        String path = PathConstants.PARAMEDICS_TESTS + "test-paramedic.json";
+        objectStore.save(paramedic, path);
 
-        try {
-            mapper.writerWithDefaultPrettyPrinter()
-                    .writeValue(new File(path + "test-paramedic.json"), paramedic);
+        Paramedic loaded = objectStore.load(Paramedic.class, path);
+        assertEquals("33445566778", loaded.getPesel());
+        assertEquals("Tomasz", loaded.getName());
+        assertEquals("Dąbrowski", loaded.getSurname());
+        assertEquals(Date.valueOf("1980-05-10"), loaded.getDob());
+        assertEquals(Person.Nation.PL, loaded.getNationality());
 
-            Paramedic loaded = mapper.readValue(new File(path + "test-paramedic.json"), Paramedic.class);
+        assertEquals("par_2", loaded.getEmployeeId());
+        assertEquals(Paramedic.Status.ON_LEAVE, loaded.getStatus());
+        assertFalse(loaded.isOnDuty());
 
-            assertEquals("33445566778", loaded.getPesel());
-            assertEquals("Tomasz", loaded.getName());
-            assertEquals("Dąbrowski", loaded.getSurname());
-            assertEquals(Date.valueOf("1980-05-10"), loaded.getDob());
-            assertEquals(Person.Nation.PL, loaded.getNationality());
-
-            assertEquals("par_2", loaded.getEmployeeId());
-            assertEquals(Paramedic.Status.ON_LEAVE, loaded.getStatus());
-            assertFalse(loaded.isOnDuty());
-
-            assertEquals(Paramedic.LicenceType.SURGICAL, loaded.getLicenceType());
-            assertEquals("LIC777", loaded.getLicenceNumber());
-            assertFalse(loaded.isHasEmergencyDrivingPermit());
-            assertEquals("CPR445", loaded.getCprNumber());
-            assertEquals("ALS777", loaded.getAdvancedLifeSupNumber());
-
-        } catch (IOException e) {
-            System.err.println("[ERROR] Reading data failed:\n" + e.getMessage());
-        }
+        assertEquals(Paramedic.LicenceType.SURGICAL, loaded.getLicenceType());
+        assertEquals("LIC777", loaded.getLicenceNumber());
+        assertFalse(loaded.isHasEmergencyDrivingPermit());
+        assertEquals("CPR445", loaded.getCprNumber());
+        assertEquals("ALS777", loaded.getAdvancedLifeSupNumber());
     }
 }

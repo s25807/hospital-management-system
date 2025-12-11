@@ -23,4 +23,6 @@ public class DepartmentTest {
             ValidatorService.validate(department);
         });
     }
+
+    //TODO Serialization Test
 }

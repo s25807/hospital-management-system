@@ -104,4 +104,6 @@ public class TherapyTest {
 
         assertThrows(NullPointerException.class, () -> ValidatorService.validate(invalid));
     }
+
+    //TODO Serialization Test with ObjectStore
 }

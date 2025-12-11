@@ -141,4 +141,6 @@ public class MedicineTest {
 
         assertThrows(IllegalArgumentException.class, () -> ValidatorService.validate(invalid));
     }
+
+    //TODO Serialization test with ObjectStore
 }

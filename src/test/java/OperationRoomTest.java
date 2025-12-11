@@ -5,6 +5,7 @@ import models.OperationRoom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import util.ObjectStore;
 import validators.ValidatorService;
 
 import java.io.File;
@@ -15,7 +16,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class OperationRoomTest {
-
+    private final ObjectStore objectStore = new ObjectStore();
     private OperationRoom operationRoom;
     private Map<String, Integer> equipment;
 
@@ -96,29 +97,19 @@ public class OperationRoomTest {
 
     @Test
     void testSerialization() {
-        ObjectMapper mapper = new ObjectMapper();
-        String path = PathConstants.ROOMS_TESTS;
+        String path = PathConstants.ROOMS_TESTS + "test-operation-room.json";
+        objectStore.save(operationRoom, path);
 
-        try {
-            mapper.writerWithDefaultPrettyPrinter()
-                    .writeValue(new File(path + "test-operation-room.json"), operationRoom);
+        OperationRoom loaded = objectStore.load(OperationRoom.class, path);
 
-            OperationRoom loaded = mapper.readValue(
-                    new File(path + "test-operation-room.json"),
-                    OperationRoom.class
-            );
+        assertEquals("1S", loaded.getRoomNumber());
+        assertEquals(3, loaded.getMaxPeopleAllowed());
+        assertEquals(2, loaded.getOccupancy());
+        assertFalse(loaded.isFilled());
+        assertEquals(1, loaded.getRemainingPlaces());
 
-            assertEquals("1S", loaded.getRoomNumber());
-            assertEquals(3, loaded.getMaxPeopleAllowed());
-            assertEquals(2, loaded.getOccupancy());
-            assertFalse(loaded.isFilled());
-            assertEquals(1, loaded.getRemainingPlaces());
-
-            assertEquals(2, loaded.getSurgicalEquipment().size());
-            assertEquals(5, loaded.getSurgicalEquipment().get("scalpel"));
-            assertEquals(10, loaded.getSurgicalEquipment().get("clamp"));
-        } catch (IOException e) {
-            System.err.println("[ERROR] Reading data failed:\n" + e.getMessage());
-        }
+        assertEquals(2, loaded.getSurgicalEquipment().size());
+        assertEquals(5, loaded.getSurgicalEquipment().get("scalpel"));
+        assertEquals(10, loaded.getSurgicalEquipment().get("clamp"));
     }
 }

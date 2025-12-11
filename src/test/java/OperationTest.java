@@ -48,4 +48,6 @@ public class OperationTest {
         assertNull(emptyOperation.getEndTime());
         assertNull(emptyOperation.getStatus());
     }
+
+    //TODO Serialization test with ObjectStore
 }

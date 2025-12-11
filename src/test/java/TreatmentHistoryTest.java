@@ -61,4 +61,6 @@ public class TreatmentHistoryTest {
         assertThrows(NullPointerException.class,
                 () -> ValidatorService.validate(history));
     }
+
+    //TODO Serialization Test with ObjectStore
 }

@@ -7,6 +7,7 @@ import models.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import util.ObjectStore;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +16,7 @@ import java.sql.Date;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class FloorTest {
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectStore objectStore = new ObjectStore();
     private Floor floor;
 
     @BeforeEach
@@ -49,16 +50,11 @@ public class FloorTest {
 
     @Test
     void testSerialization() {
-        String path = PathConstants.FLOORS_TESTS;
+        String path = PathConstants.FLOORS_TESTS + "test-floor.json";
+        objectStore.save(floor,  path);
 
-        try {
-            mapper.writerWithDefaultPrettyPrinter().writeValue(new File(path + "test-floor.json"), floor);
-            Floor loaded = mapper.readValue(new File(path + "test-floor.json"), Floor.class);
-            assertEquals(2, loaded.getNumber());
-            assertEquals(12, loaded.getAmountOfRooms());
-        }
-        catch (IOException e) {
-            System.err.println("[ERROR] Reading data failed:\n" + e.getMessage());
-        }
+        Floor loaded = objectStore.load(Floor.class, path);
+        assertEquals(2, loaded.getNumber());
+        assertEquals(12, loaded.getAmountOfRooms());
     }
 }
