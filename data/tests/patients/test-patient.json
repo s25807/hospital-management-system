@@ -17,5 +17,6 @@
     "treatmentList" : null,
     "additionalInformationList" : null,
     "dateRecorded" : null
-  }
+  },
+  "patientAmbulanceTransitList" : [ ]
 }

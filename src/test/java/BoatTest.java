@@ -1,6 +1,6 @@
 import annotations.SkipSetup;
-import models.Boat;
-import models.AmbulanceVehicle;
+import constants.PathConstants;
+import models.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,11 +8,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import util.ObjectStore;
 
+import java.sql.Date;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BoatTest {
     private final ObjectStore objectStore = new ObjectStore();
+    private MedicalLicense medicalLicense;
     private Boat boat;
+    private Paramedic paramedic;
+    private Paramedic driver;
 
     private static final String SAMPLE_REG = "ABC-123";
     private static final AmbulanceVehicle.Brand SAMPLE_BRAND = AmbulanceVehicle.Brand.REV;
@@ -25,10 +30,62 @@ public class BoatTest {
     @BeforeEach
     public void setUp(TestInfo info) {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
+        medicalLicense = new MedicalLicense("AAC-DAE-20A", Date.valueOf("2000-10-10"), Date.valueOf("2020-10-10"));
+
         boat = new Boat(
-                SAMPLE_REG, SAMPLE_BRAND, SAMPLE_WEIGHT, SAMPLE_PERSONS,
-                SAMPLE_ON_MISSION, SAMPLE_MAX_SPEED, SAMPLE_RANGE, 12.34
+                "ABC-123",
+                AmbulanceVehicle.Brand.REV,
+                1000.5,
+                4,
+                false,
+                120,
+                500,
+                12.34
         );
+
+        paramedic = new Paramedic(
+                "33445566778",
+                "paramedic2",
+                "Qwerty7/",
+                "Tomasz",
+                "Dąbrowski",
+                Date.valueOf("1980-05-10"),
+                Person.Nation.PL,
+                "par_2",
+                Paramedic.Status.ON_LEAVE,
+                false,
+                medicalLicense,
+                Paramedic.LicenceType.SURGICAL,
+                "LIC777",
+                false,
+                "CPR445",
+                "ALS777",
+                boat
+        );
+
+        driver = new Paramedic(
+                "51858500910",
+                "paramedic3",
+                "Qwerty7/",
+                "Mariusz",
+                "Dąbrowski",
+                Date.valueOf("1980-05-10"),
+                Person.Nation.PL,
+                "par_2",
+                Paramedic.Status.ON_LEAVE,
+                false,
+                medicalLicense,
+                Paramedic.LicenceType.SURGICAL,
+                "LIC777",
+                false,
+                "CPR445",
+                "ALS777",
+                boat
+        );
+
+        boat.addParamedic(paramedic);
+        boat.addParamedic(driver);
+        boat.setDriver(driver);
     }
 
     @Test
@@ -37,7 +94,7 @@ public class BoatTest {
         assertEquals(SAMPLE_BRAND, boat.getBrand());
         assertEquals(SAMPLE_WEIGHT, boat.getWeightLimit());
         assertEquals(SAMPLE_PERSONS, boat.getPersonLimit());
-        assertTrue(boat.isOnMission());
+        assertFalse(boat.isOnMission());
         assertEquals(SAMPLE_MAX_SPEED, boat.getMaxSpeed());
         assertEquals(SAMPLE_RANGE, boat.getRangeOfTravel());
         assertEquals(12.34, boat.getLength(), 1e-9);
@@ -58,19 +115,19 @@ public class BoatTest {
     }
 
     @Test
-    void jsonRoundTrip() throws JsonProcessingException {
-        Boat boat = new Boat(
-                SAMPLE_REG, SAMPLE_BRAND, SAMPLE_WEIGHT, SAMPLE_PERSONS,
-                SAMPLE_ON_MISSION, SAMPLE_MAX_SPEED, SAMPLE_RANGE, 15.5
-        );
+    void serializationTest() {
+        String path = PathConstants.VEHICLES_TESTS + "boat-test.json";
+        objectStore.save(boat, path);
 
-        /*String json = mapper.writeValueAsString(boat);
-        assertTrue(json.contains("\"type\":\"boat\""));
+        Boat loaded = objectStore.load(Boat.class, path);
 
-        AmbulanceVehicle deserialized = mapper.readValue(json, AmbulanceVehicle.class);
-        assertInstanceOf(Boat.class, deserialized);
-        assertEquals(15.5, ((Boat) deserialized).getLength());*/
+        assertEquals("ABC-123", loaded.getRegistrationPlate());
+        assertEquals(AmbulanceVehicle.Brand.REV, loaded.getBrand());
+        assertEquals(1000.5, loaded.getWeightLimit());
+        assertEquals(4, loaded.getPersonLimit());
+        assertFalse(loaded.isOnMission());
+        assertEquals(120, loaded.getMaxSpeed());
+        assertEquals(500, loaded.getRangeOfTravel());
+        assertEquals(12.34, loaded.getLength());
     }
-
-    //TODO Serialization Test with ObjectStore
 }

@@ -2,6 +2,7 @@ package models;
 
 import annotations.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -15,23 +16,19 @@ public class Doctor extends Employee {
 
     private Doctor supervisor;
 
+    @JsonDeserialize(as = ArrayList.class)
     private List<Doctor> supervisorsList;
 
-    public Doctor() {}
+    public Doctor() { this.supervisorsList = new ArrayList<>(); }
     public Doctor(String pesel, String username, String password, String name, String surname, Date dob, Nation nationality, String employeeId, Status status, boolean onDuty,  boolean hasHeadRole, MedicalLicense medicalLicense) {
         super(pesel, username, password, name, surname, dob, nationality, employeeId, status, onDuty, medicalLicense);
         this.hasHeadRole = hasHeadRole;
-        this.supervisorsList = new ArrayList<Doctor>();
-    }
-    public Doctor(String pesel, String username, String password, String name, String surname, Date dob, Nation nationality, String employeeId, Status status, boolean onDuty,boolean hasHeadRole, Map<String, MedicalLicense> mapOfMedLicenceNumbers) {
-        super(pesel, username, password, name, surname, dob, nationality, employeeId, status, onDuty, mapOfMedLicenceNumbers);
-        this.hasHeadRole = hasHeadRole;
-        this.supervisorsList = new ArrayList<Doctor>();
+        this.supervisorsList = new ArrayList<>();
     }
 
     public boolean isHasHeadRole() { return hasHeadRole; }
     public Doctor getSupervisor() { return supervisor; }
-    public List<Doctor> getSupervisorsList() { return new ArrayList<>(supervisorsList); }
+    public List<Doctor> getSupervisorsList() { return supervisorsList; }
 
     public void assignHeadRole(boolean hasHeadRole) { this.hasHeadRole = hasHeadRole; }
     public void setSupervisor(Doctor doctor) {

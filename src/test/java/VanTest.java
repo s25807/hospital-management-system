@@ -1,50 +1,102 @@
 import annotations.SkipSetup;
-import models.Van;
-import models.AmbulanceVehicle;
+import constants.PathConstants;
+import models.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import util.ObjectStore;
+
+import java.sql.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class VanTest {
-
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectStore objectStore = new ObjectStore();
+    private MedicalLicense medicalLicense;
     private Van van;
+    private Paramedic paramedic;
+    private Paramedic driver;
 
-    private static final String SAMPLE_REG = "ABC-123";
-    private static final AmbulanceVehicle.Brand SAMPLE_BRAND = AmbulanceVehicle.Brand.REV;
-    private static final double SAMPLE_WEIGHT = 1000.5;
-    private static final int SAMPLE_PERSONS = 4;
-    private static final boolean SAMPLE_ON_MISSION = true;
-    private static final double SAMPLE_MAX_SPEED = 120.0;
-    private static final double SAMPLE_RANGE = 500.0;
 
     @BeforeEach
     void setUp(TestInfo info) {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
+        medicalLicense = new MedicalLicense("AAC-DAE-20A", Date.valueOf("2000-10-10"), Date.valueOf("2020-10-10"));
         van = new Van(
-                SAMPLE_REG, SAMPLE_BRAND, SAMPLE_WEIGHT, SAMPLE_PERSONS,
-                SAMPLE_ON_MISSION, SAMPLE_MAX_SPEED, SAMPLE_RANGE, Van.Capability.Extreme
+                "ABC-123",
+                AmbulanceVehicle.Brand.REV,
+                1000.5,
+                4,
+                false,
+                120,
+                500,
+                Van.Capability.Extreme
         );
+
+        paramedic = new Paramedic(
+                "33445566778",
+                "paramedic2",
+                "Qwerty7/",
+                "Tomasz",
+                "Dąbrowski",
+                Date.valueOf("1980-05-10"),
+                Person.Nation.PL,
+                "par_2",
+                Paramedic.Status.ON_LEAVE,
+                false,
+                medicalLicense,
+                Paramedic.LicenceType.SURGICAL,
+                "LIC777",
+                false,
+                "CPR445",
+                "ALS777",
+                van
+        );
+
+        driver = new Paramedic(
+                "51858500910",
+                "paramedic3",
+                "Qwerty7/",
+                "Mariusz",
+                "Dąbrowski",
+                Date.valueOf("1980-05-10"),
+                Person.Nation.PL,
+                "par_2",
+                Paramedic.Status.ON_LEAVE,
+                false,
+                medicalLicense,
+                Paramedic.LicenceType.SURGICAL,
+                "LIC777",
+                false,
+                "CPR445",
+                "ALS777",
+                van
+        );
+
+        van.addParamedic(paramedic);
+        van.addParamedic(driver);
+        van.setDriver(driver);
     }
 
     @Test
     void constructorAndGetSet() {
-        assertEquals(SAMPLE_REG, van.getRegistrationPlate());
-        assertEquals(SAMPLE_BRAND, van.getBrand());
-        assertEquals(SAMPLE_WEIGHT, van.getWeightLimit());
-        assertEquals(SAMPLE_PERSONS, van.getPersonLimit());
-        assertTrue(van.isOnMission());
-        assertEquals(SAMPLE_MAX_SPEED, van.getMaxSpeed());
-        assertEquals(SAMPLE_RANGE, van.getRangeOfTravel());
+        assertEquals("ABC-123", van.getRegistrationPlate());
+        assertEquals(AmbulanceVehicle.Brand.REV, van.getBrand());
+        assertEquals(1000.5, van.getWeightLimit());
+        assertEquals(4, van.getPersonLimit());
+        assertFalse(van.isOnMission());
+        assertEquals(120, van.getMaxSpeed());
+        assertEquals(500, van.getRangeOfTravel());
         assertEquals(Van.Capability.Extreme, van.getOffRoadCapability());
 
         van.setOffRoadCapability(Van.Capability.Low);
         assertEquals(Van.Capability.Low, van.getOffRoadCapability());
+
+        assertEquals(driver,  van.getDriver());
+        assertEquals(2, van.getParamedicList().size());
     }
 
     @Test
@@ -57,19 +109,22 @@ public class VanTest {
     }
 
     @Test
-    void jsonRoundTrip_VanUppercaseName() throws JsonProcessingException {
+    void serializationTest() {
+        String path = PathConstants.VEHICLES_TESTS + "van-test.json";
+        objectStore.save(van, path);
 
-        /*String json = mapper.writeValueAsString(van);
+        Van loaded = objectStore.load(Van.class, path);
 
-        assertTrue(json.contains("\"type\":\"Van\""));
+        assertEquals("ABC-123", loaded.getRegistrationPlate());
+        assertEquals(AmbulanceVehicle.Brand.REV, loaded.getBrand());
+        assertEquals(1000.5, loaded.getWeightLimit());
+        assertEquals(4, loaded.getPersonLimit());
+        assertFalse(loaded.isOnMission());
+        assertEquals(120, loaded.getMaxSpeed());
+        assertEquals(500, loaded.getRangeOfTravel());
+        assertEquals(Van.Capability.Extreme, loaded.getOffRoadCapability());
 
-        AmbulanceVehicle deserialized = mapper.readValue(json, AmbulanceVehicle.class);
-        assertInstanceOf(Van.class, deserialized);
-
-        String lowerCaseTypeJson = json.replace("\"type\":\"Van\"", "\"type\":\"van\"");
-        assertThrows(InvalidTypeIdException.class,
-                () -> mapper.readValue(lowerCaseTypeJson, AmbulanceVehicle.class));*/
+        loaded.setOffRoadCapability(Van.Capability.Low);
+        assertEquals(Van.Capability.Low, loaded.getOffRoadCapability());
     }
-
-    //TODO Serialization Test with ObjectStore
 }

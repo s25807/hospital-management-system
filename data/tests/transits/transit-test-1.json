@@ -1,0 +1,64 @@
+{
+  "id" : 0,
+  "status" : "HEADING_TO_PATIENT",
+  "registered" : 1683286814000,
+  "pickLocation" : "Warsaw, Zlota 22",
+  "listOfPatientsTransported" : [ {
+    "type" : "patient",
+    "pesel" : "45155151519",
+    "username" : "username",
+    "password" : "Qwerty7/",
+    "name" : "Jake",
+    "surname" : "Kowalski",
+    "dob" : 989013600000,
+    "nationality" : "PL",
+    "bloodType" : "A",
+    "insurance" : true,
+    "weight" : 80.0,
+    "height" : 180.0,
+    "isActive" : true,
+    "treatmentHistory" : {
+      "patient" : null,
+      "treatmentList" : null,
+      "additionalInformationList" : null,
+      "dateRecorded" : null
+    },
+    "patientAmbulanceTransitList" : [ 0, {
+      "id" : 1,
+      "status" : "ARRIVED",
+      "registered" : 1640816639000,
+      "pickLocation" : "Gdańsk, Kubusia Puchata 49/32",
+      "listOfPatientsTransported" : [ "45155151519" ],
+      "ambulanceVehicle" : {
+        "type" : "boat",
+        "registrationPlate" : "AZZ-324",
+        "brand" : "ICU",
+        "weightLimit" : 2500.0,
+        "personLimit" : 6,
+        "maxSpeed" : 250.0,
+        "rangeOfTravel" : 1000.0,
+        "patientAmbulanceTransitList" : [ 1 ],
+        "paramedicList" : [ ],
+        "driver" : null,
+        "emergencyRoomList" : [ ],
+        "length" : 700.0,
+        "onMission" : false
+      }
+    } ]
+  } ],
+  "ambulanceVehicle" : {
+    "type" : "Van",
+    "registrationPlate" : "ABC-123",
+    "brand" : "REV",
+    "weightLimit" : 1000.5,
+    "personLimit" : 4,
+    "maxSpeed" : 120.0,
+    "rangeOfTravel" : 500.0,
+    "patientAmbulanceTransitList" : [ 0 ],
+    "paramedicList" : [ ],
+    "driver" : null,
+    "emergencyRoomList" : [ ],
+    "offRoadCapability" : "Extreme",
+    "onMission" : false
+  }
+}

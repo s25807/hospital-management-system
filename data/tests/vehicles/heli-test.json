@@ -1,0 +1,67 @@
+{
+  "type" : "helicopter",
+  "registrationPlate" : "ABC-123",
+  "brand" : "REV",
+  "weightLimit" : 1000.5,
+  "personLimit" : 4,
+  "maxSpeed" : 120.0,
+  "rangeOfTravel" : 500.0,
+  "patientAmbulanceTransitList" : [ ],
+  "paramedicList" : [ {
+    "type" : "paramedic",
+    "pesel" : "33445566778",
+    "username" : "paramedic2",
+    "password" : "Qwerty7/",
+    "name" : "Tomasz",
+    "surname" : "Dąbrowski",
+    "dob" : 326757600000,
+    "nationality" : "PL",
+    "employeeId" : "par_2",
+    "status" : "ON_LEAVE",
+    "onDuty" : false,
+    "mapOfMedLicenceNumbers" : {
+      "AAC-DAE-20A" : {
+        "type" : "MedicalLicense",
+        "licenseNumber" : "AAC-DAE-20A",
+        "acquisitionDate" : 971128800000,
+        "expirationDate" : 1602280800000
+      }
+    },
+    "licenceType" : "SURGICAL",
+    "licenceNumber" : "LIC777",
+    "hasEmergencyDrivingPermit" : false,
+    "cprNumber" : "CPR445",
+    "advancedLifeSupNumber" : "ALS777",
+    "vehicle" : "ABC-123"
+  }, {
+    "type" : "paramedic",
+    "pesel" : "51858500910",
+    "username" : "paramedic3",
+    "password" : "Qwerty7/",
+    "name" : "Mariusz",
+    "surname" : "Dąbrowski",
+    "dob" : 326757600000,
+    "nationality" : "PL",
+    "employeeId" : "par_2",
+    "status" : "ON_LEAVE",
+    "onDuty" : false,
+    "mapOfMedLicenceNumbers" : {
+      "AAC-DAE-20A" : {
+        "type" : "MedicalLicense",
+        "licenseNumber" : "AAC-DAE-20A",
+        "acquisitionDate" : 971128800000,
+        "expirationDate" : 1602280800000
+      }
+    },
+    "licenceType" : "SURGICAL",
+    "licenceNumber" : "LIC777",
+    "hasEmergencyDrivingPermit" : false,
+    "cprNumber" : "CPR445",
+    "advancedLifeSupNumber" : "ALS777",
+    "vehicle" : "ABC-123"
+  } ],
+  "driver" : "51858500910",
+  "emergencyRoomList" : [ ],
+  "maxAltitude" : 3000.0,
+  "onMission" : true
+}

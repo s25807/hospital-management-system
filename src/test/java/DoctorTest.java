@@ -26,12 +26,15 @@ public class DoctorTest {
 
     private final ObjectStore objectStore = new ObjectStore();
     private Doctor doctor;
+    private Doctor headDoctor;
     private MedicalLicense medicalLicense;
+    private MedicalLicense medicalLicenseTwo;
 
     @BeforeEach
     void setUp(TestInfo info) {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
         medicalLicense = new MedicalLicense("AAC-DAE-20A", Date.valueOf("2000-10-10"), Date.valueOf("2020-10-10"));
+        medicalLicenseTwo = new MedicalLicense("ABC-ZAE-20B", Date.valueOf("2000-10-10"), Date.valueOf("2020-10-10"));
         doctor = new Doctor(
                 "45645645645",
                 "doctor2",
@@ -46,6 +49,23 @@ public class DoctorTest {
                 false,
                 medicalLicense
         );
+
+        headDoctor = new Doctor(
+                "45688945645",
+                "doctor3",
+                "Qwerty7/",
+                "Mike",
+                "Smith",
+                Date.valueOf("1975-07-20"),
+                Person.Nation.ENG,
+                "doc_2",
+                Doctor.Status.ON_LEAVE,
+                false,
+                false,
+                medicalLicenseTwo
+        );
+
+        doctor.setSupervisor(headDoctor);
     }
 
     @Test
@@ -187,9 +207,13 @@ public class DoctorTest {
     @Test
     void testSerialization() {
         String path = PathConstants.DOCTORS_TESTS + "test-doctor.json";
+        String pathTwo = PathConstants.DOCTORS_TESTS + "test-doctor2.json";
+
         objectStore.save(doctor, path);
+        objectStore.save(headDoctor, pathTwo);
 
         Doctor loaded = objectStore.load(Doctor.class, path);
+        Doctor loadTwo = objectStore.load(Doctor.class, pathTwo);
 
         assertEquals("45645645645", loaded.getPesel());
         assertEquals("Mark", loaded.getName());
@@ -200,6 +224,6 @@ public class DoctorTest {
         assertEquals(Doctor.Status.ON_LEAVE, loaded.getStatus());
         assertFalse(loaded.isOnDuty());
         assertFalse(loaded.isHasHeadRole());
-        assertNull(loaded.getSupervisor());
+        assertEquals(loadTwo.getPesel(), loaded.getSupervisor().getPesel());
     }
 }

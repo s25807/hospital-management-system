@@ -22,5 +22,20 @@
   "licenceNumber" : "LIC777",
   "hasEmergencyDrivingPermit" : false,
   "cprNumber" : "CPR445",
-  "advancedLifeSupNumber" : "ALS777"
+  "advancedLifeSupNumber" : "ALS777",
+  "vehicle" : {
+    "type" : "Van",
+    "registrationPlate" : "ABC-123",
+    "brand" : "REV",
+    "weightLimit" : 1000.5,
+    "personLimit" : 4,
+    "maxSpeed" : 120.0,
+    "rangeOfTravel" : 500.0,
+    "patientAmbulanceTransitList" : [ ],
+    "paramedicList" : [ "33445566778" ],
+    "driver" : "33445566778",
+    "emergencyRoomList" : [ ],
+    "offRoadCapability" : "Extreme",
+    "onMission" : false
+  }
 }
