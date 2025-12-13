@@ -4,6 +4,8 @@ import annotations.Max;
 import exceptions.IllegalTypeException;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MaxValidator implements Validator{
     public void validate(Object object) throws IllegalAccessException {
@@ -18,11 +20,12 @@ public class MaxValidator implements Validator{
                     Object value = field.get(object);
 
                     Max annotation = field.getAnnotation(Max.class);
-                    double min = annotation.value();
+                    double max = annotation.value();
 
-                    if (fieldType.isAssignableFrom(String.class)) if (value.toString().length() < min) throw new IllegalArgumentException("[ERROR] " + field.getName() + " " + annotation.message() + " " + (int) min);
-                    else if(fieldType.isAssignableFrom(Double.class)) if((double) value < min) throw new IllegalArgumentException("[ERROR] " + field.getName() + " " + annotation.message() + " " + min);
-                    else if(fieldType.isAssignableFrom(Integer.class)) if((int) value < min) throw new IllegalArgumentException("[ERROR] " + field.getName() + " " + annotation.message() + " " + (int) min);
+                    if (fieldType.isAssignableFrom(String.class)) if (value.toString().length() > max) throw new IllegalArgumentException("[ERROR] " + field.getName() + " " + annotation.message() + " " + (int) max);
+                    else if(fieldType.isAssignableFrom(Double.class)) if((double) value > max) throw new IllegalArgumentException("[ERROR] " + field.getName() + " " + annotation.message() + " " + max);
+                    else if(fieldType.isAssignableFrom(Integer.class)) if((int) value > max) throw new IllegalArgumentException("[ERROR] " + field.getName() + " " + annotation.message() + " " + (int) max);
+                    else if(fieldType.isAssignableFrom(ArrayList.class)) if(((ArrayList) value).size() > max) throw new IllegalArgumentException("[ERROR] " + field.getName() + " " + annotation.message() + " " + (int) max);
                     else throw new IllegalTypeException("[ERROR] " + fieldType.getName() + " is an invalid type for @Max");
                 }
             }

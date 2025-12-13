@@ -1,10 +1,7 @@
 import annotations.SkipSetup;
 import constants.PathConstants;
 import exceptions.InvalidPasswordException;
-import models.Employee;
-import models.MedicalLicense;
-import models.Paramedic;
-import models.Person;
+import models.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,11 +22,23 @@ public class ParamedicTest {
     private final ObjectStore objectStore = new ObjectStore();
     private Paramedic paramedic;
     private MedicalLicense medicalLicense;
+    private Van van;
 
     @BeforeEach
     void setUp(TestInfo info) {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
         medicalLicense = new MedicalLicense("AAC-DAE-20A", Date.valueOf("2000-10-10"), Date.valueOf("2020-10-10"));
+        van = new Van(
+                "ABC-123",
+                AmbulanceVehicle.Brand.REV,
+                1000.5,
+                4,
+                false,
+                120,
+                500,
+                Van.Capability.Extreme
+        );
+
         paramedic = new Paramedic(
                 "33445566778",
                 "paramedic2",
@@ -46,8 +55,12 @@ public class ParamedicTest {
                 "LIC777",
                 false,
                 "CPR445",
-                "ALS777"
+                "ALS777",
+                van
         );
+
+        van.addParamedic(paramedic);
+        van.setDriver(paramedic);
     }
 
     @Test
@@ -155,7 +168,8 @@ public class ParamedicTest {
                                 "LIC001",
                                 true,
                                 "CPR123",
-                                "ALS001"
+                                "ALS001",
+                                van
                         )
                 );
             } catch (Exception e) {
@@ -186,7 +200,8 @@ public class ParamedicTest {
                                 "LIC001",
                                 true,
                                 "CPR123",
-                                "ALS001"
+                                "ALS001",
+                                van
                         )
                 );
             } catch (Exception e) {

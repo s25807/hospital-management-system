@@ -12,10 +12,18 @@ public class EmergencyRoom extends Room {
     @NotNull
     private static List<ResponseTime> responseTimes = new ArrayList<>();
 
-    public EmergencyRoom() {}
+    @NotNull
+    private List<AmbulanceVehicle>  ambulanceVehicles;
+
+    public EmergencyRoom() { this.ambulanceVehicles = new ArrayList<>(); }
     public EmergencyRoom(String roomNumber, int maxPeopleAllowed, int occupancy) {
         super(roomNumber, maxPeopleAllowed, occupancy);
+        ambulanceVehicles = new ArrayList<>();
     }
+
+    public void setAmbulanceVehicles(List<AmbulanceVehicle> ambulanceVehicles) { this.ambulanceVehicles = ambulanceVehicles; }
+    public List<AmbulanceVehicle> getAmbulanceVehicles() { return this.ambulanceVehicles; }
+
     public static void setResponseTimes(List<ResponseTime> responseTimes) {  EmergencyRoom.responseTimes = responseTimes; }
 
     @JsonIgnore
@@ -28,6 +36,21 @@ public class EmergencyRoom extends Room {
 
     @JsonIgnore
     public void addResponseTime(Timestamp startTime, Timestamp endTime) { responseTimes.add(new ResponseTime(startTime, endTime)); }
+
+    public void addAmbulanceVehicle(AmbulanceVehicle ambulanceVehicle) {
+        if (!this.ambulanceVehicles.contains(ambulanceVehicle)) this.ambulanceVehicles.add(ambulanceVehicle);
+        if (!ambulanceVehicle.isAssignedEmergencyRoom(this)) ambulanceVehicle.addEmergencyRoom(this);
+    }
+
+    public void removeAmbulanceVehicle(AmbulanceVehicle ambulanceVehicle) {
+        if(ambulanceVehicle != null && this.ambulanceVehicles.contains(ambulanceVehicle)) {
+            ambulanceVehicle.removeEmergencyRoom(this);
+            this.ambulanceVehicles.remove(ambulanceVehicle);
+        }
+    }
+
+    @JsonIgnore
+    public boolean isVehicleAssigned(AmbulanceVehicle ambulanceVehicle) { return this.ambulanceVehicles.contains(ambulanceVehicle); }
 
     public static class ResponseTime {
 
@@ -51,4 +74,6 @@ public class EmergencyRoom extends Room {
 
         public double getDurationMinutes() { return (endTime.getTime() - startTime.getTime()) / 60000.0; }
     }
+
+
 }

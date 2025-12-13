@@ -4,6 +4,7 @@ import annotations.NotEmpty;
 import exceptions.IllegalTypeException;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class NotEmptyValidator implements Validator {
@@ -23,6 +24,9 @@ public class NotEmptyValidator implements Validator {
                     }
                     else if(value.getClass() == HashMap.class){
                         if (((HashMap) value).isEmpty()) throw new IllegalArgumentException("[ERROR] " + field.getName() + " " + annotation.message());
+                    }
+                    else if(value.getClass() == ArrayList.class){
+                        if (((ArrayList) value).isEmpty()) throw new IllegalArgumentException("[ERROR] " + field.getName() + " " + annotation.message());
                     }
                     else throw new IllegalTypeException("[ERROR] " + field.getName() + " " + "cannot be of type " + value.getClass() + "!");
                 }

@@ -1,7 +1,7 @@
 import annotations.SkipSetup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import constants.PathConstants;
-import models.EmergencyRoom;
+import models.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -10,6 +10,7 @@ import validators.ValidatorService;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -18,13 +19,51 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EmergencyRoomTest {
     private final ObjectStore objectStore = new ObjectStore();
     private EmergencyRoom emergencyRoom;
+    private MedicalLicense medicalLicense;
+    private Van van;
+    private Paramedic paramedic;
 
     @BeforeEach
     void setUp(TestInfo info) {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
         EmergencyRoom.setResponseTimes(new ArrayList<>());
 
+        medicalLicense = new MedicalLicense("AAC-DAE-20A", Date.valueOf("2000-10-10"), Date.valueOf("2020-10-10"));
+        van = new Van(
+                "ABC-123",
+                AmbulanceVehicle.Brand.REV,
+                1000.5,
+                4,
+                false,
+                120,
+                500,
+                Van.Capability.Extreme
+        );
+
+        paramedic = new Paramedic(
+                "33445566778",
+                "paramedic2",
+                "Qwerty7/",
+                "Tomasz",
+                "Dąbrowski",
+                Date.valueOf("1980-05-10"),
+                Person.Nation.PL,
+                "par_2",
+                Paramedic.Status.ON_LEAVE,
+                false,
+                medicalLicense,
+                Paramedic.LicenceType.SURGICAL,
+                "LIC777",
+                false,
+                "CPR445",
+                "ALS777",
+                van
+        );
+
+        van.addParamedic(paramedic);
+        van.setDriver(paramedic);
         emergencyRoom = new EmergencyRoom("13E", 5, 2);
+        emergencyRoom.addAmbulanceVehicle(van);
     }
 
     @Test
@@ -102,5 +141,6 @@ public class EmergencyRoomTest {
         assertEquals(2, loaded.getOccupancy());
         assertFalse(loaded.isFilled());
         assertEquals(3, loaded.getRemainingPlaces());
+        assertEquals(van.getRegistrationPlate(), loaded.getAmbulanceVehicles().get(0).getRegistrationPlate());
     }
 }

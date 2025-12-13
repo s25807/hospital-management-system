@@ -12,6 +12,7 @@ public class PathConstants {
     public static final String ROOMS_MAIN = "data/main/rooms/";
     public static final String SPECIALIZATIONS_MAIN = "data/main/specializations/";
     public static final String PATIENTS_MAIN = "data/main/patients/";
+    public static final String PATIENTS_AMBULANCE_TRANSIT_MAIN = "data/main/transits/";
     public static final String VEHICLES_MAIN = "data/main/vehicles/";
 
     public static final String APPOINTMENTS_TESTS = "data/tests/appointments/";
@@ -25,5 +26,6 @@ public class PathConstants {
     public static final String ROOMS_TESTS = "data/tests/rooms/";
     public static final String SPECIALIZATIONS_TESTS = "data/tests/specializations/";
     public static final String PATIENTS_TESTS = "data/tests/patients/";
+    public static final String PATIENTS_AMBULANCE_TRANSIT_TESTS = "data/tests/transits/";
     public static final String VEHICLES_TESTS = "data/tests/vehicles/";
 }
