@@ -1,9 +1,19 @@
 package models;
 
 import annotations.Min;
+import annotations.NotEmpty;
 import annotations.NotNull;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "number"
+)
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -13,22 +23,31 @@ public class Floor {
     @NotNull
     private int number;
 
+    @Min
     @NotNull
-    @Min(value = 1)
     private int amountOfRooms;
 
-    public Floor() {}
+    @NotNull
+    @NotEmpty
+    private List<Room> roomList;
+
+    public Floor() { this.roomList = new ArrayList<>(); }
 
     public Floor(int number, int amountOfRooms) {
         this.number = number;
         this.amountOfRooms = amountOfRooms;
+        this.roomList = new ArrayList<>();
     }
 
     public int getNumber() { return number; }
+    public int getAmountOfRooms() { return amountOfRooms; }
+    public List<Room> getRoomList() { return roomList; }
 
     public void setNumber(int number) { this.number = number; }
-
-    public int getAmountOfRooms() { return amountOfRooms; }
-
     public void setAmountOfRooms(int amountOfRooms) { this.amountOfRooms = amountOfRooms; }
+    public void setRoomList(List<Room> roomList) { this.roomList = roomList; }
+
+    public void destroyFloor() {
+        for (Room room : roomList) room.destroyRoom();
+    }
 }
