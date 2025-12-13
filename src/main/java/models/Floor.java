@@ -28,26 +28,53 @@ public class Floor {
     private int amountOfRooms;
 
     @NotNull
+    private Department department;
+
+    @NotNull
     @NotEmpty
     private List<Room> roomList;
 
     public Floor() { this.roomList = new ArrayList<>(); }
 
-    public Floor(int number, int amountOfRooms) {
+    public Floor(int number, int amountOfRooms, Department department) {
         this.number = number;
         this.amountOfRooms = amountOfRooms;
         this.roomList = new ArrayList<>();
+        setDepartment(department);
     }
 
     public int getNumber() { return number; }
     public int getAmountOfRooms() { return amountOfRooms; }
+    public Department getDepartment() { return department; }
     public List<Room> getRoomList() { return roomList; }
 
     public void setNumber(int number) { this.number = number; }
     public void setAmountOfRooms(int amountOfRooms) { this.amountOfRooms = amountOfRooms; }
-    public void setRoomList(List<Room> roomList) { this.roomList = roomList; }
+    public void setDepartment(Department newDepartment) {
+        if (this.department == newDepartment) return;
 
+        if (this.department != null) {
+            Department oldDepartment = this.department;
+            this.department = null;
+            oldDepartment.removeFloor(this);
+        }
+
+        this.department = newDepartment;
+
+        if (newDepartment != null && !newDepartment.getFloorList().contains(this)) {
+            newDepartment.addFloor(this);
+        }
+    }
+    public void setRoomList(List<Room> roomList) { this.roomList = roomList; }
     public void destroyFloor() {
         for (Room room : roomList) room.destroyRoom();
+
+        roomList.clear();
+
+        if (department != null) {
+            Department oldDepartment = department;
+            department = null;
+            oldDepartment.getFloorList().remove(this);
+        }
     }
 }

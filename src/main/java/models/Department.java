@@ -47,4 +47,29 @@ public class Department {
     public void setFloorList(List<Floor> floorList) { this.floorList = floorList; }
 
     //public void changeFloor() {}
+
+    public void addFloor(Floor floor) {
+        if (floor != null && !floorList.contains(floor)) {
+            floorList.add(floor);
+            if (floor.getDepartment() != this)
+                floor.setDepartment(this);
+        }
+    }
+
+    public void removeFloor(Floor floor) {
+        if (floor == null) return;
+
+        if (floorList.remove(floor)) {
+            if (floor.getDepartment() == this)
+                floor.setDepartment(null);
+        }
+    }
+
+    public void destroyDepartment() {
+        List<Floor> copy = new ArrayList<>(floorList);
+        for (Floor floor : copy) {
+            floor.setDepartment(null);
+        }
+        floorList.clear();
+    }
 }

@@ -1,6 +1,7 @@
 import annotations.SkipSetup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import constants.PathConstants;
+import models.Department;
 import models.Floor;
 import models.OperationRoom;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,11 +22,13 @@ public class OperationRoomTest {
     private OperationRoom operationRoom;
     private Map<String, Integer> equipment;
     private Floor floor;
+    private Department department;
 
     @BeforeEach
     void setUp(TestInfo info) {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
-        floor = new Floor(2, 15);
+        department = new Department("14", "Department of Neurology");
+        floor = new Floor(1, 15, department);
         equipment = new HashMap<>();
         equipment.put("scalpel", 5);
         equipment.put("clamp", 10);
