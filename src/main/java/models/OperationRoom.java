@@ -12,12 +12,12 @@ public class OperationRoom extends Room{
     Map<String, Integer> surgicalEquipment;
 
     public OperationRoom() {}
-    public OperationRoom(String roomNumber, int maxPeopleAllowed, int occupancy) {
-        super(roomNumber, maxPeopleAllowed, occupancy);
+    public OperationRoom(String roomNumber, int maxPeopleAllowed, int occupancy, Floor floor) {
+        super(roomNumber, maxPeopleAllowed, occupancy, floor);
         surgicalEquipment = new HashMap<>();
     }
-    public OperationRoom(String roomNumber, int maxPeopleAllowed, int occupancy, Map<String, Integer> surgicalEquipment) {
-        super(roomNumber, maxPeopleAllowed, occupancy);
+    public OperationRoom(String roomNumber, int maxPeopleAllowed, int occupancy, Floor floor, Map<String, Integer> surgicalEquipment) {
+        super(roomNumber, maxPeopleAllowed, occupancy, floor);
         this.surgicalEquipment = surgicalEquipment;
     }
 
@@ -27,5 +27,11 @@ public class OperationRoom extends Room{
     @JsonIgnore
     public void addItem(String item, int quantity) {
         surgicalEquipment.put(item, quantity);
+    }
+
+    @Override
+    public void destroyRoom() {
+        super.destroyRoom();
+        //TODO: Remember to destroy associations
     }
 }
