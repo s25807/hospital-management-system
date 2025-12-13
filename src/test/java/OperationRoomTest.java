@@ -1,6 +1,8 @@
 import annotations.SkipSetup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import constants.PathConstants;
+import models.Department;
+import models.Floor;
 import models.OperationRoom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,15 +21,19 @@ public class OperationRoomTest {
     private final ObjectStore objectStore = new ObjectStore();
     private OperationRoom operationRoom;
     private Map<String, Integer> equipment;
+    private Floor floor;
+    private Department department;
 
     @BeforeEach
     void setUp(TestInfo info) {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
+        department = new Department("14", "Department of Neurology");
+        floor = new Floor(1, 15, department);
         equipment = new HashMap<>();
         equipment.put("scalpel", 5);
         equipment.put("clamp", 10);
 
-        operationRoom = new OperationRoom("1S", 3, 2, equipment);
+        operationRoom = new OperationRoom("1S", 3, 2, floor, equipment);
     }
 
     @Test
@@ -45,7 +51,7 @@ public class OperationRoomTest {
 
     @Test
     void testSecondConstructorEmptyEquipment() {
-        OperationRoom or = new OperationRoom("2S", 2, 1);
+        OperationRoom or = new OperationRoom("2S", 2, 1, floor);
         assertEquals("2S", or.getRoomNumber());
         assertEquals(2, or.getMaxPeopleAllowed());
         assertEquals(1, or.getOccupancy());
@@ -87,7 +93,7 @@ public class OperationRoomTest {
 
     @Test
     void testErrors() {
-        OperationRoom or = new OperationRoom("3S", 2, 1);
+        OperationRoom or = new OperationRoom("3S", 2, 1, floor);
         assertThrows(IllegalArgumentException.class, () -> or.setOccupancy(5));
 
         assertThrows(NullPointerException.class, () -> {

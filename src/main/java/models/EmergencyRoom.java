@@ -16,8 +16,8 @@ public class EmergencyRoom extends Room {
     private List<AmbulanceVehicle>  ambulanceVehicles;
 
     public EmergencyRoom() { this.ambulanceVehicles = new ArrayList<>(); }
-    public EmergencyRoom(String roomNumber, int maxPeopleAllowed, int occupancy) {
-        super(roomNumber, maxPeopleAllowed, occupancy);
+    public EmergencyRoom(String roomNumber, int maxPeopleAllowed, int occupancy, Floor floor) {
+        super(roomNumber, maxPeopleAllowed, occupancy, floor);
         ambulanceVehicles = new ArrayList<>();
     }
 
@@ -25,6 +25,14 @@ public class EmergencyRoom extends Room {
     public List<AmbulanceVehicle> getAmbulanceVehicles() { return this.ambulanceVehicles; }
 
     public static void setResponseTimes(List<ResponseTime> responseTimes) {  EmergencyRoom.responseTimes = responseTimes; }
+
+    @Override
+    public void destroyRoom() {
+        super.destroyRoom();
+
+        for (AmbulanceVehicle vehicle : ambulanceVehicles) vehicle.removeEmergencyRoom(this);
+        ambulanceVehicles = null;
+    }
 
     @JsonIgnore
     public double calculateAveResponseTime() {

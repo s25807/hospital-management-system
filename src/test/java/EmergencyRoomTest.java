@@ -22,12 +22,15 @@ public class EmergencyRoomTest {
     private MedicalLicense medicalLicense;
     private Van van;
     private Paramedic paramedic;
+    private Floor floor;
+    private Department department;
 
     @BeforeEach
     void setUp(TestInfo info) {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
         EmergencyRoom.setResponseTimes(new ArrayList<>());
-
+        department = new Department("14", "Department of Neurology");
+        floor = new Floor(1, 15, department);
         medicalLicense = new MedicalLicense("AAC-DAE-20A", Date.valueOf("2000-10-10"), Date.valueOf("2020-10-10"));
         van = new Van(
                 "ABC-123",
@@ -62,7 +65,7 @@ public class EmergencyRoomTest {
 
         van.addParamedic(paramedic);
         van.setDriver(paramedic);
-        emergencyRoom = new EmergencyRoom("13E", 5, 2);
+        emergencyRoom = new EmergencyRoom("13E", 5, 2, floor);
         emergencyRoom.addAmbulanceVehicle(van);
     }
 

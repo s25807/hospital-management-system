@@ -3,6 +3,18 @@
   "roomNumber" : "1S",
   "maxPeopleAllowed" : 3,
   "occupancy" : 2,
+  "floor" : {
+    "type" : "Floor",
+    "number" : 1,
+    "amountOfRooms" : 15,
+    "department" : {
+      "type" : "Department",
+      "id" : "14",
+      "name" : "Department of Neurology",
+      "floorList" : [ 1 ]
+    },
+    "roomList" : [ ]
+  },
   "surgicalEquipment" : {
     "scalpel" : 5,
     "clamp" : 10

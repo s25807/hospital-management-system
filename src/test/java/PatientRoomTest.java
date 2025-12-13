@@ -1,6 +1,8 @@
 import annotations.SkipSetup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import constants.PathConstants;
+import models.Department;
+import models.Floor;
 import models.PatientRoom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,11 +19,15 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PatientRoomTest {
     private PatientRoom patientRoom;
     private final ObjectStore objectStore = new ObjectStore();
+    private Floor floor;
+    private Department department;
 
     @BeforeEach
     public void setUp(TestInfo info) {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
-        patientRoom = new PatientRoom("15C", 4, 2, false);
+        department = new Department("14", "Department of Neurology");
+        floor = new Floor(1, 15, department);
+        patientRoom = new PatientRoom("15C", 4, 2, false, floor);
     }
 
     @Test
@@ -48,7 +54,8 @@ public class PatientRoomTest {
 
     @Test
     void testErrors() {
-        PatientRoom room = new PatientRoom("300C", 2, 1, false);
+        Floor floor = new Floor(2, 15, department);
+        PatientRoom room = new PatientRoom("300C", 2, 1, false, floor);
         assertThrows(IllegalArgumentException.class, () -> room.setOccupancy(3));
 
         assertThrows(NullPointerException.class, () -> {

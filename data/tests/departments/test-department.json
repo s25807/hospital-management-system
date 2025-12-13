@@ -1,0 +1,12 @@
+{
+  "type" : "Department",
+  "id" : "14",
+  "name" : "Department of Neurology",
+  "floorList" : [ {
+    "type" : "Floor",
+    "number" : 1,
+    "amountOfRooms" : 15,
+    "department" : "14",
+    "roomList" : [ ]
+  } ]
+}
