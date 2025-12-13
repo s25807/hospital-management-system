@@ -66,10 +66,7 @@ public class Department {
     }
 
     public void destroyDepartment() {
-        List<Floor> copy = new ArrayList<>(floorList);
-        for (Floor floor : copy) {
-            floor.setDepartment(null);
-        }
+        for (int i = 0; i < floorList.size(); ++i) floorList.get(i).setDepartment(null);
         floorList.clear();
     }
 }

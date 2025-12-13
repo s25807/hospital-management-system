@@ -3,6 +3,18 @@
   "roomNumber" : "13E",
   "maxPeopleAllowed" : 5,
   "occupancy" : 2,
+  "floor" : {
+    "type" : "Floor",
+    "number" : 1,
+    "amountOfRooms" : 15,
+    "department" : {
+      "type" : "Department",
+      "id" : "14",
+      "name" : "Department of Neurology",
+      "floorList" : [ 1 ]
+    },
+    "roomList" : [ ]
+  },
   "ambulanceVehicles" : [ {
     "type" : "Van",
     "registrationPlate" : "ABC-123",
