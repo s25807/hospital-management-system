@@ -1,6 +1,7 @@
 import annotations.SkipSetup;
 import constants.PathConstants;
 import exceptions.InvalidPasswordException;
+import models.Department;
 import models.Employee;
 import models.MedicalLicense;
 import models.Nurse;
@@ -164,6 +165,30 @@ public class NurseTest {
         });
     }
 
+    @Test
+    void testDepartmentAssociation() {
+        Department cardioDept = new Department("DEPT001", "Cardiology");
+        Department neuroDept = new Department("DEPT002", "Neurology");
+
+        nurse.setDepartment(cardioDept);
+        assertEquals(cardioDept, nurse.getDepartment());
+        assertEquals("DEPT001", nurse.getDepartment().getId());
+        assertEquals("Cardiology", nurse.getDepartment().getName());
+        // Test bidirectional relationship
+        assertTrue(cardioDept.getNurses().contains(nurse));
+
+        nurse.setDepartment(neuroDept);
+        assertEquals(neuroDept, nurse.getDepartment());
+        assertEquals("DEPT002", nurse.getDepartment().getId());
+        assertEquals("Neurology", nurse.getDepartment().getName());
+        // Test bidirectional relationship after change
+        assertFalse(cardioDept.getNurses().contains(nurse));
+        assertTrue(neuroDept.getNurses().contains(nurse));
+
+        nurse.setDepartment(null);
+        assertNull(nurse.getDepartment());
+        assertFalse(neuroDept.getNurses().contains(nurse));
+    }
 
     @Test
     void testSerialization() {

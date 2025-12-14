@@ -1,10 +1,12 @@
 import annotations.SkipSetup;
 import constants.PathConstants;
 import exceptions.InvalidPasswordException;
+import models.Department;
 import models.Doctor;
 import models.Employee;
 import models.MedicalLicense;
 import models.Person;
+import models.Specialization;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -202,6 +204,69 @@ public class DoctorTest {
                     )
             );
         });
+    }
+
+    @Test
+    void testSpecializationOperations() {
+        Specialization cardio = new Specialization("Cardiology", new java.util.ArrayList<>(java.util.List.of("Board certification", "5+ years experience")));
+        Specialization neuro = new Specialization("Neurology", new java.util.ArrayList<>(java.util.List.of("Neurology certification")));
+
+        // Test adding specializations - bidirectional relationship
+        doctor.addSpecialization(cardio);
+        doctor.addSpecialization(neuro);
+
+        assertEquals(2, doctor.getSpecializations().size());
+        assertTrue(doctor.getSpecializations().contains(cardio));
+        assertTrue(doctor.getSpecializations().contains(neuro));
+        // Test reverse connection
+        assertTrue(cardio.getDoctors().contains(doctor));
+        assertTrue(neuro.getDoctors().contains(doctor));
+
+        // Test removing specialization - bidirectional relationship
+        doctor.removeSpecialization(cardio);
+        assertEquals(1, doctor.getSpecializations().size());
+        assertFalse(doctor.getSpecializations().contains(cardio));
+        assertTrue(doctor.getSpecializations().contains(neuro));
+        // Test reverse connection
+        assertFalse(cardio.getDoctors().contains(doctor));
+        assertTrue(neuro.getDoctors().contains(doctor));
+
+        // Test setting specializations - bidirectional relationship
+        java.util.List<Specialization> newSpecs = new java.util.ArrayList<>();
+        newSpecs.add(cardio);
+        doctor.setSpecializations(newSpecs);
+
+        assertEquals(1, doctor.getSpecializations().size());
+        assertTrue(doctor.getSpecializations().contains(cardio));
+        assertFalse(doctor.getSpecializations().contains(neuro));
+        // Test reverse connection - old specialization should not contain doctor, new one should
+        assertTrue(cardio.getDoctors().contains(doctor));
+        assertFalse(neuro.getDoctors().contains(doctor));
+    }
+
+    @Test
+    void testDepartmentAssociation() {
+        Department cardioDept = new Department("DEPT001", "Cardiology");
+        Department neuroDept = new Department("DEPT002", "Neurology");
+
+        doctor.setDepartment(cardioDept);
+        assertEquals(cardioDept, doctor.getDepartment());
+        assertEquals("DEPT001", doctor.getDepartment().getId());
+        assertEquals("Cardiology", doctor.getDepartment().getName());
+        // Test bidirectional relationship
+        assertTrue(cardioDept.getDoctors().contains(doctor));
+
+        doctor.setDepartment(neuroDept);
+        assertEquals(neuroDept, doctor.getDepartment());
+        assertEquals("DEPT002", doctor.getDepartment().getId());
+        assertEquals("Neurology", doctor.getDepartment().getName());
+        // Test bidirectional relationship after change
+        assertFalse(cardioDept.getDoctors().contains(doctor));
+        assertTrue(neuroDept.getDoctors().contains(doctor));
+
+        doctor.setDepartment(null);
+        assertNull(doctor.getDepartment());
+        assertFalse(neuroDept.getDoctors().contains(doctor));
     }
 
     @Test

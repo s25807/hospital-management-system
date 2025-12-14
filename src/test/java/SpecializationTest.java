@@ -1,7 +1,11 @@
 import annotations.SkipSetup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import constants.PathConstants;
+import models.Doctor;
+import models.Employee;
 import models.Floor;
+import models.MedicalLicense;
+import models.Person;
 import models.Specialization;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,6 +54,8 @@ public class SpecializationTest {
         Specialization emptySpecialization = new Specialization();
         assertNull(emptySpecialization.getName());
         assertNull(emptySpecialization.getRequirements());
+        assertNotNull(emptySpecialization.getDoctors());
+        assertTrue(emptySpecialization.getDoctors().isEmpty());
     }
 
     @Test
@@ -92,6 +98,32 @@ public class SpecializationTest {
         Specialization specializationWithEmptyRequirement = new Specialization(
                 "Neurology", listWithEmpty);
         assertDoesNotThrow(() -> ValidatorService.validate(specializationWithEmptyRequirement));
+    }
+
+    @Test
+    void testDoctorManagement() {
+        // Create test doctors
+        MedicalLicense license = new MedicalLicense("LIC001", java.sql.Date.valueOf("2020-01-01"), java.sql.Date.valueOf("2025-01-01"));
+        Doctor doctor1 = new Doctor("11111111111", "doctor1", "password123", "John", "Doe",
+                java.sql.Date.valueOf("1985-05-15"), Person.Nation.PL, "DOC001",
+                Employee.Status.ACTIVE, true, true, license);
+        Doctor doctor2 = new Doctor("22222222222", "doctor2", "password123", "Jane", "Smith",
+                java.sql.Date.valueOf("1980-08-20"), Person.Nation.ENG, "DOC002",
+                Employee.Status.ACTIVE, false, false, license);
+
+        // Test adding doctors
+        specialization.addDoctor(doctor1);
+        specialization.addDoctor(doctor2);
+
+        assertEquals(2, specialization.getDoctors().size());
+        assertTrue(specialization.getDoctors().contains(doctor1));
+        assertTrue(specialization.getDoctors().contains(doctor2));
+
+        // Test removing doctor
+        specialization.removeDoctor(doctor1);
+        assertEquals(1, specialization.getDoctors().size());
+        assertFalse(specialization.getDoctors().contains(doctor1));
+        assertTrue(specialization.getDoctors().contains(doctor2));
     }
 
     @Test

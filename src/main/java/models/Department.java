@@ -5,6 +5,7 @@ import annotations.NotNull;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,20 +32,58 @@ public class Department {
     @NotEmpty
     private List<Floor> floorList;
 
-    public Department() { this.floorList = new ArrayList<>(); }
+    @NotNull
+    @JsonDeserialize(as = ArrayList.class)
+    private List<Doctor> doctors;
+
+    @NotNull
+    @JsonDeserialize(as = ArrayList.class)
+    private List<Nurse> nurses;
+
+    public Department() {
+        this.floorList = new ArrayList<>();
+        this.doctors = new ArrayList<>();
+        this.nurses = new ArrayList<>();
+    }
     public Department(String id, String name) {
         this.id = id;
         this.name = name;
         this.floorList = new ArrayList<>();
+        this.doctors = new ArrayList<>();
+        this.nurses = new ArrayList<>();
     }
 
     public String getId() { return id; }
     public String getName() { return name; }
     public List<Floor> getFloorList() { return floorList; }
+    public List<Doctor> getDoctors() { return doctors; }
+    public List<Nurse> getNurses() { return nurses; }
 
     public void setId(String id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setFloorList(List<Floor> floorList) { this.floorList = floorList; }
+    public void setDoctors(List<Doctor> doctors) { this.doctors = doctors; }
+    public void setNurses(List<Nurse> nurses) { this.nurses = nurses; }
+
+    public void addDoctor(Doctor doctor) {
+        if (doctor != null && !doctors.contains(doctor)) {
+            doctors.add(doctor);
+        }
+    }
+
+    public void removeDoctor(Doctor doctor) {
+        doctors.remove(doctor);
+    }
+
+    public void addNurse(Nurse nurse) {
+        if (nurse != null && !nurses.contains(nurse)) {
+            nurses.add(nurse);
+        }
+    }
+
+    public void removeNurse(Nurse nurse) {
+        nurses.remove(nurse);
+    }
 
     //public void changeFloor() {}
 
@@ -68,5 +107,7 @@ public class Department {
     public void destroyDepartment() {
         for (int i = 0; i < floorList.size(); ++i) floorList.get(i).setDepartment(null);
         floorList.clear();
+        doctors.clear();
+        nurses.clear();
     }
 }
