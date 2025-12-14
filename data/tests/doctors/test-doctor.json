@@ -1,47 +1,15 @@
 {
   "type" : "doctor",
-  "pesel" : "45645645645",
-  "username" : "doctor2",
-  "password" : "Qwerty7/",
-  "name" : "Mark",
-  "surname" : "Smith",
-  "dob" : 175042800000,
-  "nationality" : "ENG",
-  "employeeId" : "doc_2",
-  "status" : "ON_LEAVE",
-  "onDuty" : false,
-  "mapOfMedLicenceNumbers" : {
-    "AAC-DAE-20A" : {
-      "type" : "MedicalLicense",
-      "licenseNumber" : "AAC-DAE-20A",
-      "acquisitionDate" : 971128800000,
-      "expirationDate" : 1602280800000
-    }
-  },
-  "hasHeadRole" : false,
-  "supervisor" : {
-    "type" : "doctor",
-    "pesel" : "45688945645",
-    "username" : "doctor3",
-    "password" : "Qwerty7/",
-    "name" : "Mike",
-    "surname" : "Smith",
-    "dob" : 175042800000,
-    "nationality" : "ENG",
-    "employeeId" : "doc_2",
-    "status" : "ON_LEAVE",
-    "onDuty" : false,
-    "mapOfMedLicenceNumbers" : {
-      "ABC-ZAE-20B" : {
-        "type" : "MedicalLicense",
-        "licenseNumber" : "ABC-ZAE-20B",
-        "acquisitionDate" : 971128800000,
-        "expirationDate" : 1602280800000
-      }
-    },
-    "hasHeadRole" : false,
-    "supervisor" : null,
-    "supervisorsList" : [ "45645645645" ]
-  },
-  "supervisorsList" : [ ]
+  "pesel" : "12312312312",
+  "username" : "doctor1",
+  "password" : "newPassword1",
+  "name" : "Jan",
+  "surname" : "Nowak",
+  "dob" : 316738800000,
+  "nationality" : "PL",
+  "employeeId" : "doc_1",
+  "status" : "ACTIVE",
+  "onDuty" : true,
+  "listOfMedLicenceNumbers" : [ ],
+  "hasHeadRole" : true
 }
