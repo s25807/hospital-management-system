@@ -9,28 +9,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class Doctor extends Employee {
     @NotNull
     private boolean hasHeadRole;
 
+    private List<Specialization> specializations;
     private Doctor supervisor;
 
     @JsonDeserialize(as = ArrayList.class)
     private List<Doctor> supervisorsList;
 
-    public Doctor() { this.supervisorsList = new ArrayList<>(); }
+    public Doctor() {
+        this.specializations = new ArrayList<>();
+        this.supervisorsList = new ArrayList<>();
+    }
     public Doctor(String pesel, String username, String password, String name, String surname, Date dob, Nation nationality, String employeeId, Status status, boolean onDuty,  boolean hasHeadRole, MedicalLicense medicalLicense) {
         super(pesel, username, password, name, surname, dob, nationality, employeeId, status, onDuty, medicalLicense);
         this.hasHeadRole = hasHeadRole;
+        this.specializations = new ArrayList<>();
         this.supervisorsList = new ArrayList<>();
     }
 
     public boolean isHasHeadRole() { return hasHeadRole; }
+    public List<Specialization> getSpecializations() { return specializations; }
     public Doctor getSupervisor() { return supervisor; }
     public List<Doctor> getSupervisorsList() { return supervisorsList; }
 
     public void assignHeadRole(boolean hasHeadRole) { this.hasHeadRole = hasHeadRole; }
+    public void setSpecializations(List<Specialization> specializations) { this.specializations = specializations; }
+    public void addSpecialization(Specialization specialization) { this.specializations.add(specialization); }
+    public void removeSpecialization(Specialization specialization) { this.specializations.remove(specialization); }
     public void setSupervisor(Doctor doctor) {
         if(doctor != this &&  doctor != null) {
             supervisor = doctor;

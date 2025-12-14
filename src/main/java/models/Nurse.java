@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Nurse extends Employee {
+    private Department department;
 
     public Nurse() {}
     public Nurse(String pesel, String username, String password, String name, String surname, Date dob, Nation nationality, String employeeId, Status status, boolean onDuty, MedicalLicense medicalLicense) {
@@ -15,6 +16,9 @@ public class Nurse extends Employee {
     public Nurse(String pesel, String username, String password, String name, String surname, Date dob, Nation nationality, String employeeId, Status status, boolean onDuty, Map<String, MedicalLicense> mapOfMedLicenceNumbers) {
         super(pesel, username, password, name, surname, dob, nationality, employeeId, status, onDuty, mapOfMedLicenceNumbers);
     }
+
+    public Department getDepartment() { return department; }
+    public void setDepartment(Department department) { this.department = department; }
 
     @JsonIgnore
     public void newPatientAssignment() {}

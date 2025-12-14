@@ -1,6 +1,7 @@
 import annotations.SkipSetup;
 import constants.PathConstants;
 import exceptions.InvalidPasswordException;
+import models.Department;
 import models.Employee;
 import models.MedicalLicense;
 import models.Nurse;
@@ -164,6 +165,27 @@ public class NurseTest {
         });
     }
 
+    @Test
+    void testDepartmentAssociation() {
+        // Test setting department
+        Department cardioDept = new Department("DEPT001", "Cardiology");
+        Department neuroDept = new Department("DEPT002", "Neurology");
+
+        nurse.setDepartment(cardioDept);
+        assertEquals(cardioDept, nurse.getDepartment());
+        assertEquals("DEPT001", nurse.getDepartment().getId());
+        assertEquals("Cardiology", nurse.getDepartment().getName());
+
+        // Test changing department
+        nurse.setDepartment(neuroDept);
+        assertEquals(neuroDept, nurse.getDepartment());
+        assertEquals("DEPT002", nurse.getDepartment().getId());
+        assertEquals("Neurology", nurse.getDepartment().getName());
+
+        // Test removing department (setting to null)
+        nurse.setDepartment(null);
+        assertNull(nurse.getDepartment());
+    }
 
     @Test
     void testSerialization() {
