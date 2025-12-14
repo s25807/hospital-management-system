@@ -68,6 +68,7 @@ public class Department {
     public void addDoctor(Doctor doctor) {
         if (doctor != null && !doctors.contains(doctor)) {
             doctors.add(doctor);
+            if (doctor.getDepartment() != this) doctor.setDepartment(this);
         }
     }
 

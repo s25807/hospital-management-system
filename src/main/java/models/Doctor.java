@@ -52,7 +52,7 @@ public class Doctor extends Employee {
 
         this.department = department;
 
-        if (department != null) {
+        if (department != null && !department.getDoctors().contains(this)) {
             department.addDoctor(this);
         }
     }
