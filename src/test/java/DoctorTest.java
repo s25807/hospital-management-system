@@ -207,7 +207,6 @@ public class DoctorTest {
 
     @Test
     void testSpecializationOperations() {
-        // Test adding specializations
         Specialization cardio = new Specialization("Cardiology", new java.util.ArrayList<>(java.util.List.of("Board certification", "5+ years experience")));
         Specialization neuro = new Specialization("Neurology", new java.util.ArrayList<>(java.util.List.of("Neurology certification")));
 
@@ -218,13 +217,11 @@ public class DoctorTest {
         assertTrue(doctor.getSpecializations().contains(cardio));
         assertTrue(doctor.getSpecializations().contains(neuro));
 
-        // Test removing specializations
         doctor.removeSpecialization(cardio);
         assertEquals(1, doctor.getSpecializations().size());
         assertFalse(doctor.getSpecializations().contains(cardio));
         assertTrue(doctor.getSpecializations().contains(neuro));
 
-        // Test setting specializations
         java.util.List<Specialization> newSpecs = new java.util.ArrayList<>();
         newSpecs.add(cardio);
         doctor.setSpecializations(newSpecs);
