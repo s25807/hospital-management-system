@@ -1,21 +1,24 @@
-import annotations.SkipSetup;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import constants.PathConstants;
-import models.Department;
-import models.Floor;
-import models.OperationRoom;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
-import util.ObjectStore;
-import validators.ValidatorService;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+
+import annotations.SkipSetup;
+import constants.PathConstants;
+import models.Department;
+import models.Floor;
+import models.Operation;
+import models.OperationRoom;
+import util.ObjectStore;
+import validators.ValidatorService;
 
 public class OperationRoomTest {
     private final ObjectStore objectStore = new ObjectStore();
@@ -117,5 +120,29 @@ public class OperationRoomTest {
         assertEquals(2, loaded.getSurgicalEquipment().size());
         assertEquals(5, loaded.getSurgicalEquipment().get("scalpel"));
         assertEquals(10, loaded.getSurgicalEquipment().get("clamp"));
+    }
+
+    @Test
+    void testOperationsManagement() {
+        Operation op1 = new Operation(java.sql.Timestamp.valueOf("2025-08-08 11:00:00"));
+        Operation op2 = new Operation(java.sql.Timestamp.valueOf("2025-08-08 14:00:00"));
+
+        operationRoom.addOperation(op1);
+        operationRoom.addOperation(op2);
+
+        assertEquals(2, operationRoom.getOperations().size());
+        assertTrue(operationRoom.getOperations().contains(op1));
+        assertTrue(operationRoom.getOperations().contains(op2));
+
+        assertEquals(operationRoom, op1.getOperationRoom());
+        assertEquals(operationRoom, op2.getOperationRoom());
+
+        operationRoom.removeOperation(op1);
+        assertEquals(1, operationRoom.getOperations().size());
+        assertFalse(operationRoom.getOperations().contains(op1));
+        assertTrue(operationRoom.getOperations().contains(op2));
+        
+        assertNull(op1.getOperationRoom());
+        assertEquals(operationRoom, op2.getOperationRoom());
     }
 }

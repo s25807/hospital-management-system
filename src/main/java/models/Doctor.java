@@ -27,15 +27,21 @@ public class Doctor extends Employee {
     @JsonDeserialize(as = ArrayList.class)
     private List<Doctor> supervisorsList;
 
+    @NotNull
+    @JsonDeserialize(as = ArrayList.class)
+    private List<Operation> operations;
+
     public Doctor() {
         this.specializations = new ArrayList<>();
         this.supervisorsList = new ArrayList<>();
+        this.operations = new ArrayList<>();
     }
     public Doctor(String pesel, String username, String password, String name, String surname, Date dob, Nation nationality, String employeeId, Status status, boolean onDuty,  boolean hasHeadRole, MedicalLicense medicalLicense) {
         super(pesel, username, password, name, surname, dob, nationality, employeeId, status, onDuty, medicalLicense);
         this.hasHeadRole = hasHeadRole;
         this.specializations = new ArrayList<>();
         this.supervisorsList = new ArrayList<>();
+        this.operations = new ArrayList<>();
     }
 
     public boolean isHasHeadRole() { return hasHeadRole; }
@@ -43,6 +49,7 @@ public class Doctor extends Employee {
     public List<Specialization> getSpecializations() { return specializations; }
     public Doctor getSupervisor() { return supervisor; }
     public List<Doctor> getSupervisorsList() { return supervisorsList; }
+    public List<Operation> getOperations() { return operations; }
 
     public void assignHeadRole(boolean hasHeadRole) { this.hasHeadRole = hasHeadRole; }
     public void setDepartment(Department department) {
@@ -65,6 +72,25 @@ public class Doctor extends Employee {
 
         for (Specialization newSpec : this.specializations) {
             newSpec.addDoctor(this);
+        }
+    }
+
+    public void setOperations(List<Operation> operations) { this.operations = operations; }
+
+    public void addOperation(Operation operation) {
+        if (operation != null && !operations.contains(operation)) {
+            operations.add(operation);
+            if (operation.getSurgeon() != this) {
+                operation.setSurgeon(this);
+            }
+        }
+    }
+
+    public void removeOperation(Operation operation) {
+        if (operations.remove(operation)) {
+            if (operation.getSurgeon() == this) {
+                operation.setSurgeon(null);
+            }
         }
     }
 
