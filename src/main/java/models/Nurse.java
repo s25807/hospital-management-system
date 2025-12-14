@@ -2,11 +2,15 @@ package models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import annotations.NotNull;
+
 import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
 public class Nurse extends Employee {
+
+    @NotNull
     private Department department;
 
     public Nurse() {}
@@ -18,7 +22,17 @@ public class Nurse extends Employee {
     }
 
     public Department getDepartment() { return department; }
-    public void setDepartment(Department department) { this.department = department; }
+    public void setDepartment(Department department) {
+        if (this.department != null) {
+            this.department.removeNurse(this);
+        }
+    
+        this.department = department;
+
+        if (department != null) {
+            department.addNurse(this);
+        }
+    }
 
     @JsonIgnore
     public void newPatientAssignment() {}

@@ -1,7 +1,12 @@
 import annotations.SkipSetup;
 import constants.PathConstants;
 import models.Department;
+import models.Doctor;
+import models.Employee;
 import models.Floor;
+import models.MedicalLicense;
+import models.Nurse;
+import models.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -87,6 +92,58 @@ public class DepartmentTest {
         assertThrows(IllegalArgumentException.class, () ->
                 ValidatorService.validate(new Department("14", ""))
         );
+    }
+
+    @Test
+    void testDoctorManagement() {
+        // Create test doctors
+        MedicalLicense license = new MedicalLicense("LIC001", java.sql.Date.valueOf("2020-01-01"), java.sql.Date.valueOf("2025-01-01"));
+        Doctor doctor1 = new Doctor("11111111111", "doctor1", "password123", "John", "Doe",
+                java.sql.Date.valueOf("1985-05-15"), Person.Nation.PL, "DOC001",
+                Employee.Status.ACTIVE, true, true, license);
+        Doctor doctor2 = new Doctor("22222222222", "doctor2", "password123", "Jane", "Smith",
+                java.sql.Date.valueOf("1980-08-20"), Person.Nation.ENG, "DOC002",
+                Employee.Status.ACTIVE, false, false, license);
+
+        // Test adding doctors
+        department.addDoctor(doctor1);
+        department.addDoctor(doctor2);
+
+        assertEquals(2, department.getDoctors().size());
+        assertTrue(department.getDoctors().contains(doctor1));
+        assertTrue(department.getDoctors().contains(doctor2));
+
+        // Test removing doctor
+        department.removeDoctor(doctor1);
+        assertEquals(1, department.getDoctors().size());
+        assertFalse(department.getDoctors().contains(doctor1));
+        assertTrue(department.getDoctors().contains(doctor2));
+    }
+
+    @Test
+    void testNurseManagement() {
+        // Create test nurses
+        MedicalLicense license = new MedicalLicense("LIC001", java.sql.Date.valueOf("2020-01-01"), java.sql.Date.valueOf("2025-01-01"));
+        Nurse nurse1 = new Nurse("11111111111", "nurse1", "password123", "Anna", "Smith",
+                java.sql.Date.valueOf("1990-03-10"), Person.Nation.DE, "NUR001",
+                Employee.Status.ACTIVE, true, license);
+        Nurse nurse2 = new Nurse("22222222222", "nurse2", "password123", "Maria", "Johnson",
+                java.sql.Date.valueOf("1988-01-01"), Person.Nation.PL, "NUR002",
+                Employee.Status.ACTIVE, true, license);
+
+        // Test adding nurses
+        department.addNurse(nurse1);
+        department.addNurse(nurse2);
+
+        assertEquals(2, department.getNurses().size());
+        assertTrue(department.getNurses().contains(nurse1));
+        assertTrue(department.getNurses().contains(nurse2));
+
+        // Test removing nurse
+        department.removeNurse(nurse1);
+        assertEquals(1, department.getNurses().size());
+        assertFalse(department.getNurses().contains(nurse1));
+        assertTrue(department.getNurses().contains(nurse2));
     }
 
     @Test

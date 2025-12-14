@@ -1,6 +1,7 @@
 package models;
 
 import annotations.NotNull;
+import annotations.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -15,6 +16,11 @@ public class Doctor extends Employee {
     @NotNull
     private boolean hasHeadRole;
 
+    @NotNull
+    private Department department;
+    @NotNull
+    @NotEmpty
+    @JsonDeserialize(as = ArrayList.class)
     private List<Specialization> specializations;
     private Doctor supervisor;
 
@@ -33,14 +39,47 @@ public class Doctor extends Employee {
     }
 
     public boolean isHasHeadRole() { return hasHeadRole; }
+    public Department getDepartment() { return department; }
     public List<Specialization> getSpecializations() { return specializations; }
     public Doctor getSupervisor() { return supervisor; }
     public List<Doctor> getSupervisorsList() { return supervisorsList; }
 
     public void assignHeadRole(boolean hasHeadRole) { this.hasHeadRole = hasHeadRole; }
-    public void setSpecializations(List<Specialization> specializations) { this.specializations = specializations; }
-    public void addSpecialization(Specialization specialization) { this.specializations.add(specialization); }
-    public void removeSpecialization(Specialization specialization) { this.specializations.remove(specialization); }
+    public void setDepartment(Department department) {
+        if (this.department != null) {
+            this.department.removeDoctor(this);
+        }
+
+        this.department = department;
+
+        if (department != null) {
+            department.addDoctor(this);
+        }
+    }
+    public void setSpecializations(List<Specialization> specializations) {
+        for (Specialization currentSpec : this.specializations) {
+            currentSpec.removeDoctor(this);
+        }
+
+        this.specializations = specializations != null ? specializations : new ArrayList<>();
+
+        for (Specialization newSpec : this.specializations) {
+            newSpec.addDoctor(this);
+        }
+    }
+
+    public void addSpecialization(Specialization specialization) {
+        if (specialization != null && !this.specializations.contains(specialization)) {
+            this.specializations.add(specialization);
+            specialization.addDoctor(this);
+        }
+    }
+
+    public void removeSpecialization(Specialization specialization) {
+        if (this.specializations.remove(specialization)) {
+            specialization.removeDoctor(this);
+        }
+    }
     public void setSupervisor(Doctor doctor) {
         if(doctor != this &&  doctor != null) {
             supervisor = doctor;
