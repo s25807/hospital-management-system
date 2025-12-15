@@ -1,8 +1,7 @@
 import annotations.SkipSetup;
 import constants.PathConstants;
 import exceptions.InvalidPasswordException;
-import models.Patient;
-import models.Person;
+import models.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -39,6 +38,11 @@ public class PatientTest {
                 180,
                 true
         );
+        Department dep = new Department("14", "Department of Neurology");
+        Floor floor = new Floor(1, 10, dep);
+        PatientRoom room = new PatientRoom("PR-01", 1, 1, false, floor);
+        patient.setPatientRoom(room);
+
     }
 
     @Test
@@ -95,37 +99,26 @@ public class PatientTest {
         assertThrows(NullPointerException.class, () -> {
             ValidatorService.validate(new Patient());
         });
-        assertThrows(IllegalArgumentException.class, () -> {
-            ValidatorService.validate(
-                    new Patient("00011100011",
-                            "username",
-                            "pass",
-                            "Luffy",
-                            "Monkey",
-                            Date.valueOf("2002-05-05"),
-                            Person.Nation.PL,
-                            Patient.BloodType.A,
-                            false,
-                            65,
-                            170,
-                            false));
-        });
-        assertThrows(InvalidPasswordException.class, () -> {
-            ValidatorService.validate(
-                    new Patient("00011100011",
-                            "username",
-                            "password",
-                            "Luffy",
-                            "Monkey",
-                            Date.valueOf("2002-05-05"),
-                            Person.Nation.PL,
-                            Patient.BloodType.A,
-                            false,
-                            65,
-                            170,
-                            false));
-        });
+
+        Patient p1 = new Patient("00011100011","username","pass","Luffy","Monkey",
+                Date.valueOf("2002-05-05"), Person.Nation.PL, Patient.BloodType.A,
+                false, 65, 170, false);
+
+        Department dep = new Department("14", "Department of Neurology");
+        Floor floor = new Floor(1, 10, dep);
+        PatientRoom room = new PatientRoom("PR-01", 1, 1, false, floor);
+        p1.setPatientRoom(room);
+
+        assertThrows(IllegalArgumentException.class, () -> ValidatorService.validate(p1));
+
+        Patient p2 = new Patient("00011100011","username","password","Luffy","Monkey",
+                Date.valueOf("2002-05-05"), Person.Nation.PL, Patient.BloodType.A,
+                false, 65, 170, false);
+        p2.setPatientRoom(room);
+
+        assertThrows(InvalidPasswordException.class, () -> ValidatorService.validate(p2));
     }
+
 
     @Test
     void testCalculateAge() {

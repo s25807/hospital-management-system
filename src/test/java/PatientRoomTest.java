@@ -1,9 +1,7 @@
 import annotations.SkipSetup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import constants.PathConstants;
-import models.Department;
-import models.Floor;
-import models.PatientRoom;
+import models.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +11,7 @@ import validators.ValidatorService;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -78,4 +77,27 @@ public class PatientRoomTest {
         Assertions.assertFalse(loaded.isVip());
         Assertions.assertEquals(2, loaded.getRemainingPlaces());
     }
+
+    @Test
+    void testPatientRoomAssociation() {
+        Patient p = new Patient(
+                "45155151519",
+                "username",
+                "Qwerty7/",
+                "Jake",
+                "Kowalski",
+                Date.valueOf("2001-05-05"),
+                Person.Nation.PL,
+                Patient.BloodType.A,
+                true,
+                80,
+                180,
+                true
+        );
+        patientRoom.addPatient(p);
+
+        assertTrue(patientRoom.hasPatient(p));
+        assertEquals(patientRoom, p.getPatientRoom());
+    }
+
 }

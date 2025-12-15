@@ -17,5 +17,6 @@
     },
     "roomList" : [ "15C" ]
   },
-  "vip" : false
+  "vip" : false,
+  "patients" : [ ]
 }
