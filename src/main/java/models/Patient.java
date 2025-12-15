@@ -3,6 +3,7 @@ package models;
 import annotations.Min;
 import annotations.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -32,9 +33,14 @@ public class Patient extends Person {
     private TreatmentHistory treatmentHistory;
 
     @NotNull
+    @JsonDeserialize(as = ArrayList.class)
     private List<PatientAmbulanceTransit> patientAmbulanceTransitList;
 
-    public Patient() {}
+    @NotNull
+    @JsonDeserialize(as = ArrayList.class)
+    private List<Operation> operations;
+
+    public Patient() { patientAmbulanceTransitList = new ArrayList<>(); operations = new ArrayList<>(); }
     public Patient(String pesel, String username, String password, String name, String surname, Date dob, Nation nationality, BloodType bloodType, boolean insurance, double weight, double height, boolean isActive) {
         super(pesel, username, password, name, surname, dob, nationality);
         this.bloodType = bloodType;
@@ -44,6 +50,7 @@ public class Patient extends Person {
         this.isActive = isActive;
         this.treatmentHistory = new TreatmentHistory();
         this.patientAmbulanceTransitList = new ArrayList<>();
+        this.operations = new ArrayList<>();
     }
 
     public BloodType getBloodType() { return bloodType; }
@@ -53,6 +60,7 @@ public class Patient extends Person {
     public boolean getIsActive() { return isActive; }
     public TreatmentHistory getTreatmentHistory() { return treatmentHistory; }
     public List<PatientAmbulanceTransit> getPatientAmbulanceTransitList() { return this.patientAmbulanceTransitList; }
+    public List<Operation> getOperations() { return this.operations; }
 
     public void setBloodType(BloodType bloodType) { this.bloodType = bloodType; }
     public void setInsurance(boolean insurance) { this.insurance = insurance; }
@@ -61,6 +69,7 @@ public class Patient extends Person {
     public void setIsActive(boolean isActive) { this.isActive = isActive; }
     public void setTreatmentHistory(TreatmentHistory treatmentHistory) {  this.treatmentHistory = treatmentHistory; }
     public void setPatientAmbulanceTransitList(List<PatientAmbulanceTransit> patientAmbulanceTransitIdList) {  this.patientAmbulanceTransitList = patientAmbulanceTransitIdList; }
+    public void setOperations(List<Operation> operations) { this.operations = operations; }
 
     public void createAppointment() {}
 
@@ -72,5 +81,19 @@ public class Patient extends Person {
 
     public void removePatientAmbulanceTransit(PatientAmbulanceTransit patientAmbulanceTransit) {
         this.patientAmbulanceTransitList.remove(patientAmbulanceTransit);
+    }
+
+    public void addOperation(Operation operation) {
+        if (operation != null &&  !operations.contains(operation)) {
+            operations.add(operation);
+            if (operation.hasPatient(this)) operation.addPatient(this);
+        }
+    }
+
+    public void removeOperation(Operation operation) {
+        if (operation != null && operations.contains(operation)) {
+            operations.remove(operation);
+            if (operation.hasPatient(this)) operation.removePatient(this);
+        }
     }
 }

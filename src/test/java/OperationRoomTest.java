@@ -135,13 +135,4 @@ public class OperationRoomTest {
         assertEquals(1, room.getOperations().size());
         assertEquals(op, room.getOperations().get(0));
     }
-
-    @Test
-    void testOperationRoomSetOperationsFailsOnEmpty() {
-        OperationRoom room = new OperationRoom("OR-01", 10, 0, floor);
-
-        assertThrows(IllegalArgumentException.class, () -> room.setOperations(new ArrayList<>()));
-    }
-
-
 }

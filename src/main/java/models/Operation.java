@@ -30,50 +30,111 @@ public class Operation {
     @ValidDate(value = ValidDate.Mode.FUTURE)
     private Operation.Status status;
 
-    @NotNull
     private OperationRoom operationRoom;
-
-    @NotNull
-    private Patient patient;
-
-    @NotNull
-    private Doctor doctor;
 
     @NotNull
     @NotEmpty
     @JsonDeserialize(as = ArrayList.class)
-    private List<Nurse> nurses = new ArrayList<>();
+    private List<Patient> patients;
 
-    public Operation() {}
+    @NotNull
+    @NotEmpty
+    @JsonDeserialize(as = ArrayList.class)
+    private List<Doctor> doctors;
+
+    @NotNull
+    @NotEmpty
+    @JsonDeserialize(as = ArrayList.class)
+    private List<Nurse> nurses;
+
+    public Operation() {
+        nurses = new ArrayList<>();
+        doctors = new ArrayList<>();
+        patients = new ArrayList<>();
+    }
     public Operation(Timestamp startTime) {
         this.startTime = startTime;
         this.status = Status.Preparation;
+        nurses = new ArrayList<>();
+        doctors = new ArrayList<>();
+        patients = new ArrayList<>();
     }
 
     public Operation.Status getStatus() { return status; }
     public Timestamp getStartTime() { return startTime; }
     public Timestamp getEndTime() { return endTime; }
     public OperationRoom getOperationRoom() { return operationRoom; }
-    public Patient getPatient() { return patient; }
-    public Doctor getDoctor() { return doctor; }
+    public List<Patient> getPatients() { return patients; }
+    public List<Doctor> getDoctors() { return doctors; }
     public List<Nurse> getNurses() { return nurses; }
 
     public void setStatus(Operation.Status status) { this.status = status; }
     public void setStartTime(Timestamp startTime) { this.startTime = startTime; }
     public void setEndTime(Timestamp endTime) { this.endTime = endTime; }
-    public void setOperationRoom(OperationRoom operationRoom) { this.operationRoom = operationRoom; }
-    public void setPatient(Patient patient) { this.patient = patient; }
-
-    public void setDoctor(Doctor doctor) {
-        if (doctor == null) throw new IllegalArgumentException("doctor cannot be null");
-        this.doctor = doctor;
+    public void setPatients(List<Patient> patients) { this.patients = patients; }
+    public void setDoctors(List<Doctor> doctors) { this.doctors = doctors; }
+    public void setNurses(List<Nurse> nurses) { this.nurses = new ArrayList<>(nurses); }
+    public void setOperationRoom(OperationRoom operationRoom) {
+        if (this.operationRoom != null) {
+            this.operationRoom.removeOperation(this);
+            if (operationRoom == null) this.operationRoom = null;
+        }
+        if (operationRoom != null && this.operationRoom != operationRoom) {
+            this.operationRoom = operationRoom;
+            this.operationRoom.addOperation(this);
+        }
     }
 
-    public void setNurses(List<Nurse> nurses) {
-        if (nurses == null || nurses.isEmpty())
-            throw new IllegalArgumentException("nurses cannot be empty");
-        this.nurses = new ArrayList<>(nurses);
+    public void addPatient(Patient patient) {
+        if (patient != null && !patients.contains(patient)) {
+            patients.add(patient);
+            patient.addOperation(this);
+        }
     }
+
+    public void addDoctor(Doctor doctor) {
+        if (doctor != null && !doctors.contains(doctor)) {
+            doctors.add(doctor);
+            doctor.addOperation(this);
+        }
+    }
+
+    public void addNurse(Nurse nurse) {
+        if (nurse != null && !nurses.contains(nurse)) {
+            nurses.add(nurse);
+            nurse.addOperation(this);
+        }
+    }
+
+    public void removePatient(Patient patient) {
+        if (patient != null && patients.contains(patient)) {
+            patient.removeOperation(this);
+            patients.remove(patient);
+        }
+    }
+
+    public void removeDoctor(Doctor doctor) {
+        if (doctor != null && doctors.contains(doctor)) {
+            doctor.removeOperation(this);
+            doctors.remove(doctor);
+        }
+    }
+
+    public void removeNurse(Nurse nurse) {
+        if (nurse != null && nurses.contains(nurse)) {
+            nurse.removeOperation(this);
+            nurses.remove(nurse);
+        }
+    }
+
+    public void removeOperationRoom(OperationRoom operationRoom) {
+        this.operationRoom = null;
+        if (operationRoom.hasOperation(this)) operationRoom.removeOperation(this);
+    }
+
+    public boolean hasPatient(Patient patient) { return patients.contains(patient); }
+    public boolean hasDoctor(Doctor doctor) { return doctors.contains(doctor); }
+    public boolean hasNurse(Nurse nurse) { return nurses.contains(nurse); }
 
     /**
      *

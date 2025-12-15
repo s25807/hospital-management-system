@@ -44,7 +44,8 @@
         "length" : 700.0,
         "onMission" : false
       }
-    } ]
+    } ],
+    "operations" : [ ]
   } ],
   "ambulanceVehicle" : {
     "type" : "Van",

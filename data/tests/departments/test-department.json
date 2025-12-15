@@ -8,5 +8,7 @@
     "amountOfRooms" : 15,
     "department" : "14",
     "roomList" : [ ]
-  } ]
+  } ],
+  "doctors" : [ ],
+  "nurses" : [ ]
 }

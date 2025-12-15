@@ -1,5 +1,6 @@
 {
   "type" : "Specialization",
   "name" : "Neurology",
-  "requirements" : [ "medical degree", "proficiency with MRI", "hospital internship" ]
+  "requirements" : [ "medical degree", "proficiency with MRI", "hospital internship" ],
+  "doctors" : [ ]
 }

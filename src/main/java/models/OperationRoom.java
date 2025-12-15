@@ -16,30 +16,42 @@ public class OperationRoom extends Room{
     Map<String, Integer> surgicalEquipment;
 
     @NotNull
-    @NotEmpty
     @JsonDeserialize(as = ArrayList.class)
-    private List<Operation> operations = new ArrayList<>();
+    private List<Operation> operations;
 
-    public OperationRoom() {}
+    public OperationRoom() { operations = new ArrayList<>(); }
     public OperationRoom(String roomNumber, int maxPeopleAllowed, int occupancy, Floor floor) {
         super(roomNumber, maxPeopleAllowed, occupancy, floor);
         surgicalEquipment = new HashMap<>();
+        operations = new ArrayList<>();
     }
     public OperationRoom(String roomNumber, int maxPeopleAllowed, int occupancy, Floor floor, Map<String, Integer> surgicalEquipment) {
         super(roomNumber, maxPeopleAllowed, occupancy, floor);
         this.surgicalEquipment = surgicalEquipment;
+        operations = new ArrayList<>();
     }
 
     public Map<String, Integer> getSurgicalEquipment() { return this.surgicalEquipment; }
     public List<Operation> getOperations() { return operations; }
 
     public void setSurgicalEquipment(Map<String, Integer> surgicalEquipment) { this.surgicalEquipment = surgicalEquipment; }
+    public void setOperations(List<Operation> operations) { this.operations = new ArrayList<>(operations); }
 
-    public void setOperations(List<Operation> operations) {
-        if (operations == null || operations.isEmpty())
-            throw new IllegalArgumentException("operations cannot be empty");
-        this.operations = new ArrayList<>(operations);
+    public void addOperation(Operation operation) {
+        if (operation != null && !hasOperation(operation)) {
+            operations.add(operation);
+            if (operation.getOperationRoom() != this) operation.setOperationRoom(this);
+        }
     }
+
+    public void removeOperation(Operation operation) {
+        if (operation != null && hasOperation(operation)) {
+            operations.remove(operation);
+            if (operation.getOperationRoom() != this) operation.removeOperationRoom(this);
+        }
+    }
+
+    public boolean hasOperation(Operation operation) { return operations.contains(operation); }
 
     @JsonIgnore
     public void addItem(String item, int quantity) {
@@ -49,6 +61,6 @@ public class OperationRoom extends Room{
     @Override
     public void destroyRoom() {
         super.destroyRoom();
-        //TODO: Remember to destroy associations
+        for (int i = 0; i < operations.size(); i++) operations.get(i).removeOperationRoom(this);
     }
 }

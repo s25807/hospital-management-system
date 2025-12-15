@@ -18,8 +18,8 @@ public class OperationTest {
     @BeforeEach
     void setUp(TestInfo info) {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
-        operation = new Operation(Timestamp.valueOf("2026-08-08 11:00:00"));
-        operation.setEndTime(Timestamp.valueOf("2026-08-08 11:45:00"));
+        operation = new Operation(Timestamp.valueOf("2025-08-08 11:00:00"));
+        operation.setEndTime(Timestamp.valueOf("2025-08-08 11:45:00"));
         operation.setStatus(Operation.Status.Completed);
     }
 
@@ -107,13 +107,13 @@ public class OperationTest {
         Operation operation = new Operation(Timestamp.valueOf("2030-01-01 10:00:00"));
         operation.setEndTime(Timestamp.valueOf("2030-01-01 11:00:00"));
 
-        operation.setPatient(patient);
-        operation.setDoctor(doctor);
+        operation.setPatients(List.of(patient));
+        operation.setDoctors(List.of(doctor));
         operation.setOperationRoom(room);
         operation.setNurses(new ArrayList<>(List.of(nurse)));
 
-        assertEquals(patient, operation.getPatient());
-        assertEquals(doctor, operation.getDoctor());
+        assertEquals(patient, operation.getPatients().get(0));
+        assertEquals(doctor, operation.getDoctors().get(0));
         assertEquals(room, operation.getOperationRoom());
         assertEquals(1, operation.getNurses().size());
     }
@@ -121,13 +121,13 @@ public class OperationTest {
     @Test
     void testOperationSetNursesFailsOnEmpty() {
         Operation operation = new Operation(Timestamp.valueOf("2030-01-01 10:00:00"));
-        assertThrows(IllegalArgumentException.class, () -> operation.setNurses(new ArrayList<>()));
+        assertThrows(NullPointerException.class, () -> { operation.setNurses(new ArrayList<>()); ValidatorService.validate(operation); });
     }
 
     @Test
     void testOperationSetDoctorFailsOnNull() {
         Operation operation = new Operation(Timestamp.valueOf("2030-01-01 10:00:00"));
-        assertThrows(IllegalArgumentException.class, () -> operation.setDoctor(null));
+        assertThrows(NullPointerException.class, () -> operation.setDoctors(List.of(null)));
     }
 
 

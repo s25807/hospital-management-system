@@ -31,12 +31,17 @@ public class DoctorTest {
     private Doctor headDoctor;
     private MedicalLicense medicalLicense;
     private MedicalLicense medicalLicenseTwo;
+    private Department department;
+    private Specialization specialization;
 
     @BeforeEach
     void setUp(TestInfo info) {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
         medicalLicense = new MedicalLicense("AAC-DAE-20A", Date.valueOf("2000-10-10"), Date.valueOf("2020-10-10"));
         medicalLicenseTwo = new MedicalLicense("ABC-ZAE-20B", Date.valueOf("2000-10-10"), Date.valueOf("2020-10-10"));
+        department = new Department("23D", "Neurology");
+        specialization = new Specialization("Neurologist", List.of("5 years"));
+
         doctor = new Doctor(
                 "45645645645",
                 "doctor2",
@@ -66,6 +71,12 @@ public class DoctorTest {
                 false,
                 medicalLicenseTwo
         );
+
+        doctor.addSpecialization(specialization);
+        headDoctor.addSpecialization(specialization);
+
+        doctor.setDepartment(department);
+        headDoctor.setDepartment(department);
 
         doctor.setSupervisor(headDoctor);
     }
@@ -168,41 +179,43 @@ public class DoctorTest {
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
-            ValidatorService.validate(
-                    new Doctor(
-                            "12312312312",
-                            "username",
-                            "pass",
-                            "Jan",
-                            "Nowak",
-                            Date.valueOf("1980-01-15"),
-                            Person.Nation.PL,
-                            "emp_1",
-                            Doctor.Status.ACTIVE,
-                            true,
-                            true,
-                            medicalLicense
-                    )
+            Doctor doc = new Doctor(
+                    "12312312312",
+                    "username",
+                    "pass",
+                    "Jan",
+                    "Nowak",
+                    Date.valueOf("1980-01-15"),
+                    Person.Nation.PL,
+                    "emp_1",
+                    Doctor.Status.ACTIVE,
+                    true,
+                    true,
+                    medicalLicense
             );
+            doc.setDepartment(department);
+
+            ValidatorService.validate(doc);
         });
 
         assertThrows(InvalidPasswordException.class, () -> {
-            ValidatorService.validate(
-                    new Doctor(
-                            "12312312312",
-                            "username",
-                            "password",
-                            "Jan",
-                            "Nowak",
-                            Date.valueOf("1980-01-15"),
-                            Person.Nation.PL,
-                            "emp_1",
-                            Doctor.Status.ACTIVE,
-                            true,
-                            true,
-                            medicalLicense
-                    )
+            Doctor doc = new Doctor(
+                    "12312312312",
+                    "username",
+                    "password",
+                    "Jan",
+                    "Nowak",
+                    Date.valueOf("1980-01-15"),
+                    Person.Nation.PL,
+                    "emp_1",
+                    Doctor.Status.ACTIVE,
+                    true,
+                    true,
+                    medicalLicense
             );
+            doc.setDepartment(department);
+            doc.addSpecialization(specialization);
+            ValidatorService.validate(doc);
         });
     }
 
@@ -215,7 +228,7 @@ public class DoctorTest {
         doctor.addSpecialization(cardio);
         doctor.addSpecialization(neuro);
 
-        assertEquals(2, doctor.getSpecializations().size());
+        assertEquals(3, doctor.getSpecializations().size());
         assertTrue(doctor.getSpecializations().contains(cardio));
         assertTrue(doctor.getSpecializations().contains(neuro));
         // Test reverse connection
@@ -224,7 +237,7 @@ public class DoctorTest {
 
         // Test removing specialization - bidirectional relationship
         doctor.removeSpecialization(cardio);
-        assertEquals(1, doctor.getSpecializations().size());
+        assertEquals(2, doctor.getSpecializations().size());
         assertFalse(doctor.getSpecializations().contains(cardio));
         assertTrue(doctor.getSpecializations().contains(neuro));
         // Test reverse connection
