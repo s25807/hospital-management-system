@@ -45,7 +45,8 @@
         "onMission" : false
       }
     } ],
-    "operations" : [ ]
+    "operations" : [ ],
+    "appointments" : [ ]
   } ],
   "ambulanceVehicle" : {
     "type" : "Van",

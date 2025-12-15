@@ -45,7 +45,8 @@
         "onMission" : false
       }
     }, 1 ],
-    "operations" : [ ]
+    "operations" : [ ],
+    "appointments" : [ ]
   } ],
   "ambulanceVehicle" : {
     "type" : "boat",

@@ -11,19 +11,64 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AppointmentTest {
-    private Appointment appointment;
     private final ObjectStore objectStore = new ObjectStore();
+    private Appointment appointment;
+    private Patient patient;
+    private Doctor doctor;
+    private MedicalLicense medicalLicense;
+    private Department department;
+    private Specialization specialization;
 
     @BeforeEach
     void setUp(TestInfo info) {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
+        medicalLicense = new MedicalLicense("AAC-DAE-20A", Date.valueOf("2000-10-10"), Date.valueOf("2020-10-10"));
+        department = new Department("23D", "Neurology");
+        specialization = new Specialization("Neurologist", List.of("5 years"));
+
+        doctor = new Doctor(
+                "45645645645",
+                "doctor2",
+                "Qwerty7/",
+                "Mark",
+                "Smith",
+                Date.valueOf("1975-07-20"),
+                Person.Nation.ENG,
+                "doc_2",
+                Doctor.Status.ON_LEAVE,
+                false,
+                false,
+                medicalLicense
+        );
+
+        patient = new Patient(
+                "45155151519",
+                "username",
+                "Qwerty7/",
+                "Jake",
+                "Kowalski",
+                Date.valueOf("2001-05-05"),
+                Person.Nation.PL,
+                Patient.BloodType.A,
+                true,
+                80,
+                180,
+                true
+        );
+
+        doctor.setDepartment(department);
+        doctor.addSpecialization(specialization);
+
         appointment = new Appointment(Timestamp.valueOf("2025-08-08 11:00:00"));
         appointment.setEndTime(Timestamp.valueOf("2025-08-08 11:45:00"));
         appointment.setStatus(Appointment.Status.Completed);
+        appointment.setPatient(patient);
+        appointment.setDoctor(doctor);
     }
 
     @Test
@@ -74,14 +119,6 @@ public class AppointmentTest {
 
     @Test
     void testPatientAssociation() {
-        Patient patient = new Patient("12345678901", "testuser", "password123", "John", "Doe",
-                                    Date.valueOf("1990-01-01"), Person.Nation.PL,
-                                    Patient.BloodType.A, true, 70.0, 180.0, true);
-
-        assertNull(appointment.getPatient());
-
-        appointment.setPatient(patient);
-
         assertEquals(patient, appointment.getPatient());
         assertTrue(patient.getAppointments().contains(appointment));
 
@@ -101,21 +138,12 @@ public class AppointmentTest {
 
     @Test
     void testDoctorAssociation() {
-        MedicalLicense license = new MedicalLicense("DOC123", Date.valueOf("2020-01-01"), Date.valueOf("2030-01-01"));
-        Doctor doctor = new Doctor("12345678901", "docuser", "password123", "Dr. Smith", "Medical",
-                                 Date.valueOf("1980-01-01"), Person.Nation.PL,
-                                 "DOC001", Doctor.Status.ACTIVE, true, false, license);
-
-        assertNull(appointment.getDoctor());
-
-        appointment.setDoctor(doctor);
-
         assertEquals(doctor, appointment.getDoctor());
         assertTrue(doctor.getAppointments().contains(appointment));
 
         Doctor newDoctor = new Doctor("09876543210", "newdoc", "password123", "Dr. Jones", "Health",
                                     Date.valueOf("1982-01-01"), Person.Nation.PL,
-                                    "DOC002", Doctor.Status.ACTIVE, true, false, license);
+                                    "DOC002", Doctor.Status.ACTIVE, true, false, medicalLicense);
         appointment.setDoctor(newDoctor);
 
         assertFalse(doctor.getAppointments().contains(appointment));

@@ -2,5 +2,86 @@
   "type" : "Appointment",
   "startTime" : 1754643600000,
   "endTime" : 1754646300000,
-  "status" : "Completed"
+  "status" : "Completed",
+  "patient" : {
+    "type" : "patient",
+    "pesel" : "45155151519",
+    "username" : "username",
+    "password" : "Qwerty7/",
+    "name" : "Jake",
+    "surname" : "Kowalski",
+    "dob" : 989013600000,
+    "nationality" : "PL",
+    "bloodType" : "A",
+    "insurance" : true,
+    "weight" : 80.0,
+    "height" : 180.0,
+    "isActive" : true,
+    "treatmentHistory" : {
+      "patient" : null,
+      "treatmentList" : null,
+      "additionalInformationList" : null,
+      "dateRecorded" : null
+    },
+    "patientAmbulanceTransitList" : [ ],
+    "operations" : [ ],
+    "appointments" : [ {
+      "type" : "Appointment",
+      "startTime" : 1754643600000,
+      "endTime" : 1754646300000,
+      "status" : "Completed",
+      "patient" : "45155151519",
+      "doctor" : {
+        "type" : "doctor",
+        "pesel" : "45645645645",
+        "username" : "doctor2",
+        "password" : "Qwerty7/",
+        "name" : "Mark",
+        "surname" : "Smith",
+        "dob" : 175042800000,
+        "nationality" : "ENG",
+        "employeeId" : "doc_2",
+        "status" : "ON_LEAVE",
+        "onDuty" : false,
+        "mapOfMedLicenceNumbers" : {
+          "AAC-DAE-20A" : {
+            "type" : "MedicalLicense",
+            "licenseNumber" : "AAC-DAE-20A",
+            "acquisitionDate" : 971128800000,
+            "expirationDate" : 1602280800000
+          }
+        },
+        "hasHeadRole" : false,
+        "department" : {
+          "type" : "Department",
+          "id" : "23D",
+          "name" : "Neurology",
+          "floorList" : [ ],
+          "doctors" : [ "45645645645" ],
+          "nurses" : [ ]
+        },
+        "specializations" : [ {
+          "type" : "Specialization",
+          "name" : "Neurologist",
+          "requirements" : [ "5 years" ],
+          "doctors" : [ "45645645645" ]
+        } ],
+        "supervisor" : null,
+        "supervisorsList" : [ ],
+        "operations" : [ ],
+        "appointments" : [ {
+          "type" : "Appointment",
+          "startTime" : 1754643600000,
+          "endTime" : 1754646300000,
+          "status" : "Completed",
+          "patient" : "45155151519",
+          "doctor" : "45645645645",
+          "nurse" : null
+        } ]
+      },
+      "nurse" : null
+    } ]
+  },
+  "doctor" : "45645645645",
+  "nurse" : null
 }

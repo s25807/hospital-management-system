@@ -26,5 +26,6 @@
     "doctors" : [ ],
     "nurses" : [ "22222222222" ]
   },
-  "operations" : [ ]
+  "operations" : [ ],
+  "appointments" : [ ]
 }
