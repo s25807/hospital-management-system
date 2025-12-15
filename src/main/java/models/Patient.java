@@ -3,6 +3,7 @@ package models;
 import annotations.Min;
 import annotations.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -34,7 +35,13 @@ public class Patient extends Person {
     @NotNull
     private List<PatientAmbulanceTransit> patientAmbulanceTransitList;
 
-    public Patient() {}
+    @NotNull
+    @JsonDeserialize(as = ArrayList.class)
+    private List<Appointment> appointments;
+
+    public Patient() {
+        this.appointments = new ArrayList<>();
+    }
     public Patient(String pesel, String username, String password, String name, String surname, Date dob, Nation nationality, BloodType bloodType, boolean insurance, double weight, double height, boolean isActive) {
         super(pesel, username, password, name, surname, dob, nationality);
         this.bloodType = bloodType;
@@ -42,6 +49,7 @@ public class Patient extends Person {
         this.weight = weight;
         this.height = height;
         this.isActive = isActive;
+        this.appointments = new ArrayList<>();
         this.treatmentHistory = new TreatmentHistory();
         this.patientAmbulanceTransitList = new ArrayList<>();
     }
@@ -61,6 +69,19 @@ public class Patient extends Person {
     public void setIsActive(boolean isActive) { this.isActive = isActive; }
     public void setTreatmentHistory(TreatmentHistory treatmentHistory) {  this.treatmentHistory = treatmentHistory; }
     public void setPatientAmbulanceTransitList(List<PatientAmbulanceTransit> patientAmbulanceTransitIdList) {  this.patientAmbulanceTransitList = patientAmbulanceTransitIdList; }
+
+    public List<Appointment> getAppointments() { return appointments; }
+    public void setAppointments(List<Appointment> appointments) { this.appointments = appointments; }
+
+    public void addAppointment(Appointment appointment) {
+        if (appointment != null && !this.appointments.contains(appointment)) {
+            this.appointments.add(appointment);
+        }
+    }
+
+    public void removeAppointment(Appointment appointment) {
+        this.appointments.remove(appointment);
+    }
 
     public void createAppointment() {}
 
