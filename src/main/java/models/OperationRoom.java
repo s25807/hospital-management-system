@@ -1,15 +1,24 @@
 package models;
 
+import annotations.NotEmpty;
 import annotations.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class OperationRoom extends Room{
 
     @NotNull
     Map<String, Integer> surgicalEquipment;
+
+    @NotNull
+    @NotEmpty
+    @JsonDeserialize(as = ArrayList.class)
+    private List<Operation> operations = new ArrayList<>();
 
     public OperationRoom() {}
     public OperationRoom(String roomNumber, int maxPeopleAllowed, int occupancy, Floor floor) {
@@ -21,8 +30,16 @@ public class OperationRoom extends Room{
         this.surgicalEquipment = surgicalEquipment;
     }
 
-    public void setSurgicalEquipment(Map<String, Integer> surgicalEquipment) { this.surgicalEquipment = surgicalEquipment; }
     public Map<String, Integer> getSurgicalEquipment() { return this.surgicalEquipment; }
+    public List<Operation> getOperations() { return operations; }
+
+    public void setSurgicalEquipment(Map<String, Integer> surgicalEquipment) { this.surgicalEquipment = surgicalEquipment; }
+
+    public void setOperations(List<Operation> operations) {
+        if (operations == null || operations.isEmpty())
+            throw new IllegalArgumentException("operations cannot be empty");
+        this.operations = new ArrayList<>(operations);
+    }
 
     @JsonIgnore
     public void addItem(String item, int quantity) {
