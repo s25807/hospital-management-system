@@ -19,5 +19,6 @@
     "dateRecorded" : null
   },
   "patientAmbulanceTransitList" : [ ],
-  "operations" : [ ]
+  "operations" : [ ],
+  "appointments" : [ ]
 }

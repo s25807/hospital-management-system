@@ -31,10 +31,15 @@ public class Doctor extends Employee {
     @JsonDeserialize(as = ArrayList.class)
     private List<Operation> operations;
 
+    @NotNull
+    @JsonDeserialize(as = ArrayList.class)
+    private List<Appointment> appointments;
+
     public Doctor() {
         this.specializations = new ArrayList<>();
         this.supervisorsList = new ArrayList<>();
         this.operations = new ArrayList<>();
+        this.appointments = new ArrayList<>();
     }
     public Doctor(String pesel, String username, String password, String name, String surname, Date dob, Nation nationality, String employeeId, Status status, boolean onDuty,  boolean hasHeadRole, MedicalLicense medicalLicense) {
         super(pesel, username, password, name, surname, dob, nationality, employeeId, status, onDuty, medicalLicense);
@@ -42,6 +47,7 @@ public class Doctor extends Employee {
         this.specializations = new ArrayList<>();
         this.supervisorsList = new ArrayList<>();
         this.operations = new ArrayList<>();
+        this.appointments = new ArrayList<>();
     }
 
     public boolean isHasHeadRole() { return hasHeadRole; }
@@ -50,6 +56,7 @@ public class Doctor extends Employee {
     public Doctor getSupervisor() { return supervisor; }
     public List<Doctor> getSupervisorsList() { return supervisorsList; }
     public List<Operation> getOperations() { return operations; }
+    public List<Appointment> getAppointments() { return appointments; }
 
     public void assignHeadRole(boolean hasHeadRole) { this.hasHeadRole = hasHeadRole; }
     public void setOperations(List<Operation> operations) { this.operations = operations; }
@@ -130,6 +137,16 @@ public class Doctor extends Employee {
     public void removeDoctorHeSupervisors(Doctor doctor) {
         supervisorsList.remove(doctor);
         doctor.setSupervisor(null);
+    }
+
+    public void addAppointment(Appointment appointment) {
+        if (appointment != null && !this.appointments.contains(appointment)) {
+            this.appointments.add(appointment);
+        }
+    }
+
+    public void removeAppointment(Appointment appointment) {
+        this.appointments.remove(appointment);
     }
 
     @JsonIgnore

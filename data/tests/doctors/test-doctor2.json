@@ -54,7 +54,8 @@
       } ],
       "supervisor" : "45688945645",
       "supervisorsList" : [ ],
-      "operations" : [ ]
+      "operations" : [ ],
+      "appointments" : [ ]
     }, "45688945645" ],
     "nurses" : [ ]
   },
@@ -66,5 +67,6 @@
   } ],
   "supervisor" : null,
   "supervisorsList" : [ "45645645645" ],
-  "operations" : [ ]
+  "operations" : [ ],
+  "appointments" : [ ]
 }
