@@ -25,12 +25,13 @@ public class NurseTest {
     private final ObjectStore objectStore = new ObjectStore();
     private Nurse nurse;
     private MedicalLicense medicalLicense;
+    private Department department;
 
     @BeforeEach
     void setUp(TestInfo info) {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
         medicalLicense = new MedicalLicense("AAC-DAE-20A", Date.valueOf("2000-10-10"), Date.valueOf("2020-10-10"));
-
+        department = new Department("42", "Neurology");
         nurse = new Nurse(
                 "22222222222",
                 "nurse2",
@@ -44,6 +45,8 @@ public class NurseTest {
                 false,
                 medicalLicense
         );
+
+        nurse.setDepartment(department);
     }
 
     @Test
@@ -112,34 +115,25 @@ public class NurseTest {
             ValidatorService.validate(new Nurse());
         });
 
-        assertThrows(Exception.class, () -> {
-            try {
-                ValidatorService.validate(
-                        new Nurse(
-                                "11111111111",
-                                "username",
-                                "pass",
-                                "Anna",
-                                "Schmid",
-                                Date.valueOf("1990-03-10"),
-                                Person.Nation.DE,
-                                "nur_1",
-                                Nurse.Status.ACTIVE,
-                                true,
-                                medicalLicense
-                        )
-                );
-            } catch (Exception e) {
-                assertTrue(
-                        e instanceof InvalidPasswordException ||
-                                e instanceof IllegalArgumentException
-                );
-                throw e;
-            }
+        assertThrows(IllegalArgumentException.class, () -> {
+            Nurse test = new Nurse(
+                    "11111111111",
+                    "username",
+                    "pass",
+                    "Anna",
+                    "Schmid",
+                    Date.valueOf("1990-03-10"),
+                    Person.Nation.DE,
+                    "nur_1",
+                    Nurse.Status.ACTIVE,
+                    true,
+                    medicalLicense
+            );
+            test.setDepartment(department);
+            ValidatorService.validate(test);
         });
 
-        assertThrows(Exception.class, () -> {
-            try {
+        assertThrows(NullPointerException.class, () -> {
                 ValidatorService.validate(
                         new Nurse(
                                 "11111111111",
@@ -155,13 +149,6 @@ public class NurseTest {
                                 medicalLicense
                         )
                 );
-            } catch (Exception e) {
-                assertTrue(
-                        e instanceof InvalidPasswordException ||
-                                e instanceof IllegalArgumentException
-                );
-                throw e;
-            }
         });
     }
 

@@ -44,6 +44,7 @@ public abstract class Room {
         this.maxPeopleAllowed = maxPeopleAllowed;
         this.occupancy = occupancy;
         this.floor = floor;
+        this.floor.getRoomList().add(this);
         checkIsFilled();
     }
 

@@ -19,29 +19,52 @@
     }
   },
   "hasHeadRole" : false,
+  "department" : {
+    "type" : "Department",
+    "id" : "23D",
+    "name" : "Neurology",
+    "floorList" : [ ],
+    "doctors" : [ {
+      "type" : "doctor",
+      "pesel" : "45645645645",
+      "username" : "doctor2",
+      "password" : "Qwerty7/",
+      "name" : "Mark",
+      "surname" : "Smith",
+      "dob" : 175042800000,
+      "nationality" : "ENG",
+      "employeeId" : "doc_2",
+      "status" : "ON_LEAVE",
+      "onDuty" : false,
+      "mapOfMedLicenceNumbers" : {
+        "AAC-DAE-20A" : {
+          "type" : "MedicalLicense",
+          "licenseNumber" : "AAC-DAE-20A",
+          "acquisitionDate" : 971128800000,
+          "expirationDate" : 1602280800000
+        }
+      },
+      "hasHeadRole" : false,
+      "department" : "23D",
+      "specializations" : [ {
+        "type" : "Specialization",
+        "name" : "Neurologist",
+        "requirements" : [ "5 years" ],
+        "doctors" : [ "45645645645", "45688945645" ]
+      } ],
+      "supervisor" : "45688945645",
+      "supervisorsList" : [ ],
+      "operations" : [ ]
+    }, "45688945645" ],
+    "nurses" : [ ]
+  },
+  "specializations" : [ {
+    "type" : "Specialization",
+    "name" : "Neurologist",
+    "requirements" : [ "5 years" ],
+    "doctors" : [ "45645645645", "45688945645" ]
+  } ],
   "supervisor" : null,
-  "supervisorsList" : [ {
-    "type" : "doctor",
-    "pesel" : "45645645645",
-    "username" : "doctor2",
-    "password" : "Qwerty7/",
-    "name" : "Mark",
-    "surname" : "Smith",
-    "dob" : 175042800000,
-    "nationality" : "ENG",
-    "employeeId" : "doc_2",
-    "status" : "ON_LEAVE",
-    "onDuty" : false,
-    "mapOfMedLicenceNumbers" : {
-      "AAC-DAE-20A" : {
-        "type" : "MedicalLicense",
-        "licenseNumber" : "AAC-DAE-20A",
-        "acquisitionDate" : 971128800000,
-        "expirationDate" : 1602280800000
-      }
-    },
-    "hasHeadRole" : false,
-    "supervisor" : "45688945645",
-    "supervisorsList" : [ ]
-  } ]
+  "supervisorsList" : [ "45645645645" ],
+  "operations" : [ ]
 }

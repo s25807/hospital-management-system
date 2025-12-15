@@ -17,5 +17,14 @@
       "acquisitionDate" : 971128800000,
       "expirationDate" : 1602280800000
     }
-  }
+  },
+  "department" : {
+    "type" : "Department",
+    "id" : "42",
+    "name" : "Neurology",
+    "floorList" : [ ],
+    "doctors" : [ ],
+    "nurses" : [ "22222222222" ]
+  },
+  "operations" : [ ]
 }

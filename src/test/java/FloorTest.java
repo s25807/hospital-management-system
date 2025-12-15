@@ -18,12 +18,14 @@ public class FloorTest {
     private final ObjectStore objectStore = new ObjectStore();
     private Floor floor;
     private Department department;
+    private Room room;
 
     @BeforeEach
     void setup(TestInfo info) {
         if (info.getTestMethod().map(m -> m.isAnnotationPresent(SkipSetup.class)).orElse(false)) return;
         department = new Department("14", "Department of Neurology");
         floor = new Floor(1, 15, department);
+        room = new PatientRoom("24C", 6, 3, false, floor);
     }
 
     @Test
@@ -65,7 +67,7 @@ public class FloorTest {
         if (!floor.getRoomList().contains(r1)) floor.getRoomList().add(r1);
         if (!floor.getRoomList().contains(r2)) floor.getRoomList().add(r2);
 
-        assertEquals(2, floor.getRoomList().size());
+        assertEquals(3, floor.getRoomList().size());
 
         floor.destroyFloor();
 

@@ -11,9 +11,11 @@
       "type" : "Department",
       "id" : "14",
       "name" : "Department of Neurology",
-      "floorList" : [ 1 ]
+      "floorList" : [ 1 ],
+      "doctors" : [ ],
+      "nurses" : [ ]
     },
-    "roomList" : [ ]
+    "roomList" : [ "13E" ]
   },
   "ambulanceVehicles" : [ {
     "type" : "Van",

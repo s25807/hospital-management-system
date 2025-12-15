@@ -3,6 +3,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import constants.PathConstants;
 import models.Department;
 import models.Floor;
+import models.Operation;
 import models.OperationRoom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,10 @@ import validators.ValidatorService;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -117,5 +121,18 @@ public class OperationRoomTest {
         assertEquals(2, loaded.getSurgicalEquipment().size());
         assertEquals(5, loaded.getSurgicalEquipment().get("scalpel"));
         assertEquals(10, loaded.getSurgicalEquipment().get("clamp"));
+    }
+
+    @Test
+    void testOperationRoomAssociationsValid() {
+        OperationRoom room = new OperationRoom("OR-01", 10, 0, floor);
+
+        Operation op = new Operation(Timestamp.valueOf("2030-01-01 10:00:00"));
+        op.setEndTime(Timestamp.valueOf("2030-01-01 11:00:00"));
+
+        room.setOperations(new ArrayList<>(List.of(op)));
+
+        assertEquals(1, room.getOperations().size());
+        assertEquals(op, room.getOperations().get(0));
     }
 }

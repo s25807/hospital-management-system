@@ -6,7 +6,16 @@
     "type" : "Department",
     "id" : "14",
     "name" : "Department of Neurology",
-    "floorList" : [ 1 ]
+    "floorList" : [ 1 ],
+    "doctors" : [ ],
+    "nurses" : [ ]
   },
-  "roomList" : [ ]
+  "roomList" : [ {
+    "type" : "patientRoom",
+    "roomNumber" : "24C",
+    "maxPeopleAllowed" : 6,
+    "occupancy" : 3,
+    "floor" : 1,
+    "vip" : false
+  } ]
 }
