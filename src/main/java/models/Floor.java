@@ -31,7 +31,6 @@ public class Floor {
     private Department department;
 
     @NotNull
-    @NotEmpty
     private List<Room> roomList;
 
     public Floor() { this.roomList = new ArrayList<>(); }
