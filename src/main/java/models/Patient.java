@@ -44,6 +44,9 @@ public class Patient extends Person {
     @JsonDeserialize(as = ArrayList.class)
     private List<Appointment> appointments;
 
+    @NotNull
+    private PatientRoom patientRoom;
+
     public Patient() { patientAmbulanceTransitList = new ArrayList<>(); operations = new ArrayList<>(); appointments = new ArrayList<>(); }
     public Patient(String pesel, String username, String password, String name, String surname, Date dob, Nation nationality, BloodType bloodType, boolean insurance, double weight, double height, boolean isActive) {
         super(pesel, username, password, name, surname, dob, nationality);
@@ -66,6 +69,7 @@ public class Patient extends Person {
     public TreatmentHistory getTreatmentHistory() { return treatmentHistory; }
     public List<PatientAmbulanceTransit> getPatientAmbulanceTransitList() { return this.patientAmbulanceTransitList; }
     public List<Operation> getOperations() { return this.operations; }
+    public PatientRoom getPatientRoom() { return this.patientRoom; }
 
     public void setBloodType(BloodType bloodType) { this.bloodType = bloodType; }
     public void setInsurance(boolean insurance) { this.insurance = insurance; }
@@ -75,6 +79,20 @@ public class Patient extends Person {
     public void setTreatmentHistory(TreatmentHistory treatmentHistory) {  this.treatmentHistory = treatmentHistory; }
     public void setPatientAmbulanceTransitList(List<PatientAmbulanceTransit> patientAmbulanceTransitIdList) {  this.patientAmbulanceTransitList = patientAmbulanceTransitIdList; }
     public void setOperations(List<Operation> operations) { this.operations = operations; }
+
+    public void setPatientRoom(PatientRoom room) {
+        if (this.patientRoom == room) return;
+
+        if (this.patientRoom != null) {
+            this.patientRoom.removePatient(this);
+        }
+
+        this.patientRoom = room;
+
+        if (room != null && !room.hasPatient(this)) {
+            room.addPatient(this);
+        }
+    }
 
     public List<Appointment> getAppointments() { return appointments; }
     public void setAppointments(List<Appointment> appointments) { this.appointments = appointments; }

@@ -5,7 +5,7 @@
   "password" : "Qwerty7/",
   "name" : "Jake",
   "surname" : "Kowalski",
-  "dob" : 989013600000,
+  "dob" : 989010000000,
   "nationality" : "PL",
   "bloodType" : "A",
   "insurance" : true,
@@ -20,5 +20,27 @@
   },
   "patientAmbulanceTransitList" : [ ],
   "operations" : [ ],
-  "appointments" : [ ]
+  "appointments" : [ ],
+  "patientRoom" : {
+    "type" : "patientRoom",
+    "roomNumber" : "PR-01",
+    "maxPeopleAllowed" : 1,
+    "occupancy" : 1,
+    "floor" : {
+      "type" : "Floor",
+      "number" : 1,
+      "amountOfRooms" : 10,
+      "department" : {
+        "type" : "Department",
+        "id" : "14",
+        "name" : "Department of Neurology",
+        "floorList" : [ 1 ],
+        "doctors" : [ ],
+        "nurses" : [ ]
+      },
+      "roomList" : [ "PR-01" ]
+    },
+    "vip" : false,
+    "patients" : [ "45155151519" ]
+  }
 }
