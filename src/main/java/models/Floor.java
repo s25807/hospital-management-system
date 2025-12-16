@@ -27,10 +27,10 @@ public class Floor {
     @NotNull
     private int amountOfRooms;
 
-    @NotNull
     private Department department;
 
     @NotNull
+    @NotEmpty
     private List<Room> roomList;
 
     public Floor() { this.roomList = new ArrayList<>(); }

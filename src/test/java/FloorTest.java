@@ -101,6 +101,11 @@ public class FloorTest {
         assertThrows(Exception.class, () -> {
             ValidatorService.validate(new Floor());
         });
+
+        Floor invalid = new Floor(1, 0, department);
+        assertThrows(Exception.class, () -> {
+            ValidatorService.validate(invalid);
+        });
     }
 
     @Test
