@@ -46,7 +46,8 @@
       }
     } ],
     "operations" : [ ],
-    "appointments" : [ ]
+    "appointments" : [ ],
+    "patientRoom" : null
   } ],
   "ambulanceVehicle" : {
     "type" : "Van",

@@ -16,6 +16,7 @@
     "maxPeopleAllowed" : 6,
     "occupancy" : 3,
     "floor" : 1,
-    "vip" : false
+    "vip" : false,
+    "patients" : [ ]
   } ]
 }

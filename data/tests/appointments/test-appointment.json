@@ -80,7 +80,8 @@
         } ]
       },
       "nurse" : null
-    } ]
+    } ],
+    "patientRoom" : null
   },
   "doctor" : "45645645645",
   "nurse" : null

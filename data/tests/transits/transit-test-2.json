@@ -46,7 +46,8 @@
       }
     }, 1 ],
     "operations" : [ ],
-    "appointments" : [ ]
+    "appointments" : [ ],
+    "patientRoom" : null
   } ],
   "ambulanceVehicle" : {
     "type" : "boat",
