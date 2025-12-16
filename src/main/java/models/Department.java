@@ -29,7 +29,6 @@ public class Department {
     private String name;
 
     @NotNull
-    @NotEmpty
     private List<Floor> floorList;
 
     @NotNull
