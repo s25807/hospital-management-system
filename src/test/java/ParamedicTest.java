@@ -36,6 +36,10 @@ public class ParamedicTest {
                 false,
                 120,
                 500,
+                false,
+                false,
+                null,
+                null,
                 Van.Capability.Extreme
         );
 

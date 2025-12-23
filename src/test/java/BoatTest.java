@@ -40,6 +40,10 @@ public class BoatTest {
                 false,
                 120,
                 500,
+                true,
+                true,
+                null,
+                null,
                 12.34
         );
 
@@ -98,6 +102,7 @@ public class BoatTest {
         assertEquals(SAMPLE_MAX_SPEED, boat.getMaxSpeed());
         assertEquals(SAMPLE_RANGE, boat.getRangeOfTravel());
         assertEquals(12.34, boat.getLength(), 1e-9);
+        assertEquals(AmbulanceVehicle.VehicleType.FIRST_AID, boat.getVehicleType());
 
         boat.setLength(20.0);
         boat.setOnMission(false);
