@@ -44,6 +44,10 @@ public class PatientAmbulanceTransitTest {
                 false,
                 120,
                 500,
+                true,
+                true,
+                null,
+                null,
                 Van.Capability.Extreme
         );
 
@@ -55,6 +59,10 @@ public class PatientAmbulanceTransitTest {
                 false,
                 250,
                 1000,
+                true,
+                true,
+                null,
+                null,
                 700
         );
 

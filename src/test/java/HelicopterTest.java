@@ -9,6 +9,7 @@ import org.junit.jupiter.api.TestInfo;
 import util.ObjectStore;
 
 import java.sql.Date;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,7 +34,7 @@ public class HelicopterTest {
         medicalLicense = new MedicalLicense("AAC-DAE-20A", Date.valueOf("2000-10-10"), Date.valueOf("2020-10-10"));
         heli = new Helicopter(
                 SAMPLE_REG, SAMPLE_BRAND, SAMPLE_WEIGHT, SAMPLE_PERSONS,
-                SAMPLE_ON_MISSION, SAMPLE_MAX_SPEED, SAMPLE_RANGE, 3000.0
+                SAMPLE_ON_MISSION, SAMPLE_MAX_SPEED, SAMPLE_RANGE, null, null, Map.of("Scalpel_20", 4, "Scalpel_30", 5), Map.of("Vaporizer", 3), 3000.0
         );
 
         paramedic = new Paramedic(
@@ -83,6 +84,7 @@ public class HelicopterTest {
 
     @Test
     void constructorAndGetSet() {
+        assertEquals(AmbulanceVehicle.VehicleType.SURGICAL, heli.getVehicleType());
         assertEquals(3000.0, heli.getMaxAltitude());
         heli.setMaxAltitude(3500.5);
         assertEquals(3500.5, heli.getMaxAltitude());

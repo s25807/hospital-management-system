@@ -2,14 +2,16 @@ package models;
 
 import annotations.NotNull;
 
+import java.util.Map;
+
 public class Helicopter extends AmbulanceVehicle{
 
     @NotNull
     private double maxAltitude;
 
     public Helicopter() {}
-    public Helicopter(String registrationPlate, Brand brand, double weightLimit, int personLimit, boolean isOnMission, double maxSpeed, double rangeOfTravel, double maxAltitude) {
-        super(registrationPlate, brand, weightLimit, personLimit, isOnMission, maxSpeed, rangeOfTravel);
+    public Helicopter(String registrationPlate, Brand brand, double weightLimit, int personLimit, boolean isOnMission, double maxSpeed, double rangeOfTravel, Boolean hasDefibrillator, Boolean hasOxygenSupply, Map<String, Integer> instruments, Map<String, Integer> anesthesiaEquipment, double maxAltitude) {
+        super(registrationPlate, brand, weightLimit, personLimit, isOnMission, maxSpeed, rangeOfTravel, hasDefibrillator, hasOxygenSupply, instruments, anesthesiaEquipment);
         this.maxAltitude = maxAltitude;
     }
 

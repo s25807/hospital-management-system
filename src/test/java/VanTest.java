@@ -10,6 +10,7 @@ import org.junit.jupiter.api.TestInfo;
 import util.ObjectStore;
 
 import java.sql.Date;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,6 +34,10 @@ public class VanTest {
                 false,
                 120,
                 500,
+                true,
+                false,
+                Map.of("Scalpel_20", 4, "Scalpel_30", 5),
+                Map.of("Vaporizer", 3),
                 Van.Capability.Extreme
         );
 
@@ -91,6 +96,7 @@ public class VanTest {
         assertEquals(120, van.getMaxSpeed());
         assertEquals(500, van.getRangeOfTravel());
         assertEquals(Van.Capability.Extreme, van.getOffRoadCapability());
+        assertEquals(AmbulanceVehicle.VehicleType.SURGICAL_FIRST_AID, van.getVehicleType());
 
         van.setOffRoadCapability(Van.Capability.Low);
         assertEquals(Van.Capability.Low, van.getOffRoadCapability());

@@ -40,6 +40,10 @@ public class EmergencyRoomTest {
                 false,
                 120,
                 500,
+                true,
+                false,
+                null,
+                null,
                 Van.Capability.Extreme
         );
 

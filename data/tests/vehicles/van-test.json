@@ -2,10 +2,20 @@
   "type" : "Van",
   "registrationPlate" : "ABC-123",
   "brand" : "REV",
+  "vehicleType" : "SURGICAL_FIRST_AID",
   "weightLimit" : 1000.5,
   "personLimit" : 4,
   "maxSpeed" : 120.0,
   "rangeOfTravel" : 500.0,
+  "hasDeffibrilator" : true,
+  "hasOxygenSupply" : false,
+  "instruments" : {
+    "Scalpel_30" : 5,
+    "Scalpel_20" : 4
+  },
+  "anesthesiaEquipment" : {
+    "Vaporizer" : 3
+  },
   "patientAmbulanceTransitList" : [ ],
   "paramedicList" : [ {
     "type" : "paramedic",
